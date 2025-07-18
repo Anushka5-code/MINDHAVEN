@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chat with a Psychologist - MINDHAVEN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+      /* General Styles */
+      body {
+        background: linear-gradient(180deg, #C6F0E0 0%, #E6F0FA 100%);
+        font-family: Poppins, sans-serif;
+        margin: 0;
+      }
+      h1, h2, h3, h4 {
+        font-family: Playfair Display, serif;
+      }
+      .fade-in {
+        animation: fadeIn 0.5s ease-in;
+      }
+      @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+      .glassmorphic {
+        background: rgba(255,255,255,.9);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,.5);
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,.05);
+      }
+      .leaf-icon {
+        animation: sway 4s ease-in-out infinite;
+        color: rgba(193,154,46,.3);
+        font-size: 1.5rem;
+        position: absolute;
+      }
+      @keyframes sway {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(8deg); }
+      }
+      .leaf-icon-top {
+        left: 10px;
+        top: 10px;
+      }
+      .leaf-icon-bottom {
+        bottom: 10px;
+        right: 10px;
+      }
+
+      /* Header Styles */
+      header {
+        background: #FFFFFF;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      }
+      nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+      .logo img {
+        width: 32px;
+        height: 32px;
+        margin-right: 0.5rem;
+      }
+      .logo h1 {
+        font-size: 1.5rem;
+        color: #1F2937;
+      }
+      .hamburger {
+        color: #1F2937;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: block;
+        transition: color 0.3s ease;
+      }
+      .hamburger:hover {
+        color: #C19A2E;
+      }
+      /* Hamburger Menu Styles */
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, rgba(167, 243, 208, 0.95) 0%, rgba(191, 219, 254, 0.95) 100%);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        backdrop-filter: blur(5px);
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        animation: slideIn 0.3s ease-in-out;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      .nav-menu.show {
+        display: block;
+      }
+      @keyframes slideIn {
+        0% { opacity: 0; transform: translateY(-10px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+      .nav-menu ul {
+        position: relative;
+        padding: 1.5rem;
+        margin: 0;
+      }
+      .nav-menu li {
+        list-style: none;
+        margin-bottom: 0.75rem;
+      }
+      .nav-menu a {
+        display: block;
+        padding: 0.75rem 1rem;
+        color: #4B5563;
+        font-weight: 500;
+        font-size: 1rem;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+      .nav-menu a:hover {
+        background: rgba(255, 255, 255, 0.3);
+        color: #1F2937;
+      }
+      .nav-menu a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 1rem;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(to right, #34D399, #60A5FA);
+        transition: width 0.3s ease;
+      }
+      .nav-menu a:hover::after {
+        width: calc(100% - 2rem);
+      }
+      .leaf-icon-top {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: rgba(52, 211, 153, 0.2);
+        font-size: 2rem;
+      }
+      .leaf-icon-bottom {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        color: rgba(96, 165, 250, 0.2);
+        font-size: 2rem;
+      }
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        width: 200px;
+        background: #FFFFFF;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        z-index: 1000;
+      }
+      .dropdown-menu.show {
+        display: block;
+      }
+
+      /* Consultation Section */
+      .consultation-section {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+      .consultation-section h1 {
+        font-size: 2.5rem;
+        color: #1F2937;
+        text-align: center;
+        margin-bottom: 0.5rem;
+      }
+      .consultation-section p {
+        font-size: 1.25rem;
+        color: #4B5563;
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+      .consultation-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        justify-content: center;
+      }
+      .consultation-card {
+        background: rgba(255,255,255,.9);
+        border: 1px solid rgba(193,154,46,.2);
+        border-radius: 12px;
+        max-width: 300px;
+        padding: 1.25rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .consultation-card:hover {
+        box-shadow: 0 6px 15px rgba(193,154,46,.3);
+        transform: scale(1.02);
+      }
+      .consultation-card img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin: 0 auto 0.5rem;
+      }
+      .consultation-card h3 {
+        color: #1F2937;
+        font-size: 1.2rem;
+        margin: 0;
+        text-align: center;
+      }
+      .consultation-card p {
+        color: #4B5563;
+        font-size: 0.9rem;
+        text-align: center;
+        margin: 0;
+      }
+      .booking-form {
+        margin-top: 2rem;
+        background: rgba(255,255,255,.9);
+        border-radius: 12px;
+        padding: 1.5rem;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .booking-form h2 {
+        font-size: 1.8rem;
+        color: #1F2937;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+      .booking-form label {
+        color: #1F2937;
+        display: block;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+      .booking-form select,
+      .booking-form input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #D1D5DB;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+      }
+      .booking-form select:focus,
+      .booking-form input:focus {
+        border-color: #C19A2E;
+        box-shadow: 0 0 0 2px rgba(193,154,46,.2);
+        outline: none;
+      }
+      .booking-form button {
+        background: linear-gradient(135deg, #34D399, #C19A2E);
+        border: none;
+        border-radius: 8px;
+        color: #FFFFFF;
+        cursor: pointer;
+        font-weight: 600;
+        padding: 0.75rem;
+        width: 100%;
+        transition: all 0.3s ease;
+      }
+      .booking-form button:hover {
+        background: linear-gradient(135deg, #C19A2E, #34D399);
+        box-shadow: 0 0 8px rgba(193,154,46,.5);
+      }
+
+      /* Auth Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+      .modal.show {
+        display: flex;
+      }
+      .modal-content {
+        background: rgba(255,255,255,.95);
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,.15);
+        max-width: 400px;
+        width: 90%;
+        padding: 1.5rem;
+        position: relative;
+        text-align: center;
+      }
+      .modal-close {
+        color: #1F2937;
+        cursor: pointer;
+        font-size: 1.5rem;
+        position: absolute;
+        right: 15px;
+        top: 10px;
+      }
+      .modal-close:hover {
+        color: #C19A2E;
+      }
+      .modal-tabs {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+      .modal-tab {
+        border-bottom: 2px solid transparent;
+        color: #1F2937;
+        cursor: pointer;
+        flex: 1;
+        font-weight: 600;
+        padding: 0.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+      .modal-tab.active {
+        border-bottom: 2px solid #C19A2E;
+        color: #C19A2E;
+      }
+      .modal-tab:hover {
+        color: #C19A2E;
+      }
+      .modal-form {
+        display: none;
+      }
+      .modal-form.active {
+        display: block;
+      }
+      .modal-form label {
+        color: #1F2937;
+        display: block;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+      .modal-form input {
+        border: 1px solid #D1D5DB;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .modal-form input:focus {
+        border-color: #C19A2E;
+        box-shadow: 0 0 0 2px rgba(193,154,46,.2);
+        outline: none;
+      }
+      .modal-form button {
+        background: linear-gradient(135deg, #34D399, #C19A2E);
+        border: none;
+        border-radius: 8px;
+        color: #FFFFFF;
+        cursor: pointer;
+        font-weight: 600;
+        padding: 0.5rem;
+        transition: all 0.3s ease;
+        width: 100%;
+      }
+      .modal-form button:hover {
+        background: linear-gradient(135deg, #C19A2E, #34D399);
+        box-shadow: 0 0 8px rgba(193,154,46,.5);
+      }
+      .modal-link {
+        font-size: 0.9rem;
+        margin-top: 0.75rem;
+        text-align: center;
+      }
+      .modal-link a {
+        color: #C19A2E;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .modal-link a:hover {
+        color: #34D399;
+      }
+
+      /* Footer Styles */
+      footer {
+        background: #1F2937;
+        color: #FFFFFF;
+        padding: 2rem 1rem;
+        text-align: center;
+      }
+      .footer-logo {
+        width: 32px;
+        height: 32px;
+        margin: 1rem auto;
+        display: block;
+      }
+      footer p {
+        font-size: 0.9rem;
+        margin: 0.5rem 0;
+      }
+      footer a {
+        color: #C19A2E;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+      footer a:hover {
+        color: #34D399;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 768px) {
+        .consultation-section h1 {
+          font-size: 2rem;
+        }
+        .consultation-section p {
+          font-size: 1rem;
+        }
+        .consultation-card {
+          max-width: 100%;
+        }
+        .booking-form {
+          padding: 1rem;
+        }
+        .modal-content {
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <div class="flex items-center">
+          <button onclick="toggleNav()" class="text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 mr-4" aria-label="Toggle navigation menu">
+            <i class="fas fa-bars text-2xl"></i>
+          </button>
+          <a href="index.html" class="flex items-center">
+            <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mr-2">
+            <h1 class="text-2xl font-semibold text-gray-800">Mindful Check-In</h1>
+          </a>
+        </div>
+        <div class="flex items-center space-x-4">
+          <!-- Community Option -->
+          <a href="community.html" class="flex items-center text-gray-600 hover:text-gray-800" aria-label="Community">
+            <i class="fas fa-users text-2xl mr-1"></i>
+            <span class="text-sm font-medium">Community</span>
+          </a>
+          <!-- Profile Dropdown -->
+          <div class="relative dropdown">
+            <button onclick="toggleDropdown()" class="text-gray-600 hover:text-gray-800 focus:outline-none" aria-label="User account options">
+              <i class="fas fa-user-circle text-2xl"></i>
+            </button>
+            <div id="dropdownMenu" class="dropdown-menu"></div>
+          </div>
+        </div>
+      </nav>
+      <!-- Navigation Menu -->
+      <div id="navMenu" class="nav-menu">
+        <ul class="px-4 py-4 space-y-2">
+          <i class="fas fa-leaf leaf-icon-top"></i>
+          <i class="fas fa-leaf leaf-icon-bottom"></i>
+          <li><a href="index.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('index.html', 'Home menu item clicked')"><i class="fas fa-home mr-2"></i>Home</a></li>
+          <li><a href="#" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="checkDashboardAccess()"><i class="fas fa-user mr-2"></i>My Profile</a></li>
+          <li><a href="features.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('features.html', 'Features menu item clicked')"><i class="fas fa-cogs mr-2"></i>Features</a></li>
+          <li><a href="about.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="console.log('About menu item clicked')"><i class="fas fa-info-circle mr-2"></i>About</a></li>
+          <li><a href="faq.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="console.log('FAQ menu item clicked')"><i class="fas fa-question-circle mr-2"></i>FAQ</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <!-- Consultation Section -->
+    <section id="consultationSection" class="consultation-section active">
+      <div class="fade-in">
+        <h1>Chat with a Psychologist</h1>
+        <p>Schedule a private text-based chat session with our expert psychologists (Premium Users Only)</p>
+      </div>
+      <div class="consultation-grid" id="consultationGrid"></div>
+      <div class="booking-form glassmorphic fade-in">
+        <h2>Book Your Chat Session</h2>
+        <form onsubmit="bookConsultation(event)">
+          <label for="psychologist">Select Psychologist</label>
+          <select id="psychologist" onchange="populateSlots()" required>
+            <option value="">Choose a psychologist</option>
+            <option value="1">Dr. Jane Smith</option>
+            <option value="2">Dr. John Doe</option>
+            <option value="3">Dr. Emily Brown</option>
+          </select>
+          <label for="slot">Select Chat Time Slot</label>
+          <select id="slot" required>
+            <option value="">Choose a time slot</option>
+          </select>
+          <label for="notes">Additional Notes</label>
+          <input type="text" id="notes" placeholder="Any specific concerns or preferences">
+          <button type="submit">Book Chat Session</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <img src="logo.png" alt="Mindful Check-In Logo" class="footer-logo">
+      <p>© 2025 Mindful Check-In. All rights reserved.</p>
+      <p><a href="mailto:support@mindfulcheckin.com">Contact Us</a></p>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+      <div class="modal-content glassmorphic">
+        <i class="fas fa-leaf leaf-icon leaf-icon-top"></i>
+        <i class="fas fa-leaf leaf-icon leaf-icon-bottom"></i>
+        <span class="modal-close" onclick="closeAuthModal()">×</span>
+        <div class="modal-tabs">
+          <div class="modal-tab active" onclick="switchTab('login')">Login</div>
+          <div class="modal-tab" onclick="switchTab('signup')">Sign Up</div>
+        </div>
+        <div id="loginForm" class="modal-form active">
+          <form onsubmit="handleLogin(event)">
+            <div>
+              <label for="login-email">Email</label>
+              <input type="email" id="login-email" required placeholder="you@example.com">
+            </div>
+            <div>
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" required placeholder="Your password">
+            </div>
+            <button type="submit">Login</button>
+          </form>
+          <p class="modal-link">No account? <a onclick="switchTab('signup')">Sign up</a></p>
+        </div>
+        <div id="signupForm" class="modal-form">
+          <form onsubmit="handleSignup(event)">
+            <div>
+              <label for="signup-email">Email</label>
+              <input type="email" id="signup-email" required placeholder="you@example.com">
+            </div>
+            <div>
+              <label for="signup-password">Password</label>
+              <input type="password" id="signup-password" required placeholder="Create a password">
+            </div>
+            <div>
+              <label for="signup-confirm-password">Confirm Password</label>
+              <input type="password" id="signup-confirm-password" required placeholder="Confirm your password">
+            </div>
+            <button type="submit">Sign Up</button>
+          </form>
+          <p class="modal-link">Have an account? <a onclick="switchTab('login')">Login</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+      // Generate today's date in YYYY-MM-DD format
+      const today = new Date();
+      const todayString = today.toISOString().split('T')[0];
+
+      // Mock data for psychologists and slots
+      const psychologists = [
+        {
+          id: 1,
+          name: "Dr. Jane Smith",
+          specialty: "Cognitive Behavioral Therapy",
+          thumbnail: "https://via.placeholder.com/100",
+          slots: [
+            { time: `${todayString} 19:38`, booked: false }, // Today at 5:05 PM
+            { time: "2025-05-11 10:00", booked: false },
+            { time: "2025-05-11 14:00", booked: true },
+            { time: "2025-05-12 09:00", booked: false }
+          ]
+        },
+        {
+          id: 2,
+          name: "Dr. John Doe",
+          specialty: "Mindfulness-Based Therapy",
+          thumbnail: "https://via.placeholder.com/100",
+          slots: [
+            { time: "2025-05-11 11:00", booked: false },
+            { time: "2025-05-11 15:00", booked: false },
+            { time: "2025-05-12 10:00", booked: true }
+          ]
+        },
+        {
+          id: 3,
+          name: "Dr. Emily Brown",
+          specialty: "Trauma Counseling",
+          thumbnail: "https://via.placeholder.com/100",
+          slots: [
+            { time: "2025-05-11 13:00", booked: false },
+            { time: "2025-05-12 11:00", booked: false },
+            { time: "2025-05-12 14:00", booked: false }
+          ]
+        }
+      ];
+
+      // Toggle navigation menu
+      function toggleNav() {
+        try {
+          const navMenu = document.getElementById('navMenu');
+          navMenu.classList.toggle('show');
+          document.getElementById('dropdownMenu').classList.remove('show');
+        } catch (error) {
+          console.error("Error toggling navigation menu:", error);
+          alert("Failed to toggle navigation menu. Please check console for errors.");
+        }
+      }
+
+      // Navigate to URL
+      function navigateTo(url, message) {
+        console.log(message);
+        try {
+          window.location.href = url;
+        } catch (error) {
+          console.error("Navigation failed to", url, ":", error);
+          alert("Failed to navigate to " + url + ". Please ensure the file exists and check console for errors.");
+        }
+      }
+
+      // Toggle dropdown menu
+      function toggleDropdown() {
+        try {
+          const dropdownMenu = document.getElementById('dropdownMenu');
+          dropdownMenu.classList.toggle('show');
+          document.getElementById('navMenu').classList.remove('show');
+        } catch (error) {
+          console.error("Error toggling dropdown menu:", error);
+          alert("Failed to toggle dropdown menu. Please check console for errors.");
+        }
+      }
+
+      // Start guest chat
+      function startGuestChat() {
+        alert("Starting anonymous guest chat... Your data won’t be saved!");
+        // Replace with chat redirect/modal
+      }
+
+      // Check dashboard access
+      function checkDashboardAccess() {
+        if (sessionStorage.getItem('isRegistered') === 'true') {
+          window.location.href = 'dashboard.html';
+        } else {
+          openAuthModal('login');
+        }
+      }
+
+      // Update profile options
+      function updateProfileOptions() {
+        try {
+          const isRegistered = sessionStorage.getItem('isRegistered') === 'true';
+          const dropdownMenu = document.getElementById('dropdownMenu');
+          dropdownMenu.innerHTML = isRegistered
+            ? '<a href="#" onclick="logout()" class="block px-4 py-2 text-gray-600 hover:bg-red-100">Logout</a>'
+            : `
+              <a href="#" onclick="startGuestChat()" class="block px-4 py-2 text-gray-600 hover:bg-blue-100">Use as Guest</a>
+              <a href="#" onclick="openAuthModal('login')" class="block px-4 py-2 text-gray-600 hover:bg-green-100">Login / Signup</a>
+            `;
+        } catch (error) {
+          console.error("Error updating profile options:", error);
+          alert("Failed to update profile options. Please check console for errors.");
+          document.getElementById('dropdownMenu').innerHTML = `
+            <a href="#" onclick="startGuestChat()" class="block px-4 py-2 text-gray-600 hover:bg-blue-100">Use as Guest</a>
+            <a href="#" onclick="openAuthModal('login')" class="block px-4 py-2 text-gray-600 hover:bg-green-100">Login / Signup</a>
+          `;
+        }
+      }
+
+      // Logout
+      function logout() {
+        try {
+          sessionStorage.removeItem('isRegistered');
+          sessionStorage.removeItem('isPremium');
+          sessionStorage.removeItem('bookedConsultations');
+          sessionStorage.removeItem('chatHistory');
+          alert('Logged out successfully!');
+          window.location.reload();
+        } catch (error) {
+          console.error("Error during logout:", error);
+          alert("Failed to logout. Please check console for errors.");
+        }
+      }
+
+      // Open auth modal
+      function openAuthModal(tab) {
+        try {
+          const modal = document.getElementById('authModal');
+          modal.classList.add('show');
+          switchTab(tab);
+        } catch (error) {
+          console.error("Error opening auth modal:", error);
+          alert("Failed to open authentication modal. Please check console for errors.");
+        }
+      }
+
+      // Close auth modal
+      function closeAuthModal() {
+        try {
+          document.getElementById('authModal').classList.remove('show');
+        } catch (error) {
+          console.error("Error closing auth modal:", error);
+          alert("Failed to close authentication modal. Please check console for errors.");
+        }
+      }
+
+      // Switch auth tabs
+      function switchTab(tab) {
+        try {
+          const loginTab = document.querySelector('.modal-tab:nth-child(1)');
+          const signupTab = document.querySelector('.modal-tab:nth-child(2)');
+          const loginForm = document.getElementById('loginForm');
+          const signupForm = document.getElementById('signupForm');
+          loginTab.classList.toggle('active', tab === 'login');
+          signupTab.classList.toggle('active', tab === 'signup');
+          loginForm.classList.toggle('active', tab === 'login');
+          signupForm.classList.toggle('active', tab === 'signup');
+        } catch (error) {
+          console.error("Error switching auth tabs:", error);
+          alert("Failed to switch authentication tabs. Please check console for errors.");
+        }
+      }
+
+      // Handle login
+      function handleLogin(e) {
+        e.preventDefault();
+        try {
+          const email = document.getElementById('login-email').value;
+          const password = document.getElementById('login-password').value;
+          console.log('Logging in with:', { email, password });
+          sessionStorage.setItem('isRegistered', 'true');
+          sessionStorage.setItem('isPremium', 'true');
+          alert('Login successful!');
+          closeAuthModal();
+          window.location.reload();
+        } catch (error) {
+          console.error("Error during login:", error);
+          alert("Failed to login. Please check console for errors.");
+        }
+      }
+
+      // Handle signup
+      function handleSignup(e) {
+        e.preventDefault();
+        try {
+          const email = document.getElementById('signup-email').value;
+          const password = document.getElementById('signup-password').value;
+          const confirmPassword = document.getElementById('signup-confirm-password').value;
+          if (password !== confirmPassword) {
+            alert('Passwords do not match!');
+            return;
+          }
+          console.log('Signing up with:', { email, password });
+          sessionStorage.setItem('isRegistered', 'true');
+          sessionStorage.setItem('isPremium', 'false');
+          alert('Sign up successful! Upgrade to premium to access chat sessions.');
+          closeAuthModal();
+          window.location.reload();
+        } catch (error) {
+          console.error("Error during signup:", error);
+          alert("Failed to sign up. Please check console for errors.");
+        }
+      }
+
+      // Render consultation grid
+      function renderConsultationGrid() {
+        try {
+          const grid = document.getElementById('consultationGrid');
+          grid.innerHTML = '';
+          psychologists.forEach((psychologist, index) => {
+            const card = document.createElement('div');
+            card.className = 'consultation-card fade-in';
+            card.style.animationDelay = `${index * 0.2}s`;
+            card.innerHTML = `
+              <img src="${psychologist.thumbnail}" alt="${psychologist.name}">
+              <h3>${psychologist.name}</h3>
+              <p>${psychologist.specialty}</p>
+              <p>Available Slots: ${psychologist.slots.filter(slot => !slot.booked).length}</p>
+            `;
+            grid.appendChild(card);
+          });
+        } catch (error) {
+          console.error("Error rendering consultation grid:", error);
+          alert("Failed to render consultation grid. Please check console for errors.");
+        }
+      }
+
+      // Populate time slots based on selected psychologist
+      function populateSlots() {
+        try {
+          const psychologistId = document.getElementById('psychologist').value;
+          const slotSelect = document.getElementById('slot');
+          slotSelect.innerHTML = '<option value="">Choose a time slot</option>';
+          if (psychologistId) {
+            const psychologist = psychologists.find(p => p.id === parseInt(psychologistId));
+            if (psychologist) {
+              const availableSlots = psychologist.slots.filter(slot => !slot.booked);
+              if (availableSlots.length === 0) {
+                slotSelect.innerHTML = '<option value="">No available slots</option>';
+              } else {
+                availableSlots.forEach(slot => {
+                  const option = document.createElement('option');
+                  option.value = slot.time;
+                  option.textContent = new Date(slot.time).toLocaleString('en-US', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit'
+                  });
+                  slotSelect.appendChild(option);
+                });
+              }
+            }
+          }
+        } catch (error) {
+          console.error("Error populating time slots:", error);
+          alert("Failed to populate time slots. Please check console for errors.");
+        }
+      }
+
+      // Book consultation
+      function bookConsultation(e) {
+        e.preventDefault();
+        try {
+          if (sessionStorage.getItem('isPremium') !== 'true') {
+            alert('Please upgrade to premium to book a chat session.');
+            window.location.href = 'subscribe.html';
+            return;
+          }
+          const psychologistId = document.getElementById('psychologist').value;
+          const slot = document.getElementById('slot').value;
+          const notes = document.getElementById('notes').value;
+          if (!psychologistId || !slot) {
+            alert('Please select a psychologist and time slot.');
+            return;
+          }
+          const psychologist = psychologists.find(p => p.id === parseInt(psychologistId));
+          // Store booking
+          let bookings = JSON.parse(sessionStorage.getItem('bookedConsultations') || '[]');
+          bookings.push({ psychologistId: parseInt(psychologistId), time: slot, notes });
+          sessionStorage.setItem('bookedConsultations', JSON.stringify(bookings));
+          // Update slot to booked
+          const slotObj = psychologist.slots.find(s => s.time === slot);
+          if (slotObj) slotObj.booked = true;
+          // Schedule chat prompt
+          scheduleChatPrompt(psychologist.name, slot, psychologistId);
+          alert(`Chat session booked with ${psychologist.name} on ${new Date(slot).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}.\nNotes: ${notes || 'None'}\nYou will be prompted to join the chat 3 minutes before the session.`);
+          renderConsultationGrid();
+          document.getElementById('psychologist').value = '';
+          document.getElementById('slot').innerHTML = '<option value="">Choose a time slot</option>';
+          document.getElementById('notes').value = '';
+        } catch (error) {
+          console.error("Error booking consultation:", error);
+          alert("Failed to book consultation. Please check console for errors.");
+        }
+      }
+
+      // Schedule chat prompt 3 minutes before slot
+      function scheduleChatPrompt(psychologistName, slotTime, psychologistId) {
+        try {
+          const slotDate = new Date(slotTime);
+          const now = new Date();
+          const chatPromptTime = slotDate.getTime() - 3 * 60 * 1000; // 3 minutes before
+          const delay = chatPromptTime - now.getTime();
+          console.log(`Scheduling prompt for ${psychologistName} at ${slotDate.toLocaleString()}. Delay: ${delay}ms`);
+          if (delay > 0) {
+            setTimeout(() => {
+              if (confirm(`Your chat session with ${psychologistName} starts in 3 minutes at ${slotDate.toLocaleString('en-US', { hour: 'numeric', minute: '2-digit' })}.\nClick OK to join the chat now.`)) {
+                console.log(`Redirecting to chat2.html for psychologistId=${psychologistId}, name=${psychologistName}`);
+                window.location.href = `chat2.html?psychologistId=${psychologistId}&name=${encodeURIComponent(psychologistName)}`;
+              }
+            }, delay);
+          } else {
+            // Fallback for immediate testing
+            setTimeout(() => {
+              if (confirm(`Your chat session with ${psychologistName} is ready at ${slotDate.toLocaleString('en-US', { hour: 'numeric', minute: '2-digit' })}.\nClick OK to join the chat now.`)) {
+                console.log(`Redirecting to chat2.html for psychologistId=${psychologistId}, name=${psychologistName}`);
+                window.location.href = `chat2.html?psychologistId=${psychologistId}&name=${encodeURIComponent(psychologistName)}`;
+              }
+            }, 1000); // 1-second delay for testing
+          }
+        } catch (error) {
+          console.error("Error scheduling chat prompt:", error);
+          alert("Failed to schedule chat prompt. Please check console for errors.");
+        }
+      }
+
+      // Check and schedule chat prompts for existing bookings
+      function checkExistingBookings() {
+        try {
+          const bookings = JSON.parse(sessionStorage.getItem('bookedConsultations') || '[]');
+          bookings.forEach(booking => {
+            const psychologist = psychologists.find(p => p.id === booking.psychologistId);
+            if (psychologist) {
+              const slotDate = new Date(booking.time);
+              const now = new Date();
+              if (slotDate > now) {
+                scheduleChatPrompt(psychologist.name, booking.time, booking.psychologistId);
+              }
+            }
+          });
+        } catch (error) {
+          console.error("Error checking existing bookings:", error);
+          alert("Failed to check existing bookings. Please check console for errors.");
+        }
+      }
+
+      // Check premium access
+      function checkPremiumAccess() {
+        try {
+          if (sessionStorage.getItem('isRegistered') !== 'true') {
+            openAuthModal('login');
+            return false;
+          }
+          if (sessionStorage.getItem('isPremium') !== 'true') {
+            alert('This feature is exclusive to premium users. Please upgrade your plan.');
+            window.location.href = 'subscribe.html';
+            return false;
+          }
+          return true;
+        } catch (error) {
+          console.error("Error checking premium access:", error);
+          alert("Failed to check premium access. Please check console for errors.");
+          return false;
+        }
+      }
+
+      // Handle clicks outside modal and menus
+      document.addEventListener('click', e => {
+        try {
+          const authModal = document.getElementById('authModal');
+          const dropdown = document.querySelector('.dropdown');
+          const dropdownMenu = document.getElementById('dropdownMenu');
+          const navMenu = document.getElementById('navMenu');
+          if (e.target === authModal) {
+            closeAuthModal();
+          }
+          if (!dropdown.contains(e.target)) {
+            dropdownMenu.classList.remove('show');
+          }
+          if (!navMenu.contains(e.target) && !e.target.closest('button[onclick="toggleNav()"]')) {
+            navMenu.classList.remove('show');
+          }
+        } catch (error) {
+          console.error("Error handling click events:", error);
+          alert("Failed to handle click events. Please check console for errors.");
+        }
+      });
+
+      // Initialize
+      document.addEventListener('DOMContentLoaded', () => {
+        try {
+          if (!sessionStorage.getItem('isRegistered')) {
+            sessionStorage.removeItem('isRegistered');
+            sessionStorage.removeItem('isPremium');
+          }
+          updateProfileOptions();
+          if (checkPremiumAccess()) {
+            renderConsultationGrid();
+            checkExistingBookings();
+          }
+        } catch (error) {
+          console.error("Error during initialization:", error);
+          alert("Failed to initialize page. Please check console for errors.");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Comic Resources - MINDHAVEN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+      /* General Styles */
+      body {
+        background: linear-gradient(180deg, #C6F0E0 0%, #E6F0FA 100%);
+        font-family: Poppins, sans-serif;
+        margin: 0;
+      }
+      h1, h2, h3, h4 {
+        font-family: Playfair Display, serif;
+      }
+      .fade-in {
+        animation: fadeIn 0.5s ease-in;
+      }
+      @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+      .glassmorphic {
+        background: rgba(255,255,255,.9);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,.5);
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,.05);
+      }
+      .leaf-icon {
+        animation: sway 4s ease-in-out infinite;
+        color: rgba(193,154,46,.3);
+        font-size: 1.5rem;
+        position: absolute;
+      }
+      @keyframes sway {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(8deg); }
+      }
+      .leaf-icon-top {
+        left: 10px;
+        top: 10px;
+      }
+      .leaf-icon-bottom {
+        bottom: 10px;
+        right: 10px;
+      }
+
+      /* Header Styles */
+      header {
+        background: #FFFFFF;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      }
+      nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+      .logo img {
+        width: 32px;
+        height: 32px;
+        margin-right: 0.5rem;
+      }
+      .logo h1 {
+        font-size: 1.5rem;
+        color: #1F2937;
+      }
+      .hamburger {
+        color: #1F2937;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: block;
+        transition: color 0.3s ease;
+      }
+      .hamburger:hover {
+        color: #C19A2E;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+      .nav-links li {
+        list-style: none;
+      }
+      .nav-links a {
+        color: #1F2937;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+      .nav-links a:hover {
+        color: #C19A2E;
+      }
+      /* Hamburger Menu Styles */
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, rgba(167, 243, 208, 0.95) 0%, rgba(191, 219, 254, 0.95) 100%);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        backdrop-filter: blur(5px);
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        animation: slideIn 0.3s ease-in-out;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      .nav-menu.show {
+        display: block;
+      }
+      @keyframes slideIn {
+        0% { opacity: 0; transform: translateY(-10px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+      .nav-menu ul {
+        position: relative;
+        padding: 1.5rem;
+        margin: 0;
+      }
+      .nav-menu li {
+        list-style: none;
+        margin-bottom: 0.75rem;
+      }
+      .nav-menu a {
+        display: block;
+        padding: 0.75rem 1rem;
+        color: #4B5563;
+        font-weight: 500;
+        font-size: 1rem;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+      .nav-menu a:hover {
+        background: rgba(255, 255, 255, 0.3);
+        color: #1F2937;
+      }
+      .nav-menu a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 1rem;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(to right, #34D399, #60A5FA);
+        transition: width 0.3s ease;
+      }
+      .nav-menu a:hover::after {
+        width: calc(100% - 2rem);
+      }
+      .leaf-icon-top {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: rgba(52, 211, 153, 0.2);
+        font-size: 2rem;
+      }
+      .leaf-icon-bottom {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        color: rgba(96, 165, 250, 0.2);
+        font-size: 2rem;
+      }
+      .dropdown-menu {
+        display: none;
+      }
+      .dropdown-menu.show {
+        display: block;
+      }
+      .dropdown:hover .dropdown-menu {
+        display: block;
+      }
+      /* Nav Link Styles */
+      .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+      .nav-link:hover {
+        background: rgba(193, 154, 46, 0.1);
+      }
+      .nav-link i {
+        color: inherit;
+      }
+      @media (max-width: 768px) {
+        .nav-link span {
+          display: none;
+        }
+      }
+      /* Top-Right Controls */
+      .top-right-controls {
+        position: fixed;
+        top: 60px;
+        right: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        z-index: 999;
+      }
+      .control-btn {
+        background: linear-gradient(135deg, #34D399, #C19A2E);
+        border: none;
+        border-radius: 8px;
+        color: #FFFFFF;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+        width: 140px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .control-btn:hover {
+        background: linear-gradient(135deg, #C19A2E, #34D399);
+        box-shadow: 0 0 8px rgba(193,154,46,.5);
+      }
+      .control-btn i {
+        font-size: 1rem;
+      }
+      .dropdown-popup {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: -260px;
+        width: 250px;
+        padding: 1rem;
+        z-index: 1000;
+        animation: fadeIn 0.3s ease-in;
+      }
+      .dropdown-popup.show {
+        display: block;
+      }
+      .dropdown-popup h4 {
+        color: #1F2937;
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+      }
+      .dropdown-popup ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .dropdown-popup li {
+        margin-bottom: 0.5rem;
+      }
+      .dropdown-popup a {
+        color: #1F2937;
+        font-size: 0.85rem;
+        display: block;
+        padding: 0.5rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+      .dropdown-popup a:hover {
+        background: rgba(193,154,46,.1);
+        color: #C19A2E;
+      }
+      .dropdown-popup .sub-section {
+        margin-top: 1rem;
+      }
+
+      /* Heading and Choice Section */
+      .heading-section {
+        max-width: 1200px;
+        margin: 2rem auto;
+        text-align: center;
+      }
+      .heading-section h1 {
+        font-size: 2.5rem;
+        color: #1F2937;
+        margin-bottom: 0.5rem;
+      }
+      .heading-section p {
+        font-size: 1.25rem;
+        color: #4B5563;
+        margin-bottom: 1.5rem;
+      }
+      .choice-section {
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .choice-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-bottom: 1rem;
+      }
+      .choice-btn {
+        background: linear-gradient(135deg, #34D399, #C19A2E);
+        border: none;
+        border-radius: 8px;
+        color: #FFFFFF;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+      }
+      .choice-btn:hover {
+        background: linear-gradient(135deg, #C19A2E, #34D399);
+        box-shadow: 0 0 8px rgba(193,154,46,.5);
+      }
+      .choice-btn.active {
+        background: linear-gradient(135deg, #C19A2E, #34D399);
+      }
+      .search-bar {
+        width: 400px;
+        margin: 1rem auto;
+        position: relative;
+      }
+      .search-bar input {
+        width: 100%;
+        padding: 0.5rem 1rem 0.5rem 2.5rem;
+        border: 1px solid #D1D5DB;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        background: rgba(255,255,255,.9);
+        backdrop-filter: blur(8px);
+      }
+      .search-bar input:focus {
+        border-color: #C19A2E;
+        box-shadow: 0 0 0 2px rgba(193,154,46,.2);
+        outline: none;
+      }
+      .search-bar i {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #4B5563;
+        font-size: 1rem;
+      }
+
+      /* Comics and Videos Sections */
+      .comics-section, .videos-section {
+        padding: 2rem 0;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><path d="M25 35c-5.5 0-10-4.5-10-10s4.5-10 10-10 10 4.5 10 10-4.5 10-10 10zm0-18c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8z" fill="rgba(193,154,46,.1)"/></svg>') repeat;
+        display: none;
+      }
+      .comics-section.active, .videos-section.active {
+        display: block;
+      }
+      .comics-section.active .section-content.list-view, .videos-section.active .section-content.list-view {
+        padding: 0;
+      }
+      .section-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+      .section-content h2 {
+        font-size: 2rem;
+        color: #1F2937;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+      .resource-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        justify-content: center;
+        padding: 0 1rem;
+      }
+      .resource-grid.list-view {
+        display: block;
+        gap: 1.5rem;
+        padding: 0;
+        margin: 0;
+      }
+      .resource-card {
+        background: rgba(255,255,255,.9);
+        border: 1px solid rgba(193,154,46,.2);
+        border-radius: 12px;
+        max-width: 300px;
+        padding: 1.25rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .resource-grid.list-view .resource-card {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 1rem;
+        width: 1200px;
+        max-width: 1200px;
+        margin: 0 0 1.5rem 0;
+        padding: 2rem;
+        box-sizing: border-box;
+        height: 250px;
+      }
+      .resource-card:hover {
+        box-shadow: 0 6px 15px rgba(193,154,46,.3);
+        transform: scale(1.02);
+      }
+      .resource-card img {
+        width: 100px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        grid-column: 1;
+        grid-row: 1 / -1;
+        align-self: center;
+      }
+      .resource-grid.list-view .comics-section .resource-card img {
+        width: 120px;
+        height: 180px;
+        margin-bottom: 0;
+      }
+      .resource-grid.list-view .videos-section .resource-card img {
+        width: 180px;
+        height: 120px;
+        margin-bottom: 0;
+      }
+      .resource-card .content {
+        grid-column: 2;
+        grid-row: 1 / -1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        flex: 1;
+        padding: 0 1.5rem;
+        max-height: 186px;
+        overflow: hidden;
+      }
+      .resource-card h4 {
+        color: #1F2937;
+        font-size: 1.2rem;
+        margin: 0;
+        overflow-wrap: break-word;
+        line-height: 1.3;
+      }
+      .resource-card p {
+        color: #4B5563;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin: 0;
+        max-height: 4.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        flex-grow: 1;
+      }
+      .resource-grid.list-view .resource-card p {
+        max-height: 120px;
+        -webkit-line-clamp: 5;
+      }
+      .resource-card .actions {
+        grid-column: 3;
+        grid-row: 1 / -1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-end;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding-left: 1.5rem;
+        max-height: 186px;
+        overflow: auto;
+      }
+      .resource-grid.list-view .resource-card .actions {
+        margin: 0;
+      }
+      .action-btn {
+        background: linear-gradient(135deg, #34D399, #C19A2E);
+        border: none;
+        border-radius: 8px;
+        color: #FFFFFF;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+        width: 100px;
+      }
+      .action-btn:hover {
+        background: linear-gradient(135deg, #C19A2E, #34D399);
+        box-shadow: 0 0 8px rgba(193,154,46,.5);
+      }
+      .action-btn.icon-btn {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+      }
+      .action-btn.icon-btn i {
+        font-size: 1rem;
+        color: #FFFFFF;
+      }
+      .action-btn.icon-btn i.bookmarked {
+        color: #C19A2E;
+      }
+      .no-results {
+        color: #4B5563;
+        text-align: center;
+        font-size: 0.9rem;
+      }
+      .videos-section .resource-card {
+        border: 1px solid rgba(193,154,46,.4);
+      }
+      .videos-section .resource-card img {
+        width: 150px;
+        height: 100px;
+      }
+      .videos-section .resource-card:hover {
+        box-shadow: 0 8px 20px rgba(193,154,46,.4);
+      }
+      .resource-grid.small .resource-card {
+        max-width: 750px;
+      }
+      .resource-grid.medium .resource-card {
+        max-width: 950px;
+      }
+      .resource-grid.large .resource-card {
+        max-width: 1200px;
+      }
+      .resource-grid.small .resource-card img {
+        width: 80px;
+        height: 120px;
+      }
+      .resource-grid.medium .resource-card img {
+        width: 100px;
+        height: 150px;
+      }
+      .resource-grid.large .resource-card img {
+        width: 120px;
+        height: 180px;
+      }
+      .resource-grid.small .videos-section .resource-card img {
+        width: 120px;
+        height: 80px;
+      }
+      .resource-grid.medium .videos-section .resource-card img {
+        width: 150px;
+        height: 100px;
+      }
+      .resource-grid.large .videos-section .resource-card img {
+        width: 180px;
+        height: 120px;
+      }
+
+      /* Auth Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+      .modal.show {
+        display: flex;
+      }
+      .modal-content {
+        background: rgba(255,255,255,.95);
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,.15);
+        max-width: 400px;
+        width: 90%;
+        padding: 1.5rem;
+        position: relative;
+        text-align: center;
+      }
+      .modal-close {
+        color: #1F2937;
+        cursor: pointer;
+        font-size: 1.5rem;
+        position: absolute;
+        right: 15px;
+        top: 10px;
+      }
+      .modal-tabs {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+      .modal-tab {
+        border-bottom: 2px solid transparent;
+        color: #1F2937;
+        cursor: pointer;
+        flex: 1;
+        font-weight: 600;
+        padding: 0.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+      .modal-tab.active {
+        border-bottom: 2px solid #C19A2E;
+        color: #C19A2E;
+      }
+      .modal-form {
+        display: none;
+      }
+      .modal-form.active {
+        display: block;
+      }
+      .modal-form label {
+        color: #1F2937;
+        display: block;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+      .modal-form input {
+        border: 1px solid #D1D5DB;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .modal-form input:focus {
+        border-color: #C19A2E;
+        box-shadow: 0 0 0 2px rgba(193,154,46,.2);
+        outline: none;
+      }
+      .modal-form button {
+        background: linear-gradient(135deg, #34D399, #C19A2E);
+        border: none;
+        border-radius: 8px;
+        color: #FFFFFF;
+        cursor: pointer;
+        font-weight: 600;
+        padding: 0.5rem;
+        transition: all 0.3s ease;
+        width: 100%;
+      }
+      .modal-form button:hover {
+        background: linear-gradient(135deg, #C19A2E, #34D399);
+        box-shadow: 0 0 8px rgba(193,154,46,.5);
+      }
+      .modal-link {
+        font-size: 0.9rem;
+        margin-top: 0.75rem;
+        text-align: center;
+      }
+      .modal-link a {
+        color: #C19A2E;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      /* Footer Styles */
+      footer {
+        background: #1F2937;
+        color: #FFFFFF;
+        padding: 2rem 1rem;
+        text-align: center;
+      }
+      .footer-logo {
+        width: 32px;
+        height: 32px;
+        margin: 1rem auto;
+        display: block;
+      }
+      footer p {
+        font-size: 0.9rem;
+        margin: 0.5rem 0;
+      }
+      footer a {
+        color: #C19A2E;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+      footer a:hover {
+        color: #34D399;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+        .hamburger {
+          display: block;
+        }
+        .heading-section h1 {
+          font-size: 2rem;
+        }
+        .heading-section p {
+          font-size: 1rem;
+        }
+        .section-content h2 {
+          font-size: 1.8rem;
+        }
+        .search-bar {
+          width: 90%;
+        }
+        .comics-section.active .section-content.list-view, .videos-section.active .section-content.list-view {
+          padding: 0;
+        }
+        .resource-grid.small .resource-card {
+          max-width: 180px;
+        }
+        .resource-grid.medium .resource-card {
+          max-width: 280px;
+        }
+        .resource-grid.large .resource-card {
+          max-width: 360px;
+        }
+        .resource-card p {
+          max-height: 4rem;
+          -webkit-line-clamp: 2;
+        }
+        .resource-grid.list-view .resource-card {
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 0.5rem;
+          padding: 1.5rem;
+          width: 100%;
+          max-width: none;
+          min-height: 320px;
+          height: auto;
+        }
+        .resource-grid.list-view .comics-section .resource-card img {
+          width: 100px;
+          height: 150px;
+          align-self: center;
+        }
+        .resource-grid.list-view .videos-section .resource-card img {
+          width: 150px;
+          height: 100px;
+          align-self: center;
+        }
+        .resource-grid.list-view .resource-card .content {
+          flex: 1;
+          padding: 0;
+          max-height: none;
+        }
+        .resource-grid.list-view .resource-card p {
+          max-height: none;
+          -webkit-line-clamp: unset;
+        }
+        .resource-grid.list-view .resource-card .actions {
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          flex-wrap: wrap;
+          padding-left: 0;
+          max-height: none;
+          overflow: visible;
+        }
+        .modal-content {
+          padding: 1rem;
+        }
+        .top-right-controls {
+          right: 0.5rem;
+        }
+        .control-btn {
+          width: 120px;
+          font-size: 0.8rem;
+        }
+        .dropdown-popup {
+          width: 200px;
+          left: -210px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <div class="flex items-center">
+          <button onclick="toggleNav()" class="text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 mr-4" aria-label="Toggle navigation menu">
+            <i class="fas fa-bars text-2xl"></i>
+          </button>
+          <a href="index.html" class="flex items-center">
+            <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mr-2">
+            <h1 class="text-2xl font-semibold text-gray-800">Mindful Check-In</h1>
+          </a>
+        </div>
+        <div class="flex items-center space-x-4">
+          <a href="premium.html" class="nav-link flex items-center space-x-2 text-gray-600 hover:text-[#C19A2E] transition-colors duration-300" aria-label="Visit Premium Page">
+            <i class="fas fa-crown text-xl"></i>
+            <span class="hidden md:inline text-sm font-medium">Premium</span>
+          </a>
+          <a href="community.html" class="nav-link flex items-center space-x-2 text-gray-600 hover:text-[#C19A2E] transition-colors duration-300" aria-label="Visit Community Page">
+            <i class="fas fa-users text-xl"></i>
+            <span class="hidden md:inline text-sm font-medium">Community</span>
+          </a>
+          <div class="relative dropdown">
+            <button onclick="toggleDropdown()" class="text-gray-600 hover:text-gray-800 focus:outline-none" aria-label="User account options">
+              <i class="fas fa-user-circle text-2xl"></i>
+            </button>
+            <div id="dropdownMenu" class="dropdown-menu absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 z-10">
+              <a href="#" onclick="startGuestChat()" class="block px-4 py-2 text-gray-600 hover:bg-blue-100">Use as Guest</a>
+              <a href="#" onclick="openAuthModal('login')" class="block px-4 py-2 text-gray-600 hover:bg-green-100">Login / Signup</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <!-- Navigation Menu -->
+      <div id="navMenu" class="nav-menu">
+        <ul class="px-4 py-4 space-y-2">
+          <i class="fas fa-leaf leaf-icon-top"></i>
+          <i class="fas fa-leaf leaf-icon-bottom"></i>
+          <li><a href="index.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('index.html', 'Home menu item clicked')"><i class="fas fa-home mr-2"></i>Home</a></li>
+          <li><a href="#" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="checkProfileAccess()"><i class="fas fa-user mr-2"></i>My Profile</a></li>
+          <li><a href="features.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('features.html', 'Features menu item clicked')"><i class="fas fa-cogs mr-2"></i>Features</a></li>
+          <li><a href="about.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="console.log('About menu item clicked')"><i class="fas fa-info-circle mr-2"></i>About</a></li>
+          <li><a href="faq.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="console.log('FAQ menu item clicked')"><i class="fas fa-question-circle mr-2"></i>FAQ</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <!-- Top-Right Controls -->
+    <div class="top-right-controls" id="topRightControls"></div>
+
+    <!-- Heading Section -->
+    <section class="heading-section">
+      <div class="fade-in">
+        <h1>Explore Laughter</h1>
+        <p>Dive into Exotic Comics and Hilarious Comedy Videos</p>
+      </div>
+    </section>
+
+    <!-- Choice Section -->
+    <section class="choice-section" id="choiceSection">
+      <div class="choice-buttons fade-in">
+        <button class="choice-btn active" onclick="showComics()">Comics</button>
+        <button class="choice-btn" onclick="showVideos()">Comedy Videos</button>
+      </div>
+      <div class="search-bar glassmorphic fade-in">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchBar" placeholder="Search by title..." oninput="applySearchFilter()">
+      </div>
+    </section>
+
+    <!-- Comics Section -->
+    <section class="comics-section active">
+      <div class="section-content">
+        <h2>Funny Exotic Comics</h2>
+        <div class="resource-grid grid-view medium" id="comicsGrid"></div>
+      </div>
+    </section>
+
+    <!-- Videos Section -->
+    <section class="videos-section">
+      <div class="section-content">
+        <h2>Comedy Videos</h2>
+        <div class="resource-grid grid-view medium" id="videosGrid"></div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <img src="logo.png" alt="Mindful Check-In Logo" class="footer-logo">
+      <p>© 2025 Mindful Check-In. All rights reserved.</p>
+      <p><a href="mailto:support@mindfulcheckin.com">Contact Us</a></p>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+      <div class="modal-content glassmorphic">
+        <i class="fas fa-leaf leaf-icon leaf-icon-top"></i>
+        <i class="fas fa-leaf leaf-icon leaf-icon-bottom"></i>
+        <span class="modal-close" onclick="closeAuthModal()">×</span>
+        <div class="modal-tabs">
+          <div class="modal-tab active" onclick="switchTab('login')">Login</div>
+          <div class="modal-tab" onclick="switchTab('signup')">Sign Up</div>
+        </div>
+        <div id="loginForm" class="modal-form active">
+          <form onsubmit="handleLogin(event)">
+            <div>
+              <label for="login-email">Email</label>
+              <input type="email" id="login-email" required placeholder="you@example.com">
+            </div>
+            <div>
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" required placeholder="Your password">
+            </div>
+            <button type="submit">Login</button>
+          </form>
+          <p class="modal-link">No account? <a onclick="switchTab('signup')">Sign up</a></p>
+        </div>
+        <div id="signupForm" class="modal-form">
+          <form onsubmit="handleSignup(event)">
+            <div>
+              <label for="signup-email">Email</label>
+              <input type="email" id="signup-email" required placeholder="you@example.com">
+            </div>
+            <div>
+              <label for="signup-password">Password</label>
+              <input type="password" id="signup-password" required placeholder="Create a password">
+            </div>
+            <div>
+              <label for="signup-confirm-password">Confirm Password</label>
+              <input type="password" id="signup-confirm-password" required placeholder="Confirm your password">
+            </div>
+            <button type="submit">Sign Up</button>
+          </form>
+          <p class="modal-link">Have an account? <a onclick="switchTab('login')">Login</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+      // Mock data
+      const comics = [
+        { id: 1, title: "Cosmic Chuckles", description: "Aliens share interstellar jokes in this quirky comic.", thumbnail: "https://via.placeholder.com/120x180" },
+        { id: 2, title: "Safari Snickers", description: "Jungle creatures deliver wild humor and puns.", thumbnail: "https://via.placeholder.com/120x180" },
+        { id: 3, title: "Mystic Mirth", description: "Mythical beings in a hilarious fantasy comic.", thumbnail: "https://via.placeholder.com/120x180" }
+      ];
+      const videos = [
+        { id: 1, title: "Giggle Fest", description: "A stand-up comedy special full of laughs.", thumbnail: "https://via.placeholder.com/180x120" },
+        { id: 2, title: "Prank Palooza", description: "Outrageous pranks that keep you smiling.", thumbnail: "https://via.placeholder.com/180x120" },
+        { id: 3, title: "Sketch Shenanigans", description: "Improv comedy sketches for endless fun.", thumbnail: "https://via.placeholder.com/180x120" }
+      ];
+
+      let currentView = 'grid';
+      let currentSize = 'medium';
+      let currentSection = 'comics';
+      let searchQuery = '';
+
+      // Toggle navigation menu
+      function toggleNav() {
+        try {
+          document.getElementById('navMenu').classList.toggle('show');
+          // Close other menus
+          ['dropdownMenu', 'viewPopup', 'sizePopup', 'downloadsPopup', 'watchHistoryPopup', 'bookmarksPopup'].forEach(id => {
+            document.getElementById(id)?.classList.remove('show');
+          });
+        } catch (error) {
+          console.error("Error toggling navigation menu:", error);
+          alert("Failed to toggle navigation menu. Please check console for errors.");
+        }
+      }
+
+      // Navigate to URL
+      function navigateTo(url, message) {
+        console.log(message);
+        try {
+          window.location.href = url;
+        } catch (error) {
+          console.error("Navigation failed to", url, ":", error);
+          alert("Failed to navigate to " + url + ". Please ensure the file exists and check console for errors.");
+        }
+      }
+
+      // Toggle dropdown menu
+      function toggleDropdown() {
+        try {
+          const dropdownMenu = document.getElementById('dropdownMenu');
+          dropdownMenu.classList.toggle('show');
+          // Close other menus
+          ['navMenu', 'viewPopup', 'sizePopup', 'downloadsPopup', 'watchHistoryPopup', 'bookmarksPopup'].forEach(id => {
+            document.getElementById(id)?.classList.remove('show');
+          });
+        } catch (error) {
+          console.error("Error toggling dropdown menu:", error);
+          alert("Failed to toggle dropdown menu. Please check console for errors.");
+        }
+      }
+
+      // Start guest chat
+      function startGuestChat() {
+        alert("Starting anonymous guest chat... Your data won’t be saved!");
+        // Replace with chat redirect/modal
+      }
+
+      // Check profile access
+      function checkProfileAccess() {
+        if (sessionStorage.getItem('isRegistered') === 'true') {
+          navigateTo('profile.html', 'My Profile menu item clicked');
+        } else {
+          openAuthModal('login');
+        }
+      }
+
+      // Show comics section
+      function showComics() {
+        currentSection = 'comics';
+        searchQuery = '';
+        document.getElementById('searchBar').value = '';
+        document.querySelector('.comics-section').classList.add('active');
+        document.querySelector('.videos-section').classList.remove('active');
+        document.querySelector('.choice-btn:nth-child(1)').classList.add('active');
+        document.querySelector('.choice-btn:nth-child(2)').classList.remove('active');
+        renderTopRightControls();
+        renderComics();
+      }
+
+      // Show videos section
+      function showVideos() {
+        currentSection = 'videos';
+        searchQuery = '';
+        document.getElementById('searchBar').value = '';
+        document.querySelector('.videos-section').classList.add('active');
+        document.querySelector('.comics-section').classList.remove('active');
+        document.querySelector('.choice-btn:nth-child(1)').classList.remove('active');
+        document.querySelector('.choice-btn:nth-child(2)').classList.add('active');
+        renderTopRightControls();
+        renderVideos();
+      }
+
+      // Toggle view
+      function toggleView(view) {
+        currentView = view;
+        const grids = document.querySelectorAll('.resource-grid');
+        grids.forEach(grid => {
+          grid.classList.toggle('grid-view', view === 'grid');
+          grid.classList.toggle('list-view', view === 'list');
+        });
+        document.querySelectorAll('.view-option').forEach(opt => {
+          opt.classList.toggle('active', opt.dataset.view === view);
+        });
+        currentSection === 'comics' ? renderComics() : renderVideos();
+      }
+
+      // Set card size
+      function setSize(size) {
+        currentSize = size;
+        const grids = document.querySelectorAll('.resource-grid');
+        grids.forEach(grid => {
+          grid.classList.remove('small', 'medium', 'large');
+          grid.classList.add(size);
+        });
+        document.querySelectorAll('.size-option').forEach(opt => {
+          opt.classList.toggle('active', opt.dataset.size === size);
+        });
+        currentSection === 'comics' ? renderComics() : renderVideos();
+      }
+
+      // Apply search filter
+      function applySearchFilter() {
+        searchQuery = document.getElementById('searchBar').value.toLowerCase();
+        currentSection === 'comics' ? renderComics() : renderVideos();
+      }
+
+      // Render comics
+      function renderComics() {
+        const comicsGrid = document.getElementById('comicsGrid');
+        comicsGrid.innerHTML = '';
+        const filteredComics = comics.filter(comic => comic.title.toLowerCase().includes(searchQuery));
+        if (filteredComics.length === 0) {
+          comicsGrid.innerHTML = '<p class="no-results">No comics found.</p>';
+          return;
+        }
+        filteredComics.forEach((comic, index) => {
+          const card = document.createElement('div');
+          card.className = 'resource-card fade-in';
+          card.style.animationDelay = `${index * 0.2}s`;
+          card.innerHTML = `
+            <img src="${comic.thumbnail}" alt="${comic.title}">
+            <div class="content">
+              <h4>${comic.title}</h4>
+              <p>${comic.description}</p>
+            </div>
+            <div class="actions">
+              <button class="action-btn" onclick="viewComic(${comic.id})">View</button>
+              <button class="action-btn" onclick="downloadComic(${comic.id})">${isComicDownloaded(comic.id) ? 'Downloaded' : 'Download'}</button>
+              <button class="action-btn icon-btn" onclick="bookmarkComic(${comic.id})"><i class="fas fa-bookmark ${isComicBookmarked(comic.id) ? 'bookmarked' : ''}"></i></button>
+            </div>
+          `;
+          comicsGrid.appendChild(card);
+        });
+      }
+
+      // Render videos
+      function renderVideos() {
+        const videosGrid = document.getElementById('videosGrid');
+        videosGrid.innerHTML = '';
+        const filteredVideos = videos.filter(video => video.title.toLowerCase().includes(searchQuery));
+        if (filteredVideos.length === 0) {
+          videosGrid.innerHTML = '<p class="no-results">No videos found.</p>';
+          return;
+        }
+        filteredVideos.forEach((video, index) => {
+          const card = document.createElement('div');
+          card.className = 'resource-card fade-in';
+          card.style.animationDelay = `${index * 0.2}s`;
+          card.innerHTML = `
+            <img src="${video.thumbnail}" alt="${video.title}">
+            <div class="content">
+              <h4>${video.title}</h4>
+              <p>${video.description}</p>
+            </div>
+            <div class="actions">
+              <button class="action-btn" onclick="playVideo(${video.id})">Play</button>
+              <button class="action-btn icon-btn" onclick="bookmarkVideo(${video.id})"><i class="fas fa-bookmark ${isVideoBookmarked(video.id) ? 'bookmarked' : ''}"></i></button>
+            </div>
+          `;
+          videosGrid.appendChild(card);
+        });
+      }
+
+      // Render top-right controls
+      function renderTopRightControls() {
+        const controls = document.getElementById('topRightControls');
+        controls.innerHTML = `
+          <button class="control-btn" onclick="toggleMenu('viewPopup')"><i class="fas fa-th"></i> View</button>
+          <div id="viewPopup" class="dropdown-popup glassmorphic">
+            <i class="fas fa-leaf leaf-icon leaf-icon-top"></i>
+            <i class="fas fa-leaf leaf-icon leaf-icon-bottom"></i>
+            <ul>
+              <li><a href="#" onclick="toggleView('grid')" class="view-option ${currentView === 'grid' ? 'active' : ''}" data-view="grid">Grid View</a></li>
+              <li><a href="#" onclick="toggleView('list')" class="view-option ${currentView === 'list' ? 'active' : ''}" data-view="list">List View</a></li>
+            </ul>
+          </div>
+          <button class="control-btn" onclick="toggleMenu('sizePopup')"><i class="fas fa-ruler"></i> Size</button>
+          <div id="sizePopup" class="dropdown-popup glassmorphic">
+            <i class="fas fa-leaf leaf-icon leaf-icon-top"></i>
+            <i class="fas fa-leaf leaf-icon leaf-icon-bottom"></i>
+            <ul>
+              <li><a href="#" onclick="setSize('small')" class="size-option ${currentSize === 'small' ? 'active' : ''}" data-size="small">Small</a></li>
+              <li><a href="#" onclick="setSize('medium')" class="size-option ${currentSize === 'medium' ? 'active' : ''}" data-size="medium">Medium</a></li>
+              <li><a href="#" onclick="setSize('large')" class="size-option ${currentSize === 'large' ? 'active' : ''}" data-size="large">Large</a></li>
+            </ul>
+          </div>
+          ${currentSection === 'comics' ? `
+            <button class="control-btn" onclick="toggleMenu('downloadsPopup')"><i class="fas fa-download"></i> Downloads</button>
+            <div id="downloadsPopup" class="dropdown-popup glassmorphic">
+              <i class="fas fa-leaf leaf-icon leaf-icon-top"></i>
+              <i class="fas fa-leaf leaf-icon leaf-icon-bottom"></i>
+              <h4>Downloaded Comics</h4>
+              <ul id="downloadsList"></ul>
+            </div>
+            <button class="control-btn" onclick="toggleMenu('bookmarksPopup')"><i class="fas fa-bookmark"></i> Bookmarks</button>
+            <div id="bookmarksPopup" class="dropdown-popup glassmorphic">
+              <i class="fas fa-leaf leaf-icon leaf-icon-top"></i>
+              <i class="fas fa-leaf leaf-icon leaf-icon-bottom"></i>
+              <h4>Bookmarked Comics</h4>
+              <ul id="bookmarkComicsList"></ul>
+              <div class="sub-section">
+                <h4>Bookmarked Videos</h4>
+                <ul id="bookmarkVideosList"></ul>
+              </div>
+            </div>
+          ` : `
+            <button class="control-btn" onclick="toggleMenu('bookmarksPopup')"><i class="fas fa-bookmark"></i> Bookmarks</button>
+            <div id="bookmarksPopup" class="dropdown-popup glassmorphic">
+              <i class="fas fa-leaf leaf-icon leaf-icon-top"></i>
+              <i class="fas fa-leaf leaf-icon leaf-icon-bottom"></i>
+              <h4>Bookmarked Comics</h4>
+              <ul id="bookmarkComicsList"></ul>
+              <div class="sub-section">
+                <h4>Bookmarked Videos</h4>
+                <ul id="bookmarkVideosList"></ul>
+              </div>
+            </div>
+            <button class="control-btn" onclick="toggleMenu('watchHistoryPopup')"><i class="fas fa-history"></i> Watch History</button>
+            <div id="watchHistoryPopup" class="dropdown-popup glassmorphic">
+              <i class="fas fa-leaf leaf-icon leaf-icon-top"></i>
+              <i class="fas fa-leaf leaf-icon leaf-icon-bottom"></i>
+              <h4>Watch History</h4>
+              <ul id="watchHistoryList"></ul>
+            </div>
+          `}
+        `;
+        renderDownloads();
+        renderBookmarks();
+        renderWatchHistory();
+      }
+
+      // Render downloads
+      function renderDownloads() {
+        const downloadsList = document.getElementById('downloadsList');
+        if (!downloadsList) return;
+        const isRegistered = sessionStorage.getItem('isRegistered') === 'true';
+        downloadsList.innerHTML = '';
+
+        if (!isRegistered) {
+          downloadsList.innerHTML = '<li><p class="no-results">Please log in to view downloads.</p></li>';
+          return;
+        }
+
+        let downloads = JSON.parse(sessionStorage.getItem('comicDownloads') || '[]');
+        downloads = downloads.map(id => comics.find(c => c.id === id)).filter(c => c);
+        if (downloads.length === 0) {
+          downloadsList.innerHTML = '<li><p class="no-results">No comics downloaded.</p></li>';
+        } else {
+          downloads.forEach(comic => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#" onclick="viewComic(${comic.id})">${comic.title}</a>`;
+            downloadsList.appendChild(li);
+          });
+        }
+      }
+
+      // Render bookmarks
+      function renderBookmarks() {
+        const comicsList = document.getElementById('bookmarkComicsList');
+        const videosList = document.getElementById('bookmarkVideosList');
+        if (!comicsList || !videosList) return;
+        const isRegistered = sessionStorage.getItem('isRegistered') === 'true';
+        comicsList.innerHTML = '';
+        videosList.innerHTML = '';
+
+        if (!isRegistered) {
+          comicsList.innerHTML = '<li><p class="no-results">Please log in to view bookmarks.</p></li>';
+          videosList.innerHTML = '<li><p class="no-results">Please log in to view bookmarks.</p></li>';
+          return;
+        }
+
+        let comicBookmarks = JSON.parse(sessionStorage.getItem('comicBookmarks') || '[]');
+        comicBookmarks = comicBookmarks.map(id => comics.find(c => c.id === id)).filter(c => c);
+        if (comicBookmarks.length === 0) {
+          comicsList.innerHTML = '<li><p class="no-results">No comics bookmarked.</p></li>';
+        } else {
+          comicBookmarks.forEach(comic => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#" onclick="viewComic(${comic.id})">${comic.title}</a>`;
+            comicsList.appendChild(li);
+          });
+        }
+
+        let videoBookmarks = JSON.parse(sessionStorage.getItem('videoBookmarks') || '[]');
+        videoBookmarks = videoBookmarks.map(id => videos.find(v => v.id === id)).filter(v => v);
+        if (videoBookmarks.length === 0) {
+          videosList.innerHTML = '<li><p class="no-results">No videos bookmarked.</p></li>';
+        } else {
+          videoBookmarks.forEach(video => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#" onclick="playVideo(${video.id})">${video.title}</a>`;
+            videosList.appendChild(li);
+          });
+        }
+      }
+
+      // Render watch history
+      function renderWatchHistory() {
+        const historyList = document.getElementById('watchHistoryList');
+        if (!historyList) return;
+        const isRegistered = sessionStorage.getItem('isRegistered') === 'true';
+        historyList.innerHTML = '';
+
+        if (!isRegistered) {
+          historyList.innerHTML = '<li><p class="no-results">Please log in to view history.</p></li>';
+          return;
+        }
+
+        let history = JSON.parse(sessionStorage.getItem('videoHistory') || '[]');
+        history = history.map(id => videos.find(v => v.id === id)).filter(v => v).slice(0, 5);
+        if (history.length === 0) {
+          historyList.innerHTML = '<li><p class="no-results">No videos watched yet.</p></li>';
+        } else {
+          history.forEach(video => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#" onclick="playVideo(${video.id})">${video.title}</a>`;
+            historyList.appendChild(li);
+          });
+        }
+      }
+
+      // View comic
+      function viewComic(id) {
+        if (sessionStorage.getItem('isRegistered') !== 'true') {
+          openAuthModal('login');
+          return;
+        }
+        const comic = comics.find(c => c.id === id);
+        if (comic) {
+          let history = JSON.parse(sessionStorage.getItem('comicHistory') || '[]');
+          history = [id, ...history.filter(hid => hid !== id)].slice(0, 5);
+          sessionStorage.setItem('comicHistory', JSON.stringify(history));
+          alert(`Comic: ${comic.title}\nDescription: ${comic.description}`);
+          renderBookmarks();
+          renderDownloads();
+        }
+      }
+
+      // Download comic
+      function downloadComic(id) {
+        if (sessionStorage.getItem('isRegistered') !== 'true') {
+          openAuthModal('login');
+          return;
+        }
+        let downloads = JSON.parse(sessionStorage.getItem('comicDownloads') || '[]');
+        if (!downloads.includes(id)) {
+          downloads.push(id);
+          sessionStorage.setItem('comicDownloads', JSON.stringify(downloads));
+          alert(`Comic downloaded: ${comics.find(c => c.id === id).title}`);
+        }
+        renderComics();
+        renderDownloads();
+      }
+
+      // Check if comic is downloaded
+      function isComicDownloaded(id) {
+        const downloads = JSON.parse(sessionStorage.getItem('comicDownloads') || '[]');
+        return downloads.includes(id);
+      }
+
+      // Play video
+      function playVideo(id) {
+        if (sessionStorage.getItem('isRegistered') !== 'true') {
+          openAuthModal('login');
+          return;
+        }
+        const video = videos.find(v => v.id === id);
+        if (video) {
+          let history = JSON.parse(sessionStorage.getItem('videoHistory') || '[]');
+          history = [id, ...history.filter(hid => hid !== id)].slice(0, 5);
+          sessionStorage.setItem('videoHistory', JSON.stringify(history));
+          alert(`Video: ${video.title}\nDescription: ${video.description}`);
+          renderWatchHistory();
+          renderBookmarks();
+        }
+      }
+
+      // Bookmark comic
+      function bookmarkComic(id) {
+        if (sessionStorage.getItem('isRegistered') !== 'true') {
+          openAuthModal('login');
+          return;
+        }
+        let bookmarks = JSON.parse(sessionStorage.getItem('comicBookmarks') || '[]');
+        if (bookmarks.includes(id)) {
+          bookmarks = bookmarks.filter(bid => bid !== id);
+        } else {
+          bookmarks.push(id);
+        }
+        sessionStorage.setItem('comicBookmarks', JSON.stringify(bookmarks));
+        renderComics();
+        renderBookmarks();
+      }
+
+      // Bookmark video
+      function bookmarkVideo(id) {
+        if (sessionStorage.getItem('isRegistered') !== 'true') {
+          openAuthModal('login');
+          return;
+        }
+        let bookmarks = JSON.parse(sessionStorage.getItem('videoBookmarks') || '[]');
+        if (bookmarks.includes(id)) {
+          bookmarks = bookmarks.filter(bid => bid !== id);
+        } else {
+          bookmarks.push(id);
+        }
+        sessionStorage.setItem('videoBookmarks', JSON.stringify(bookmarks));
+        renderVideos();
+        renderBookmarks();
+      }
+
+      // Check if comic is bookmarked
+      function isComicBookmarked(id) {
+        const bookmarks = JSON.parse(sessionStorage.getItem('comicBookmarks') || '[]');
+        return bookmarks.includes(id);
+      }
+
+      // Check if video is bookmarked
+      function isVideoBookmarked(id) {
+        const bookmarks = JSON.parse(sessionStorage.getItem('videoBookmarks') || '[]');
+        return bookmarks.includes(id);
+      }
+
+      // Update profile options
+      function updateProfileOptions() {
+        const isRegistered = sessionStorage.getItem('isRegistered') === 'true';
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        dropdownMenu.innerHTML = isRegistered
+          ? '<a href="#" onclick="logout()" class="block px-4 py-2 text-gray-600 hover:bg-red-100">Logout</a>'
+          : `
+            <a href="#" onclick="startGuestChat()" class="block px-4 py-2 text-gray-600 hover:bg-blue-100">Use as Guest</a>
+            <a href="#" onclick="openAuthModal('login')" class="block px-4 py-2 text-gray-600 hover:bg-green-100">Login / Signup</a>
+          `;
+      }
+
+      // Logout
+      function logout() {
+        sessionStorage.removeItem('isRegistered');
+        sessionStorage.removeItem('comicHistory');
+        sessionStorage.removeItem('comicBookmarks');
+        sessionStorage.removeItem('comicDownloads');
+        sessionStorage.removeItem('videoHistory');
+        sessionStorage.removeItem('videoBookmarks');
+        alert('Logged out successfully!');
+        window.location.reload();
+      }
+
+      // Open auth modal
+      function openAuthModal(tab) {
+        document.getElementById('authModal').classList.add('show');
+        switchTab(tab);
+      }
+
+      // Close auth modal
+      function closeAuthModal() {
+        document.getElementById('authModal').classList.remove('show');
+      }
+
+      // Switch auth tabs
+      function switchTab(tab) {
+        const loginTab = document.querySelector('.modal-tab:nth-child(1)');
+        const signupTab = document.querySelector('.modal-tab:nth-child(2)');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        loginTab.classList.toggle('active', tab === 'login');
+        signupTab.classList.toggle('active', tab === 'signup');
+        loginForm.classList.toggle('active', tab === 'login');
+        signupForm.classList.toggle('active', tab === 'signup');
+      }
+
+      // Handle login
+      function handleLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        console.log('Logging in with:', { email, password });
+        sessionStorage.setItem('isRegistered', 'true');
+        alert('Login successful!');
+        closeAuthModal();
+        window.location.reload();
+      }
+
+      // Handle signup
+      function handleSignup(e) {
+        e.preventDefault();
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const confirmPassword = document.getElementById('signup-confirm-password').value;
+        if (password !== confirmPassword) {
+          alert('Passwords do not match!');
+          return;
+        }
+        console.log('Signing up with:', { email, password });
+        sessionStorage.setItem('isRegistered', 'true');
+        alert('Sign up successful!');
+        closeAuthModal();
+        window.location.reload();
+      }
+
+      // Toggle menu for other dropdowns
+      function toggleMenu(menuId) {
+        const menu = document.getElementById(menuId);
+        menu.classList.toggle('show');
+        ['navMenu', 'dropdownMenu', 'viewPopup', 'sizePopup', 'downloadsPopup', 'watchHistoryPopup', 'bookmarksPopup'].forEach(id => {
+          if (id !== menuId) document.getElementById(id)?.classList.remove('show');
+        });
+      }
+
+      // Handle clicks
+      document.addEventListener('click', e => {
+        const authModal = document.getElementById('authModal');
+        const dropdown = document.querySelector('.dropdown');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const navMenu = document.getElementById('navMenu');
+        const viewPopup = document.getElementById('viewPopup');
+        const sizePopup = document.getElementById('sizePopup');
+        const downloadsPopup = document.getElementById('downloadsPopup');
+        const watchHistoryPopup = document.getElementById('watchHistoryPopup');
+        const bookmarksPopup = document.getElementById('bookmarksPopup');
+        
+        if (e.target === authModal) {
+          closeAuthModal();
+        }
+        
+        if (!dropdown.contains(e.target)) {
+          dropdownMenu.classList.remove('show');
+        }
+        
+        if (!navMenu.contains(e.target) && !e.target.closest('button[onclick="toggleNav()"]')) {
+          navMenu.classList.remove('show');
+        }
+        
+        if (viewPopup && !viewPopup.contains(e.target) && !e.target.textContent.includes('View')) {
+          viewPopup.classList.remove('show');
+        }
+        if (sizePopup && !sizePopup.contains(e.target) && !e.target.textContent.includes('Size')) {
+          sizePopup.classList.remove('show');
+        }
+        if (downloadsPopup && !downloadsPopup.contains(e.target) && !e.target.textContent.includes('Downloads')) {
+          downloadsPopup.classList.remove('show');
+        }
+        if (watchHistoryPopup && !watchHistoryPopup.contains(e.target) && !e.target.textContent.includes('Watch History')) {
+          watchHistoryPopup.classList.remove('show');
+        }
+        if (bookmarksPopup && !bookmarksPopup.contains(e.target) && !e.target.textContent.includes('Bookmarks')) {
+          bookmarksPopup.classList.remove('show');
+        }
+      });
+
+      // Initialize
+      document.addEventListener('DOMContentLoaded', () => {
+        const isRegistered = sessionStorage.getItem('isRegistered') === 'true';
+        console.log('User registered:', isRegistered);
+        updateProfileOptions();
+        document.getElementById('topRightControls').style.display = isRegistered ? 'flex' : 'none';
+        showComics();
+      });
+    </script>
+  </body>
+</html>

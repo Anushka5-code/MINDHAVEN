@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with AI - Mindful Check-In</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #E8F5E9; /* Pastel mint green */
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .nav-menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(167, 243, 208, 0.95) 0%, rgba(191, 219, 254, 0.95) 100%);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            animation: slideIn 0.3s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .nav-menu.show {
+            display: block;
+        }
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .nav-menu ul {
+            position: relative;
+            padding: 1.5rem;
+            margin: 0;
+        }
+        .nav-menu li {
+            list-style: none;
+            margin-bottom: 0.75rem;
+        }
+        .nav-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #4B5563;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #1F2937;
+        }
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            transition: width 0.3s ease;
+        }
+        .nav-menu a:hover::after {
+            width: calc(100% - 2rem);
+        }
+        .leaf-icon-top {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(52, 211, 153, 0.2);
+            font-size: 2rem;
+        }
+        .leaf-icon-bottom {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: rgba(96, 165, 250, 0.2);
+            font-size: 2rem;
+        }
+        .dropdown-menu {
+            display: none;
+        }
+        .dropdown-menu.show {
+            display: block;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        /* Chat Section Styling */
+        .chat-section {
+            background: linear-gradient(180deg, #E8F5E9 0%, #E6F0FA 100%),
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><path d="M20 30c-5 0-9-4-9-9s4-9 9-9 9 4 9 9-4 9-9 9zm0-16c-3.9 0-7 3.1-7 7s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7z" fill="rgba(52, 211, 153, 0.1)"/></svg>') repeat;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem; /* Reduced to minimize space */
+            padding-top: 20rem; /* Space for wave */
+            padding-bottom: 4rem; /* Compact footer spacing */
+        }
+        .chat-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113.64,31.08,1200,36.85V0H0Z" fill="%23FFFFFF"/></svg>') no-repeat center top;
+            background-size: cover;
+            z-index: 5; /* Below content */
+        }
+        .chat-section h2 {
+            position: relative;
+            z-index: 20; /* Above wave */
+        }
+        .chat-container {
+            background: #FFFFFF;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem; /* Compact padding */
+            max-height: 400px; /* Reduced height */
+            overflow-y: auto;
+            margin-bottom: 0.5rem; /* Tight spacing */
+            z-index: 10;
+        }
+        .chat-message {
+            margin-bottom: 0.5rem; /* Compact */
+            padding: 0.5rem; /* Compact */
+            border-radius: 8px;
+            max-width: 80%;
+            font-size: 0.85rem; /* Smaller font */
+        }
+        .chat-message.user {
+            background: #34D399;
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+        .chat-message.ai {
+            background: #E6F0FA;
+            color: #1F2937;
+            margin-right: auto;
+        }
+        .chat-input-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem; /* Tight spacing */
+        }
+        .chat-input {
+            flex: 1;
+            padding: 0.5rem; /* Compact */
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 0.85rem; /* Smaller font */
+        }
+        .chat-input:focus {
+            outline: none;
+            border-color: #34D399;
+        }
+        .chat-send-btn {
+            padding: 0.5rem 1rem; /* Compact */
+            background: linear-gradient(135deg, #34D399, #60A5FA);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.85rem; /* Smaller font */
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .chat-send-btn:hover {
+            background: linear-gradient(135deg, #2DD4BF, #3B82F6);
+        }
+        /* History Section Styling */
+        .history-toggle-btn {
+            display: none; /* Hidden by default, shown for registered users */
+            background: linear-gradient(135deg, #34D399, #60A5FA);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-bottom: 0.5rem; /* Tight spacing */
+        }
+        .history-toggle-btn:hover {
+            background: linear-gradient(135deg, #2DD4BF, #3B82F6);
+        }
+        .history-toggle-btn i {
+            margin-right: 0.25rem;
+        }
+        .history-panel {
+            display: none; /* Hidden by default */
+            background: #FFFFFF;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem; /* Compact */
+            margin-top: 0.5rem; /* Tight spacing */
+            z-index: 10;
+            position: relative;
+            animation: fadeIn 0.3s ease-in;
+        }
+        .history-panel.show {
+            display: block;
+        }
+        .history-filter {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem; /* Compact */
+            justify-content: center;
+        }
+        .history-filter-btn {
+            padding: 0.4rem 0.8rem; /* Compact */
+            background: #E6F0FA;
+            color: #4B5563;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem; /* Smaller font */
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .history-filter-btn.active,
+        .history-filter-btn:hover {
+            background: linear-gradient(135deg, #34D399, #60A5FA);
+            color: white;
+        }
+        .history-list {
+            max-height: 200px; /* Compact height */
+            overflow-y: auto;
+            font-size: 0.85rem; /* Smaller font */
+            color: #4B5563;
+        }
+        .history-item {
+            padding: 0.4rem 0; /* Compact */
+            border-bottom: 1px solid #E5E7EB;
+        }
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        .history-item span {
+            color: #34D399; /* Timestamp highlight */
+        }
+        .history-leaf-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(52, 211, 153, 0.2);
+            font-size: 1.5rem;
+        }
+        .history-note {
+            font-size: 0.9rem;
+            color: #4B5563;
+            text-align: center;
+            margin-bottom: 0.5rem; /* Tight spacing */
+        }
+        /* Footer Styling */
+        footer {
+            z-index: 100; /* Above content, below modal */
+            background: #1F2937; /* Match bg-gray-800 */
+        }
+        /* Auth Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000; /* Above footer and content */
+        }
+        .modal.show {
+            display: block;
+        }
+        .modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #FFFFFF;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .modal-tabs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        .modal-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: #4B5563;
+            border-bottom: 2px solid transparent;
+        }
+        .modal-tab.active {
+            color: #34D399;
+            border-bottom: 2px solid #34D399;
+        }
+        .modal-form {
+            display: none;
+        }
+        .modal-form.active {
+            display: block;
+        }
+        .modal-form label {
+            font-size: 0.9rem;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+        .modal-form input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        .modal-form button {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #34D399, #60A5FA);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .modal-form button:hover {
+            background: linear-gradient(135deg, #2DD4BF, #3B82F6);
+        }
+        .modal-link {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        .modal-link a {
+            color: #34D399;
+            cursor: pointer;
+        }
+        .modal-leaf-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(52, 211, 153, 0.2);
+            font-size: 2rem;
+        }
+        .modal-leaf-icon-right {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: rgba(96, 165, 250, 0.2);
+            font-size: 2rem;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .chat-section::before {
+                min-height: 80px;
+            }
+            .chat-section {
+                padding-top: 16rem; /* Adjusted for mobile */
+                padding-bottom: 3rem; /* Compact */
+            }
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+            .chat-container {
+                max-height: 300px; /* Compact for mobile */
+            }
+            .history-list {
+                max-height: 150px; /* Compact for mobile */
+            }
+            .history-toggle-btn, .chat-input, .chat-send-btn {
+                font-size: 0.8rem; /* Smaller font */
+            }
+            .history-filter-btn {
+                padding: 0.3rem 0.6rem; /* More compact */
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <button onclick="toggleNav()" class="text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 mr-4" aria-label="Toggle navigation menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <a href="index.html" class="flex items-center">
+                    <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mr-2">
+                    <h1 class="text-2xl font-semibold text-gray-800">Mindful Check-In</h1>
+                </a>
+            </div>
+            <div class="relative dropdown">
+                <button onclick="toggleDropdown()" class="text-gray-600 hover:text-gray-800 focus:outline-none" aria-label="User account options">
+                    <i class="fas fa-user-circle text-2xl"></i>
+                </button>
+                <div id="dropdownMenu" class="dropdown-menu absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 z-10">
+                    <a href="#" onclick="startGuestChat()" class="block px-4 py-2 text-gray-600 hover:bg-blue-100">Use as Guest</a>
+                    <a href="#" onclick="openAuthModal('login')" class="block px-4 py-2 text-gray-600 hover:bg-green-100">Login / Signup</a>
+                </div>
+            </div>
+        </nav>
+        <!-- Navigation Menu -->
+        <div id="navMenu" class="nav-menu">
+            <ul class="px-4 py-4 space-y-2">
+                <i class="fas fa-leaf leaf-icon-top"></i>
+                <i class="fas fa-leaf leaf-icon-bottom"></i>
+                <li><a href="index.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('index.html', 'Home menu item clicked')">Home</a></li>
+                <li><a href="features.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('features.html', 'Features menu item clicked')">Features</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="checkDashboardAccess()">Dashboard</a></li>
+                <li><a href="about.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="console.log('About menu item clicked')">About</a></li>
+                <li><a href="faq.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="console.log('FAQ menu item clicked')">FAQ</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Chat Section -->
+    <section class="chat-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-semibold text-gray-800 text-center mb-6 fade-in">Chat with Our AI</h2>
+            <p id="historyNote" class="history-note fade-in" style="animation-delay: 0.2s;"></p>
+            <div class="chat-container fade-in" style="animation-delay: 0.4s;" id="chatContainer">
+                <!-- Messages will be added dynamically -->
+            </div>
+            <div class="chat-input-container fade-in" style="animation-delay: 0.6s;">
+                <input type="text" id="chatInput" class="chat-input" placeholder="Type your message...">
+                <button class="chat-send-btn" onclick="sendMessage()">Send</button>
+            </div>
+            <button id="historyToggle" class="history-toggle-btn fade-in" style="animation-delay: 0.8s;" onclick="toggleHistoryPanel()">
+                <i class="fas fa-leaf"></i> View History
+            </button>
+            <div id="historyPanel" class="history-panel fade-in" style="animation-delay: 1s;">
+                <i class="fas fa-leaf history-leaf-icon"></i>
+                <div class="history-filter">
+                    <button class="history-filter-btn active" onclick="filterHistory('day')">Day</button>
+                    <button class="history-filter-btn" onclick="filterHistory('month')">Month</button>
+                    <button class="history-filter-btn" onclick="filterHistory('year')">Year</button>
+                </div>
+                <div id="historyList" class="history-list"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mx-auto mb-4">
+            <p>© 2025 Mindful Check-In. All rights reserved.</p>
+            <p class="mt-2">Built with care for your mental well-being.</p>
+            <button onclick="startGuestChat()" 
+                    class="btn bg-blue-200 text-gray-800 px-6 py-3 rounded-full font-medium mt-4 hover:bg-blue-300">
+                Start Chatting Now
+            </button>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <i class="fas fa-leaf modal-leaf-icon"></i>
+            <i class="fas fa-leaf modal-leaf-icon-right"></i>
+            <span class="modal-close" onclick="closeAuthModal()">×</span>
+            <div class="modal-tabs">
+                <div class="modal-tab active" onclick="switchTab('login')">Login</div>
+                <div class="modal-tab" onclick="switchTab('signup')">Sign Up</div>
+            </div>
+            <!-- Login Form -->
+            <div id="loginForm" class="modal-form active">
+                <form onsubmit="handleLogin(event)">
+                    <div class="mb-5">
+                        <label for="login-email" class="block">Email</label>
+                        <input type="email" id="login-email" required placeholder="you@example.com">
+                    </div>
+                    <div class="mb-5">
+                        <label for="login-password" class="block">Password</label>
+                        <input type="password" id="login-password" required placeholder="Your password">
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+                <p class="modal-link">
+                    Don't have an account? <a onclick="switchTab('signup')">Sign up</a>
+                </p>
+            </div>
+            <!-- Sign-Up Form -->
+            <div id="signupForm" class="modal-form">
+                <form onsubmit="handleSignup(event)">
+                    <div class="mb-5">
+                        <label for="signup-email" class="block">Email</label>
+                        <input type="email" id="signup-email" required placeholder="you@example.com">
+                    </div>
+                    <div class="mb-5">
+                        <label for="signup-password" class="block">Password</label>
+                        <input type="password" id="signup-password" required placeholder="Create a password">
+                    </div>
+                    <div class="mb-5">
+                        <label for="signup-confirm-password" class="block">Confirm Password</label>
+                        <input type="password" id="signup-confirm-password" required placeholder="Confirm your password">
+                    </div>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p class="modal-link">
+                    Already have an account? <a onclick="switchTab('login')">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let guestMessages = []; // Temporary storage for guest chats
+        let currentFilter = 'day'; // Default filter
+        const mockResponses = [
+            "I'm here for you. How are you feeling today?",
+            "That sounds like a lot. Want to share more?",
+            "It's okay to feel this way. Let's reflect together.",
+            "You're not alone. How can I support you?"
+        ];
+
+        function startGuestChat() {
+            navigateTo('chat.html', 'Start chat clicked');
+        }
+
+        function toggleNav() {
+            try {
+                document.getElementById('navMenu').classList.toggle('show');
+            } catch (error) {
+                console.error("Error toggling navigation menu:", error);
+                alert("Failed to toggle navigation menu. Please check console for errors.");
+            }
+        }
+
+        function toggleDropdown() {
+            try {
+                const dropdownMenu = document.getElementById('dropdownMenu');
+                dropdownMenu.classList.toggle('show');
+            } catch (error) {
+                console.error("Error toggling dropdown menu:", error);
+                alert("Failed to toggle dropdown menu. Please check console for errors.");
+            }
+        }
+
+        function navigateTo(url, message) {
+            console.log(message);
+            try {
+                window.location.href = url;
+            } catch (error) {
+                console.error("Navigation failed to", url, ":", error);
+                alert("Failed to navigate to " + url + ". Please ensure the file exists and check console for errors.");
+            }
+        }
+
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const historyPanel = document.getElementById('historyPanel');
+            const historyToggle = document.getElementById('historyToggle');
+            if (!dropdown.contains(event.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+            if (historyPanel && !historyPanel.contains(event.target) && !historyToggle.contains(event.target)) {
+                historyPanel.classList.remove('show');
+            }
+        });
+
+        function checkDashboardAccess() {
+            const isRegistered = sessionStorage.getItem('isRegistered') === 'true';
+            if (isRegistered) {
+                navigateTo('dashboard.html', 'Dashboard menu item clicked');
+            } else {
+                openAuthModal('login');
+            }
+        }
+
+        function openAuthModal(tab) {
+            const modal = document.getElementById('authModal');
+            modal.classList.add('show');
+            switchTab(tab);
+        }
+
+        function closeAuthModal() {
+            const modal = document.getElementById('authModal');
+            modal.classList.remove('show');
+        }
+
+        function switchTab(tab) {
+            const loginTab = document.querySelector('.modal-tab:nth-child(1)');
+            const signupTab = document.querySelector('.modal-tab:nth-child(2)');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+
+            if (tab === 'login') {
+                loginTab.classList.add('active');
+                signupTab.classList.remove('active');
+                loginForm.classList.add('active');
+                signupForm.classList.remove('active');
+            } else {
+                loginTab.classList.remove('active');
+                signupTab.classList.add('active');
+                loginForm.classList.remove('active');
+                signupForm.classList.add('active');
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            console.log("Logging in with:", { email, password });
+            sessionStorage.setItem('isRegistered', 'true');
+            alert("Login successful!");
+            closeAuthModal();
+            window.location.reload();
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm-password').value;
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            console.log("Signing up with:", { email, password });
+            sessionStorage.setItem('isRegistered', 'true');
+            alert("Sign up successful!");
+            closeAuthModal();
+            window.location.reload();
+        }
+
+        document.getElementById('authModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeAuthModal();
+            }
+        });
+
+        function toggleHistoryPanel() {
+            const historyPanel = document.getElementById('historyPanel');
+            historyPanel.classList.toggle('show');
+            if (historyPanel.classList.contains('show')) {
+                filterHistory(currentFilter); // Refresh history when opened
+            }
+        }
+
+        function filterHistory(period) {
+            currentFilter = period;
+            const filterButtons = document.querySelectorAll('.history-filter-btn');
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.history-filter-btn[onclick="filterHistory('${period}')"]`).classList.add('active');
+            updateHistory();
+        }
+
+        function updateHistory() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+            const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+            const now = new Date();
+            let timeLimit;
+
+            switch (currentFilter) {
+                case 'day':
+                    timeLimit = now.getTime() - 24 * 60 * 60 * 1000; // Last 24 hours
+                    break;
+                case 'month':
+                    timeLimit = now.getTime() - 30 * 24 * 60 * 60 * 1000; // Last 30 days
+                    break;
+                case 'year':
+                    timeLimit = now.getTime() - 365 * 24 * 60 * 60 * 1000; // Last 365 days
+                    break;
+            }
+
+            const filteredHistory = history.filter(item => {
+                const itemDate = new Date(item.timestamp).getTime();
+                return itemDate >= timeLimit;
+            });
+
+            if (filteredHistory.length === 0) {
+                const emptyMessage = document.createElement('div');
+                emptyMessage.className = 'history-item';
+                emptyMessage.textContent = 'No chats found for this period.';
+                historyList.appendChild(emptyMessage);
+                return;
+            }
+
+            filteredHistory.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `<span>[${item.timestamp}]</span> You: ${item.user} | AI: ${item.ai}`;
+                historyList.appendChild(historyItem);
+            });
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const isRegistered = sessionStorage.getItem('isRegistered') === 'true';
+            const chatContainer = document.getElementById('chatContainer');
+
+            // Add user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'chat-message user';
+            userMessage.textContent = message;
+            chatContainer.appendChild(userMessage);
+
+            // Add AI response
+            const aiResponse = mockResponses[Math.floor(Math.random() * mockResponses.length)];
+            const aiMessage = document.createElement('div');
+            aiMessage.className = 'chat-message ai';
+            aiMessage.textContent = aiResponse;
+            chatContainer.appendChild(aiMessage);
+
+            // Store message
+            const messageObj = {
+                user: message,
+                ai: aiResponse,
+                timestamp: new Date().toLocaleString()
+            };
+            if (isRegistered) {
+                let history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+                history.push(messageObj);
+                localStorage.setItem('chatHistory', JSON.stringify(history));
+                if (document.getElementById('historyPanel').classList.contains('show')) {
+                    filterHistory(currentFilter); // Update history if panel is open
+                }
+            } else {
+                guestMessages.push(messageObj);
+            }
+
+            // Clear input and scroll to bottom
+            input.value = '';
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        window.onload = function() {
+            const isRegistered = sessionStorage.getItem('isRegistered') === 'true';
+            const historyToggle = document.getElementById('historyToggle');
+            const historyPanel = document.getElementById('historyPanel');
+            const historyNote = document.getElementById('historyNote');
+
+            if (isRegistered) {
+                historyToggle.style.display = 'block';
+                historyNote.textContent = 'Click "View History" to see your saved chats.';
+            } else {
+                historyNote.textContent = 'Guest chats are not saved. Register to keep your history.';
+                historyPanel.style.display = 'none';
+            }
+
+            // Display guest messages (if any)
+            const chatContainer = document.getElementById('chatContainer');
+            guestMessages.forEach(item => {
+                const userMessage = document.createElement('div');
+                userMessage.className = 'chat-message user';
+                userMessage.textContent = item.user;
+                chatContainer.appendChild(userMessage);
+
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'chat-message ai';
+                aiMessage.textContent = item.ai;
+                chatContainer.appendChild(aiMessage);
+            });
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Allow sending message with Enter key
+            document.getElementById('chatInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        };
+    </script>
+</body>
+</html>

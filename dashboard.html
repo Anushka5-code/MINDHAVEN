@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MINDHAVEN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(180deg, #D4F4E2 0%, #E0F0FA 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+        .btn {
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .dropdown-menu {
+            display: none;
+        }
+        .dropdown-menu.show {
+            display: block;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .nav-menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(167, 243, 208, 0.95) 0%, rgba(191, 219, 254, 0.95) 100%);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            animation: slideIn 0.3s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .nav-menu.show {
+            display: block;
+        }
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .nav-menu ul {
+            position: relative;
+            padding: 1.5rem;
+            margin: 0;
+        }
+        .nav-menu li {
+            list-style: none;
+            margin-bottom: 0.75rem;
+        }
+        .nav-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #4B5563;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #1F2937;
+        }
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            transition: width 0.3s ease;
+        }
+        .nav-menu a:hover::after {
+            width: calc(100% - 2rem);
+        }
+        .leaf-icon-top {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(52, 211, 153, 0.2);
+            font-size: 2rem;
+        }
+        .leaf-icon-bottom {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: rgba(96, 165, 250, 0.2);
+            font-size: 2rem;
+        }
+        .charts-section, .premium-section {
+            position: relative;
+            background: linear-gradient(135deg, rgba(232, 245, 233, 0.5) 0%, rgba(230, 240, 250, 0.5) 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .charts-section::before, .premium-section::before {
+            content: '\f4d8';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            top: -30px;
+            left: -20px;
+            font-size: 5rem;
+            color: rgba(52, 211, 153, 0.1);
+            z-index: -1;
+        }
+        .charts-section::after, .premium-section::after {
+            content: '\f4d8';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            bottom: -30px;
+            right: -20px;
+            font-size: 5rem;
+            color: rgba(96, 165, 250, 0.1);
+            z-index: -1;
+        }
+        .chart-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .chart-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(52, 211, 153, 0.5);
+        }
+        .chart-card canvas {
+            max-height: 200px;
+        }
+        .progress-card, .user-details {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+        }
+        .progress-card:hover, .user-details:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(52, 211, 153, 0.5);
+        }
+        .progress-card h3, .user-details h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #4A5568;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .user-details {
+            max-width: 48rem; /* max-w-3xl */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .user-details h2 {
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .progress-stat, .user-details .detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        .progress-stat:last-child, .user-details .detail:last-child {
+            border-bottom: none;
+        }
+        .progress-stat span, .user-details .detail span {
+            font-size: 1rem;
+            color: #4B5563;
+        }
+        .progress-stat .value, .user-details .detail .value {
+            font-weight: 500;
+            color: #1F2937;
+        }
+        .leaf-decor {
+            position: absolute;
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            color: rgba(52, 211, 153, 0.15);
+            font-size: 3rem;
+            z-index: -1;
+        }
+        .leaf-decor-top-left {
+            top: -20px;
+            left: -15px;
+            transform: rotate(-30deg);
+        }
+        .leaf-decor-bottom-right {
+            bottom: -20px;
+            right: -15px;
+            transform: rotate(30deg);
+        }
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, rgba(167, 243, 208, 0.95) 0%, rgba(191, 219, 254, 0.95) 100%);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+            }
+            .chart-card, .progress-card, .user-details {
+                padding: 1rem;
+            }
+            .progress-card h3, .user-details h3 {
+                font-size: 1.25rem;
+            }
+            .user-details h2 {
+                font-size: 2rem;
+            }
+            .charts-section, .premium-section {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-white shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <button onclick="toggleNav()" class="text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 mr-4" aria-label="Toggle navigation menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <a href="index.html" class="flex items-center">
+                    <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mr-2">
+                    <h1 class="text-2xl font-semibold text-gray-800">Mindful Check-In</h1>
+                </a>
+            </div>
+            <div class="flex items-center space-x-6">
+                <a href="premium.html" onclick="navigateTo('premium.html', 'Premium button clicked')" class="flex items-center text-gray-600 hover:text-gray-800 focus:outline-none" aria-label="Premium page">
+                    <span class="font-semibold mr-1">Premium</span>
+                    <i class="fas fa-crown text-2xl"></i>
+                </a>
+                <a href="community.html" onclick="navigateTo('community.html', 'Community button clicked')" class="flex items-center text-gray-600 hover:text-gray-800 focus:outline-none" aria-label="Community page">
+                    <span class="font-semibold mr-1">Community</span>
+                    <i class="fas fa-users text-2xl"></i>
+                </a>
+                <div class="relative dropdown">
+                    <button onclick="toggleDropdown()" class="text-gray-600 hover:text-gray-800 focus:outline-none" aria-label="User account options">
+                        <i class="fas fa-user-circle text-2xl"></i>
+                    </button>
+                    <div id="dropdownMenu" class="dropdown-menu absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 z-10">
+                        <a href="index.html" onclick="logout()" class="block px-4 py-2 text-gray-600 hover:bg-red-100">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div id="navMenu" class="nav-menu">
+            <ul class="px-4 py-4 space-y-2">
+                <i class="fas fa-leaf leaf-icon-top"></i>
+                <i class="fas fa-leaf leaf-icon-bottom"></i>
+                <li><a href="index.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('index.html', 'Home menu item clicked')">Home</a></li>
+                <li><a href="dashboard.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('dashboard.html', 'My Profile menu item clicked')">My Profile</a></li>
+                <li><a href="features.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('features.html', 'Features menu item clicked')">Features</a></li>
+                <li><a href="about.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="console.log('About menu item clicked')">About</a></li>
+                <li><a href="faq.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="console.log('FAQ menu item clicked')">FAQ</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <section class="user-details fade-in">
+            <i class="fas fa-leaf leaf-decor leaf-decor-top-left"></i>
+            <i class="fas fa-leaf leaf-decor leaf-decor-bottom-right"></i>
+            <h2 id="welcomeUsername">Welcome, User!</h2>
+            <div class="detail">
+                <span>Username</span>
+                <span class="value" id="username">Guest User</span>
+            </div>
+            <div class="detail">
+                <span>Email</span>
+                <span class="value" id="userEmail">Not available</span>
+            </div>
+            <div class="detail">
+                <span>Join Date</span>
+                <span class="value" id="joinDate">Not available</span>
+            </div>
+        </section>
+
+        <section class="charts-section grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="chart-card fade-in">
+                <canvas id="moodChart"></canvas>
+            </div>
+            <div class="chart-card fade-in">
+                <canvas id="activityChart"></canvas>
+            </div>
+            <div class="chart-card fade-in">
+                <canvas id="copingChart"></canvas>
+            </div>
+            <div class="chart-card fade-in">
+                <canvas id="yogaVideoChart"></canvas>
+            </div>
+            <div class="chart-card fade-in">
+                <canvas id="comicChart"></canvas>
+            </div>
+        </section>
+
+        <section class="premium-section fade-in">
+            <i class="fas fa-leaf leaf-decor leaf-decor-top-left"></i>
+            <i class="fas fa-leaf leaf-decor leaf-decor-bottom-right"></i>
+            <div id="premiumCharts" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="chart-card">
+                    <canvas id="yogaMeditationChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <canvas id="consultationChart"></canvas>
+                </div>
+            </div>
+            <div id="premiumPlaceholder" class="text-center">
+                <p class="text-gray-600 mb-4">Unlock Premium to view your Yoga/Meditation and Consultation activity charts!</p>
+                <button onclick="navigateTo('premium.html', 'Get Premium button clicked')" class="btn bg-blue-200 text-gray-800 px-6 py-3 rounded-full font-medium hover:bg-blue-300">Get Premium</button>
+            </div>
+        </section>
+
+        <section class="progress-card fade-in">
+            <h3>Progression Report</h3>
+            <div class="progress-stat">
+                <span>Total Activities Completed</span>
+                <span class="value">15</span>
+            </div>
+            <div class="progress-stat">
+                <span>Average Mood Score (Last 7 Days)</span>
+                <span class="value">3.8/5</span>
+            </div>
+            <div class="progress-stat">
+                <span>Most Used Coping Strategy</span>
+                <span class="value">Deep Breathing</span>
+            </div>
+        </section>
+
+        <section class="text-center py-8">
+            <button onclick="logout()" class="btn bg-red-200 text-gray-800 px-6 py-3 rounded-full font-medium hover:bg-red-300">
+                Logout
+            </button>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mx-auto mb-4">
+            <p>© 2025 Mindful Check-In. All rights reserved.</p>
+            <p class="mt-2">Built with care for your mental well-being.</p>
+            <button onclick="startGuestChat()" 
+                    class="btn bg-blue-200 text-gray-800 px-6 py-3 rounded-full font-medium mt-4 hover:bg-blue-300">
+                Start Chatting Now
+            </button>
+        </div>
+    </footer>
+
+    <script>
+        function startGuestChat() {
+            alert("Starting chat... Your data is saved for your account!");
+        }
+
+        function toggleNav() {
+            try {
+                document.getElementById('navMenu').classList.toggle('show');
+            } catch (error) {
+                console.error("Error toggling navigation menu:", error);
+                alert("Failed to toggle navigation menu. Please check console for errors.");
+            }
+        }
+
+        function toggleDropdown() {
+            try {
+                const dropdownMenu = document.getElementById('dropdownMenu');
+                dropdownMenu.classList.toggle('show');
+            } catch (error) {
+                console.error("Error toggling dropdown menu:", error);
+                alert("Failed to toggle dropdown menu. Please check console for errors.");
+            }
+        }
+
+        function navigateTo(url, message) {
+            console.log(message);
+            try {
+                window.location.href = url;
+            } catch (error) {
+                console.error("Navigation failed to", url, ":", error);
+                alert("Failed to navigate to " + url + ". Please ensure the file exists and check console for errors.");
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('isRegistered');
+            sessionStorage.removeItem('userEmail');
+            sessionStorage.removeItem('userJoinDate');
+            sessionStorage.removeItem('isPremium');
+            navigateTo('index.html', 'Logged out');
+        }
+
+        function initializeUserDetails() {
+            const isRegistered = sessionStorage.getItem('isRegistered') === 'true';
+            const userEmail = sessionStorage.getItem('userEmail') || 'Not available';
+            const joinDate = sessionStorage.getItem('userJoinDate') || 'Not available';
+            const username = userEmail.split('@')[0] || 'Guest User';
+
+            document.getElementById('username').textContent = isRegistered ? username : 'Guest User';
+            document.getElementById('userEmail').textContent = isRegistered ? userEmail : 'Not available';
+            document.getElementById('joinDate').textContent = isRegistered ? new Date(joinDate).toLocaleDateString() : 'Not available';
+            document.getElementById('welcomeUsername').textContent = isRegistered ? `Welcome, ${username}!` : 'Welcome, User!';
+        }
+
+        function initializePremiumSection() {
+            const isPremium = sessionStorage.getItem('isPremium') === 'true';
+            document.getElementById('premiumCharts').style.display = isPremium ? 'grid' : 'none';
+            document.getElementById('premiumPlaceholder').style.display = isPremium ? 'none' : 'block';
+        }
+
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            if (!dropdown.contains(event.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeUserDetails();
+            initializePremiumSection();
+        });
+
+        const moodChart = new Chart(document.getElementById('moodChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Mood',
+                    data: [3, 4, 3.5, 4.2, 4, 3.8, 4.5],
+                    borderColor: '#34D399',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#34D399',
+                    pointRadius: 4,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { 
+                        display: true, 
+                        text: 'Mood Over Time', 
+                        font: { size: 16, family: 'Poppins' },
+                        color: '#4A5568'
+                    },
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    x: { 
+                        grid: { display: false },
+                        ticks: { font: { size: 12, family: 'Poppins' } }
+                    },
+                    y: { 
+                        beginAtZero: true, 
+                        max: 5, 
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                        ticks: { font: { size: 12, family: 'Poppins' } }
+                    }
+                }
+            }
+        });
+
+        const activityChart = new Chart(document.getElementById('activityChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Activity',
+                    data: [2, 3, 1, 4, 2, 3, 5],
+                    backgroundColor: '#60A5FA',
+                    borderColor: '#3B82F6',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { 
+                        display: true, 
+                        text: 'Activity Overview', 
+                        font: { size: 16, family: 'Poppins' },
+                        color: '#4A5568'
+                    },
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    x: { 
+                        grid: { display: false },
+                        ticks: { font: { size: 12, family: 'Poppins' } }
+                    },
+                    y: { 
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                        ticks: { font: { size: 12, family: 'Poppins' } }
+                    }
+                }
+            }
+        });
+
+        const copingChart = new Chart(document.getElementById('copingChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Deep Breathing', 'Journaling', 'Meditation', 'Exercise', 'Gratitude'],
+                datasets: [{
+                    label: 'Times Used',
+                    data: [5, 4, 4, 3, 2],
+                    backgroundColor: '#34D399',
+                    borderColor: '#2DD4BF',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { 
+                        display: true, 
+                        text: 'Coping Strategies Usage', 
+                        font: { size: 16, family: 'Poppins' },
+                        color: '#4A5568'
+                    },
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    x: { 
+                        beginAtZero: true, 
+                        grid: { display: false },
+                        ticks: { font: { size: 12, family: 'Poppins' } }
+                    },
+                    y: { 
+                        grid: { display: false },
+                        ticks: { font: { size: 12, family: 'Poppins' } }
+                    }
+                }
+            }
+        });
+
+        const yogaVideoChart = new Chart(document.getElementById('yogaVideoChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Sessions',
+                    data: [1, 2, 0, 3, 2, 4, 1],
+                    backgroundColor: '#FBBF24',
+                    borderColor: '#F59E0B',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { 
+                        display: true, 
+                        text: 'Yoga/Video Sessions', 
+                        font: { size: 16, family: 'Poppins' },
+                        color: '#4A5568'
+                    },
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    x: { 
+                        grid: { display: false },
+                        ticks: { font: { size: 12, family: 'Poppins' } }
+                    },
+                    y: { 
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                        ticks: { font: { size: 12, family: 'Poppins' } }
+                    }
+                }
+            }
+        });
+
+        const comicChart = new Chart(document.getElementById('comicChart').getContext('2d'), {
+            type: 'pie',
+            data: {
+                labels: ['Motivational Comics', 'Humor Comics', 'Mindfulness Comics'],
+                datasets: [{
+                    label: 'Interactions',
+                    data: [10, 7, 5],
+                    backgroundColor: ['#34D399', '#60A5FA', '#FBBF24'],
+                    borderColor: ['#2DD4BF', '#3B82F6', '#F59E0B'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { 
+                        position: 'bottom',
+                        labels: { font: { size: 12, family: 'Poppins' } }
+                    },
+                    title: { 
+                        display: true, 
+                        text: 'Comic Resources Engagement', 
+                        font: { size: 16, family: 'Poppins' },
+                        color: '#4A5568'
+                    },
+                    tooltip: { enabled: true }
+                }
+            }
+        });
+
+        const yogaMeditationChart = new Chart(document.getElementById('yogaMeditationChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Sessions',
+                    data: [2, 1, 3, 0, 2, 4, 1],
+                    borderColor: '#34D399',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#34D399',
+                    pointRadius: 4,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { 
+                        display: true, 
+                        text: 'Yoga/Meditation Course Regularity', 
+                        font: { size: 16, family: 'Poppins' },
+                        color: '#4A5568'
+                    },
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            label: function(context) {
+                                const times = ['08:00', '10:00', '14:00', '16:00', '18:00', '20:00', '09:00'];
+                                return `Sessions: ${context.raw} (Completed at ${times[context.dataIndex]})`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { 
+                        grid: { display: false },
+                        ticks: { font: { size: 12, family: 'Poppins' } }
+                    },
+                    y: { 
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                        ticks: { font: { size: 12, family: 'Poppins' } }
+                    }
+                }
+            }
+        });
+
+        const consultationChart = new Chart(document.getElementById('consultationChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Consultations',
+                    data: [1, 0, 2, 1, 0, 3, 0],
+                    backgroundColor: '#60A5FA',
+                    borderColor: '#3B82F6',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { 
+                        display: true, 
+                        text: 'Consultation Activity', 
+                        font: { size: 16, family: 'Poppins' },
+                        color: '#4A5568'
+                    },
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            label: function(context) {
+                                const times = ['09:00', '11:00', '13:00', '15:00', '17:00', '10:00', '12:00'];
+                                return `Consultations: ${context.raw} (Scheduled at ${times[context.dataIndex]})`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { 
+                        grid: { display: false },
+                        ticks: { font: { size: 12, family: 'Poppins' } }
+                    },
+                    y: { 
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                        ticks: { font: { size: 12, family: 'Poppins' } }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

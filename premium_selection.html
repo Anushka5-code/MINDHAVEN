@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Course Selection - MINDHAVEN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #E8F5E9;
+            overflow-x: hidden;
+            position: relative;
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .nav-menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(167, 243, 208, 0.95) 0%, rgba(191, 219, 254, 0.95) 100%);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            animation: slideIn 0.3s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .nav-menu.show {
+            display: block;
+        }
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .nav-menu ul {
+            position: relative;
+            padding: 1.5rem;
+            margin: 0;
+        }
+        .nav-menu li {
+            list-style: none;
+            margin-bottom: 0.5rem;
+        }
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: #4B5563;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-menu a i {
+            color: #4B5563;
+        }
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #1F2937;
+        }
+        .nav-menu a:hover i {
+            color: #1F2937;
+        }
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            transition: width 0.3s ease;
+        }
+        .nav-menu a:hover::after {
+            width: calc(100% - 2rem);
+        }
+        .leaf-icon-top {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(52, 211, 153, 0.2);
+            font-size: 2rem;
+        }
+        .leaf-icon-bottom {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: rgba(96, 165, 250, 0.2);
+            font-size: 2rem;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            width: 192px;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 8px 0;
+            z-index: 10;
+        }
+        .dropdown-menu.show {
+            display: block;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        .selection-section {
+            background: linear-gradient(180deg, #E8F5E9 0%, #DBEAFE 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 4rem 0;
+        }
+        .selection-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(167, 243, 208, 0.2)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+            z-index: 0;
+        }
+        .course-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
+            border: 2px solid rgba(52, 211, 153, 0.5);
+        }
+        .course-icon {
+            font-size: 2.5rem;
+            color: #34D399;
+            margin-bottom: 1rem;
+            background: rgba(52, 211, 153, 0.1);
+            border-radius: 50%;
+            padding: 0.75rem;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .course-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.75rem;
+        }
+        .course-description {
+            font-size: 1rem;
+            color: #4A5568;
+            margin-bottom: 1.5rem;
+        }
+        .btn {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+        .btn:active::after {
+            width: 200px;
+            height: 200px;
+        }
+        .btn-premium {
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 1rem;
+            text-align: center;
+            display: block;
+        }
+        .btn-premium:hover {
+            background: linear-gradient(to right, #2DD4BF, #3B82F6);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.show {
+            display: flex;
+        }
+        .modal-content {
+            max-width: 450px;
+            width: 90%;
+            padding: 2.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(167, 243, 208, 0.3) 0%, transparent 70%);
+            transform: rotate(45deg);
+            z-index: -1;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: #4B5563;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .modal-close:hover {
+            color: #1F2937;
+        }
+        .modal-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        .modal-tab {
+            padding: 0.5rem 1.5rem;
+            color: #4B5563;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .modal-tab.active {
+            color: #1F2937;
+            border-bottom: 2px solid #34D399;
+        }
+        .modal-tab:hover {
+            color: #1F2937;
+        }
+        .modal-form {
+            display: none;
+        }
+        .modal-form.active {
+            display: block;
+        }
+        .modal-form label {
+            color: #4B5563;
+            font-weight: 500;
+            font-size: 0.95rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .modal-form input {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            background: #F3F4F6;
+            color: #1F2937;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .modal-form input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.3);
+            background: #FFFFFF;
+        }
+        .modal-form input::placeholder {
+            color: #9CA3AF;
+        }
+        .modal-form button {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            color: white;
+            font-weight: 500;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .modal-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            background: linear-gradient(to right, #2DD4BF, #3B82F6);
+        }
+        .modal-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #4B5563;
+            font-size: 0.9rem;
+        }
+        .modal-link a {
+            color: #34D399;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        .modal-link a:hover {
+            color: #2DD4BF;
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .course-card {
+                padding: 1rem;
+            }
+            .course-title {
+                font-size: 1.25rem;
+            }
+            .course-description {
+                font-size: 0.9rem;
+            }
+            .course-icon {
+                font-size: 2rem;
+            }
+            .selection-section {
+                padding: 2rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <button onclick="toggleNav()" class="text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 mr-4" aria-label="Toggle navigation menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <a href="index.html" class="flex items-center">
+                    <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mr-2">
+                    <h1 class="text-2xl font-semibold text-gray-800">Mindful Check-In</h1>
+                </a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="community.html" class="nav-link text-gray-600 hover:text-gray-800">
+                    <i class="fas fa-users mr-2"></i> Community
+                </a>
+                <div class="relative dropdown">
+                    <button onclick="toggleDropdown()" class="text-gray-600 hover:text-gray-800 focus:outline-none" aria-label="User account options">
+                        <i class="fas fa-user-circle text-2xl"></i>
+                    </button>
+                    <div id="dropdownMenu" class="dropdown-menu">
+                        <a href="#" onclick="startGuestChat()" class="block px-4 py-2 text-gray-600 hover:bg-blue-100">Use as Guest</a>
+                        <a href="#" onclick="openAuthModal('login')" class="block px-4 py-2 text-gray-600 hover:bg-green-100">Login / Signup</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Navigation Menu -->
+        <div id="navMenu" class="nav-menu">
+            <ul>
+                <i class="fas fa-leaf leaf-icon-top"></i>
+                <i class="fas fa-leaf leaf-icon-bottom"></i>
+                <li>
+                    <a href="index.html" onclick="navigateTo('index.html', 'Home menu item clicked')">
+                        <i class="fas fa-home text-base mr-2"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="checkDashboardAccess()">
+                        <i class="fas fa-user text-base mr-2"></i> My Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="features.html" onclick="navigateTo('features.html', 'Features menu item clicked')">
+                        <i class="fas fa-list text-base mr-2"></i> Features
+                    </a>
+                </li>
+                <li>
+                    <a href="about.html" onclick="console.log('About menu item clicked')">
+                        <i class="fas fa-info-circle text-base mr-2"></i> About
+                    </a>
+                </li>
+                <li>
+                    <a href="faq.html" onclick="console.log('FAQ menu item clicked')">
+                        <i class="fas fa-question-circle text-base mr-2"></i> FAQ
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Course Selection Section -->
+    <section class="selection-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-8 fade-in">Choose Your Premium Course</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <!-- Yoga Courses -->
+                <div class="course-card fade-in">
+                    <i class="fas fa-spa course-icon"></i>
+                    <h3 class="course-title">Yoga Courses</h3>
+                    <p class="course-description">Immerse yourself in guided yoga sessions designed to melt stress and cultivate mindfulness, accessible anytime.</p>
+                    <a href="yogacourse.html" class="btn btn-premium" onclick="selectCourse('yoga')">Select Yoga</a>
+                </div>
+                <!-- Psychology Consultations -->
+                <div class="course-card fade-in" style="animation-delay: 0.2s;">
+                    <i class="fas fa-user-md course-icon"></i>
+                    <h3 class="course-title">Psychology Consultations</h3>
+                    <p class="course-description">Connect with licensed professionals for personalized virtual sessions, nurturing your mental health.</p>
+                    <a href="consultation.html" class="btn btn-premium" onclick="selectCourse('psychology')">Select Consultations</a>
+                </div>
+                <!-- Meditation Courses -->
+                <div class="course-card fade-in" style="animation-delay: 0.4s;">
+                    <i class="fas fa-om course-icon"></i>
+                    <h3 class="course-title">Meditation Courses</h3>
+                    <p class="course-description">Explore guided meditation practices to enhance focus, reduce anxiety, and promote inner peace.</p>
+                    <a href="meditationcourse.html" class="btn btn-premium" onclick="selectCourse('meditation')">Select Meditation</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <i class="fas fa-leaf modal-leaf-icon"></i>
+            <i class="fas fa-leaf modal-leaf-icon-right"></i>
+            <span class="modal-close" onclick="closeAuthModal()">×</span>
+            <div class="modal-tabs">
+                <div class="modal-tab active" onclick="switchTab('login')">Login</div>
+                <div class="modal-tab" onclick="switchTab('signup')">Sign Up</div>
+            </div>
+            <!-- Login Form -->
+            <div id="loginForm" class="modal-form active">
+                <form onsubmit="handleLogin(event)">
+                    <div class="mb-5">
+                        <label for="login-email" class="block">Email</label>
+                        <input type="email" id="login-email" required placeholder="you@example.com">
+                    </div>
+                    <div class="mb-5">
+                        <label for="login-password" class="block">Password</label>
+                        <input type="password" id="login-password" required placeholder="Your password">
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+                <p class="modal-link">
+                    Don't have an account? <a onclick="switchTab('signup')">Sign up</a>
+                </p>
+            </div>
+            <!-- Sign-Up Form -->
+            <div id="signupForm" class="modal-form">
+                <form onsubmit="handleSignup(event)">
+                    <div class="mb-5">
+                        <label for="signup-email" class="block">Email</label>
+                        <input type="email" id="signup-email" required placeholder="you@example.com">
+                    </div>
+                    <div class="mb-5">
+                        <label for="signup-password" class="block">Password</label>
+                        <input type="password" id="signup-password" required placeholder="Create a password">
+                    </div>
+                    <div class="mb-5">
+                        <label for="signup-confirm-password" class="block">Confirm Password</label>
+                        <input type="password" id="signup-confirm-password" required placeholder="Confirm your password">
+                    </div>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p class="modal-link">
+                    Already have an account? <a onclick="switchTab('login')">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mx-auto mb-4">
+            <p>© 2025 Mindful Check-In. All rights reserved.</p>
+            <p class="mt-2">Crafted with love for your mental well-being.</p>
+            <button onclick="navigateTo('premium.html', 'Return to Premium page')" class="btn bg-blue-200 text-gray-800 px-6 py-3 rounded-full font-medium mt-4 hover:bg-blue-300">
+                Explore Premium Options
+            </button>
+        </div>
+    </footer>
+
+    <script>
+        function startGuestChat() {
+            alert("Starting anonymous guest chat... Your data won’t be saved!");
+        }
+        function toggleNav() {
+            try {
+                document.getElementById('navMenu').classList.toggle('show');
+            } catch (error) {
+                console.error("Error toggling navigation menu:", error);
+                alert("Failed to toggle navigation menu. Please check console for errors.");
+            }
+        }
+        function toggleDropdown() {
+            try {
+                const dropdownMenu = document.getElementById('dropdownMenu');
+                dropdownMenu.classList.toggle('show');
+            } catch (error) {
+                console.error("Error toggling dropdown menu:", error);
+                alert("Failed to toggle dropdown menu. Please check console for errors.");
+            }
+        }
+        function navigateTo(url, message) {
+            console.log(message);
+            try {
+                window.location.href = url;
+            } catch (error) {
+                console.error("Navigation failed to", url, ":", error);
+                alert("Failed to navigate to " + url + ". Please ensure the file exists and check console for errors.");
+            }
+        }
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            if (!dropdown.contains(event.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+        function checkDashboardAccess() {
+            const isRegistered = sessionStorage.getItem('isRegistered') === 'true';
+            if (isRegistered) {
+                navigateTo('dashboard.html', 'My Profile menu item clicked');
+            } else {
+                openAuthModal('login');
+            }
+        }
+        function openAuthModal(tab) {
+            const modal = document.getElementById('authModal');
+            modal.classList.add('show');
+            switchTab(tab);
+        }
+        function closeAuthModal() {
+            const modal = document.getElementById('authModal');
+            modal.classList.remove('show');
+        }
+        function switchTab(tab) {
+            const loginTab = document.querySelector('.modal-tab:nth-child(1)');
+            const signupTab = document.querySelector('.modal-tab:nth-child(2)');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            if (tab === 'login') {
+                loginTab.classList.add('active');
+                signupTab.classList.remove('active');
+                loginForm.classList.add('active');
+                signupForm.classList.remove('active');
+            } else {
+                loginTab.classList.remove('active');
+                signupTab.classList.add('active');
+                loginForm.classList.remove('active');
+                signupForm.classList.add('active');
+            }
+        }
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            console.log("Logging in with:", { email, password });
+            sessionStorage.setItem('isRegistered', 'true');
+            alert("Login successful!");
+            closeAuthModal();
+            navigateTo('premium-selection.html', 'Premium selection page accessed after login');
+        }
+        function handleSignup(event) {
+            event.preventDefault();
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm-password').value;
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+            console.log("Signing up with:", { email, password });
+            sessionStorage.setItem('isRegistered', 'true');
+            alert("Sign up successful!");
+            closeAuthModal();
+            navigateTo('premium-selection.html', 'Premium selection page accessed after signup');
+        }
+        function selectCourse(course) {
+            console.log(`Selecting ${course} course`);
+            alert(`Proceeding with ${course} course selection...`);
+            navigateTo(`subscription.html?course=${course}`, `${course} course selection started`);
+        }
+        document.getElementById('authModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeAuthModal();
+            }
+        });
+    </script>
+</body>
+</html>

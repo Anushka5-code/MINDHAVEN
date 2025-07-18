@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Services - MINDHAVEN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Favicon: Heart-leaf logo -->
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(180deg, #E8F5E9 0%, #E6F0FA 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+        .btn {
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .dropdown-menu {
+            display: none;
+        }
+        .dropdown-menu.show {
+            display: block;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .nav-menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(167, 243, 208, 0.95) 0%, rgba(191, 219, 254, 0.95) 100%);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            animation: slideIn 0.3s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .nav-menu.show {
+            display: block;
+        }
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .nav-menu ul {
+            position: relative;
+            padding: 1.5rem;
+            margin: 0;
+        }
+        .nav-menu li {
+            list-style: none;
+            margin-bottom: 0.75rem;
+        }
+        .nav-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #4B5563;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #1F2937;
+        }
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            transition: width 0.3s ease;
+        }
+        .nav-menu a:hover::after {
+            width: calc(100% - 2rem);
+        }
+        .leaf-icon-top {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(52, 211, 153, 0.2);
+            font-size: 2rem;
+        }
+        .leaf-icon-bottom {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: rgba(96, 165, 250, 0.2);
+            font-size: 2rem;
+        }
+        .welcome-section {
+            position: relative;
+        }
+        .welcome-section h2 {
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .welcome-section p {
+            color: #4B5563;
+            font-size: 1.1rem;
+        }
+        .guest-notice {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            text-align: center;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .guest-notice p {
+            color: #4B5563;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        .guest-notice button {
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .guest-notice button:hover {
+            background: linear-gradient(to right, #2DD4BF, #3B82F6);
+            transform: translateY(-2px);
+        }
+        .services-section {
+            position: relative;
+        }
+        .services-section::before {
+            content: '\f4d8';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            top: -30px;
+            left: -20px;
+            font-size: 5rem;
+            color: rgba(52, 211, 153, 0.1);
+            z-index: -1;
+        }
+        .services-section::after {
+            content: '\f4d8';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            bottom: -30px;
+            right: -20px;
+            font-size: 5rem;
+            color: rgba(96, 165, 250, 0.1);
+            z-index: -1;
+        }
+        .service-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            margin-bottom: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(52, 211, 153, 0.5);
+        }
+        .service-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #4A5568;
+            margin-bottom: 1rem;
+        }
+        .service-card button {
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .service-card button:hover {
+            background: linear-gradient(to right, #2DD4BF, #3B82F6);
+            transform: scale(1.05);
+        }
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, rgba(167, 243, 208, 0.95) 0%, rgba(191, 219, 254, 0.95) 100%);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+            }
+            .service-card, .guest-notice {
+                padding: 1rem;
+            }
+            .service-card h3 {
+                font-size: 1.25rem;
+            }
+            .welcome-section h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <button onclick="toggleNav()" class="text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 mr-4" aria-label="Toggle navigation menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <!-- Logo: Links to Homepage -->
+                <a href="index.html" class="flex items-center">
+                    <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mr-2">
+                    <h1 class="text-2xl font-semibold text-gray-800">Mindful Check-In</h1>
+                </a>
+            </div>
+            <div class="relative dropdown">
+                <button onclick="toggleDropdown()" class="text-gray-600 hover:text-gray-800 focus:outline-none" aria-label="User account options">
+                    <i class="fas fa-user-circle text-2xl"></i>
+                </button>
+                <div id="dropdownMenu" class="dropdown-menu absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 z-10">
+                    <a href="index.html?auth=open" onclick="navigateToAuth()" class="block px-4 py-2 text-gray-600 hover:bg-green-100">Login / Sign Up</a>
+                </div>
+            </div>
+        </nav>
+        <!-- Navigation Menu -->
+        <div id="navMenu" class="nav-menu">
+            <ul class="px-4 py-4 space-y-2">
+                <i class="fas fa-leaf leaf-icon-top"></i>
+                <i class="fas fa-leaf leaf-icon-bottom"></i>
+                <li><a href="index.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('index.html', 'Home menu item clicked')">Home</a></li>
+                <li><a href="features.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('features.html', 'Features menu item clicked')">Features</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('index.html?auth=open', 'Dashboard menu item clicked')">Dashboard</a></li>
+                <li><a href="#about" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="console.log('About menu item clicked')">About</a></li>
+                <li><a href="#faq" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="console.log('FAQ menu item clicked')">FAQ</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Welcome Section -->
+        <section class="welcome-section mb-12 text-center fade-in">
+            <h2>Welcome, Guest!</h2>
+            <p>Access limited services in guest mode.</p>
+        </section>
+
+        <!-- Guest Notice -->
+        <section class="guest-notice fade-in">
+            <p>Use as Guest Only: Limited features available. Sign up or log in to access your full dashboard and personalized insights.</p>
+            <button onclick="navigateToAuth()">Login / Sign Up</button>
+        </section>
+
+        <!-- Services Section -->
+        <section class="services-section grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Empathized Chatbot -->
+            <div class="service-card fade-in">
+                <h3>Empathized Chatbot</h3>
+                <button onclick="accessChatbot()">Start Chat</button>
+            </div>
+
+            <!-- Free Yoga and Meditation Videos -->
+            <div class="service-card fade-in">
+                <h3>Free Yoga & Meditation Videos</h3>
+                <button onclick="accessVideos()">Watch Now</button>
+            </div>
+
+            <!-- Hotlines and Local Services -->
+            <div class="service-card fade-in">
+                <h3>Hotlines & Local Services</h3>
+                <button onclick="accessHotlines()">View Resources</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mx-auto mb-4">
+            <p>© 2025 Mindful Check-In. All rights reserved.</p>
+            <p class="mt-2">Built with care for your mental well-being.</p>
+            <button onclick="startGuestChat()" 
+                    class="btn bg-blue-200 text-gray-800 px-6 py-3 rounded-full font-medium mt-4 hover:bg-blue-300">
+                Start Chatting Now
+            </button>
+        </div>
+    </footer>
+
+    <script>
+        function startGuestChat() {
+            alert("Starting anonymous guest chat... Your data won’t be saved!");
+            // Replace with chat redirect/modal
+        }
+
+        function toggleNav() {
+            try {
+                document.getElementById('navMenu').classList.toggle('show');
+            } catch (error) {
+                console.error("Error toggling navigation menu:", error);
+                alert("Failed to toggle navigation menu. Please check console for errors.");
+            }
+        }
+
+        function toggleDropdown() {
+            try {
+                const dropdownMenu = document.getElementById('dropdownMenu');
+                dropdownMenu.classList.toggle('show');
+            } catch (error) {
+                console.error("Error toggling dropdown menu:", error);
+                alert("Failed to toggle dropdown menu. Please check console for errors.");
+            }
+        }
+
+        function navigateTo(url, message) {
+            console.log(message);
+            try {
+                window.location.href = url;
+            } catch (error) {
+                console.error("Navigation failed to", url, ":", error);
+                alert("Failed to navigate to " + url + ". Please ensure the file exists and check console for errors.");
+            }
+        }
+
+        function navigateToAuth() {
+            navigateTo('index.html?auth=open', 'Redirecting to Login/Sign Up');
+        }
+
+        function accessChatbot() {
+            alert("Starting empathized chatbot…");
+            // Placeholder for chatbot functionality
+        }
+
+        function accessVideos() {
+            alert("Accessing free yoga and meditation videos…");
+            // Placeholder for video access
+        }
+
+        function accessHotlines() {
+            alert("Fetching hotlines and local services…");
+            // Placeholder for hotline/services access
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            if (!dropdown.contains(event.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

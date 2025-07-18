@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Session - Mindful Check-In</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="icon" href="logo.png" type="image/png" onerror="this.href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAA3NCSVQICAjb4U/gAAAACXBIWXMAAAsSAAALEgHS3X78AAAAGXRFWHRTb2Z0d2FyZQBnbm9tZS1zY3JlZW5zaG90MDDZ4gAAAHBJREFUeJxtjksKwCAMRBUTTTTb//9p0oAEO7QdKoKje+3NzgBBxACF3rS3wxJCGWQMbMiJ2IuF5IedzF4sJD/sZPaS4a6s3xZRL/ZyIflhJ7OXDHdhJ7OXDHdhJ7OXDHdhJ7OXDHdhJ7OXDHdhJ7OXDHeG3s4O/vX4AN8qUY4AAAAASUVORK5CYII='">
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background: #F4F7FA;
+        font-family: 'Poppins', Arial, sans-serif;
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .chat-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        width: calc(100% - 1rem);
+        margin: 0.5rem;
+        height: calc(100vh - 1rem);
+        background: #FFFFFF;
+        border: 2px solid #34D399;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      }
+      .chat-header {
+        background: linear-gradient(135deg, #2C6B7F 0%, #C19A2E 100%);
+        background: -webkit-linear-gradient(135deg, #2C6B7F 0%, #C19A2E 100%);
+        color: #FFFFFF;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        border-bottom: 2px solid #C19A2E;
+      }
+      .chat-header .back-btn {
+        cursor: pointer;
+        font-size: 1.5rem;
+        transition: transform 0.3s ease, color 0.3s ease;
+      }
+      .chat-header .back-btn:hover {
+        color: #34D399;
+        transform: scale(1.1);
+      }
+      .chat-header img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #FFFFFF;
+        transition: transform 0.3s ease;
+      }
+      .chat-header img:hover {
+        transform: scale(1.05);
+      }
+      .chat-header h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+      }
+      .chat-header .status {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        opacity: 0.9;
+      }
+      .chat-header .status-dot {
+        width: 8px;
+        height: 8px;
+        background: #34D399;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.5); opacity: 0.5; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+      .chat-history {
+        flex: 1;
+        padding: 2rem;
+        overflow-y: auto;
+        background: #E6F0FA;
+      }
+      .chat-message {
+        margin-bottom: 2rem;
+        padding: 1rem 1.5rem;
+        max-width: 75%;
+        position: relative;
+        word-wrap: break-word;
+        animation: slideIn 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      }
+      @keyframes slideIn {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .chat-message.user {
+        background: #D1E8F2;
+        margin-left: auto;
+        border-radius: 12px 12px 4px 12px;
+        border: 1px solid #34D399;
+      }
+      .chat-message.psychologist {
+        background: #FFFFFF;
+        margin-right: auto;
+        border-radius: 12px 12px 12px 4px;
+        border: 1px solid #34D399;
+      }
+      .chat-message p {
+        margin: 0;
+        font-size: 1rem;
+        color: #1F2937;
+        line-height: 1.5;
+      }
+      .chat-message .timestamp {
+        font-size: 0.8rem;
+        color: #6B7280;
+        text-align: right;
+        margin-top: 0.5rem;
+        font-style: italic;
+        opacity: 0.7;
+      }
+      .chat-input {
+        background: #FFFFFF;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
+        border-top: 2px solid #34D399;
+      }
+      .chat-input input {
+        flex: 1;
+        padding: 0.75rem 1.5rem;
+        border: 1px solid #D1D5DB;
+        border-radius: 12px;
+        font-size: 1rem;
+        background: #F9FAFB;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      .chat-input input:focus {
+        outline: none;
+        border-color: #34D399;
+        box-shadow: 0 0 0 3px rgba(52,211,153,0.2);
+      }
+      .chat-input .emoji-btn,
+      .chat-input .voice-btn {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 1.5rem;
+        color: #6B7280;
+        transition: color 0.3s ease, transform 0.3s ease;
+      }
+      .chat-input .emoji-btn:hover,
+      .chat-input .voice-btn:hover {
+        color: #C19A2E;
+        transform: scale(1.1);
+      }
+      .chat-input button.send-btn {
+        background: linear-gradient(135deg, #34D399 0%, #C19A2E 100%);
+        background: -webkit-linear-gradient(135deg, #34D399 0%, #C19A2E 100%);
+        border: none;
+        border-radius: 50%;
+        color: #FFFFFF;
+        cursor: pointer;
+        padding: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s ease, transform 0.3s ease;
+      }
+      .chat-input button.send-btn:hover {
+        background: linear-gradient(135deg, #C19A2E 0%, #34D399 100%);
+        background: -webkit-linear-gradient(135deg, #C19A2E 0%, #34D399 100%);
+        transform: scale(1.05);
+      }
+      .chat-input button.send-btn:disabled {
+        background: #D1D5DB;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .chat-input button.send-btn i {
+        font-size: 1.25rem;
+      }
+      @media (max-width: 768px) {
+        .chat-container {
+          width: calc(100% - 0.5rem);
+          margin: 0.25rem;
+          height: calc(100vh - 0.5rem);
+          border: 1px solid #34D399;
+        }
+        .chat-history {
+          padding: 1rem;
+        }
+        .chat-message {
+          max-width: 75%;
+          margin-bottom: 1.5rem;
+          padding: 0.75rem 1rem;
+        }
+        .chat-header {
+          padding: 1rem;
+          gap: 1rem;
+        }
+        .chat-header h2 {
+          font-size: 1.3rem;
+        }
+        .chat-header img {
+          width: 40px;
+          height: 40px;
+        }
+        .chat-input {
+          padding: 1rem;
+          gap: 0.75rem;
+        }
+        .chat-input input {
+          padding: 0.5rem 1rem;
+          font-size: 0.95rem;
+        }
+        .chat-input .emoji-btn,
+        .chat-input .voice-btn,
+        .chat-input button.send-btn {
+          padding: 0.6rem;
+          font-size: 1.3rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-container">
+      <div class="chat-header">
+        <i class="fas fa-arrow-left back-btn" onclick="navigateToConsultation()"></i>
+        <img id="chatPsychologistImage" src="https://via.placeholder.com/48" alt="Psychologist" onerror="this.src='https://via.placeholder.com/48'">
+        <div>
+          <h2 id="chatPsychologistName">Loading...</h2>
+          <div class="status">
+            <span class="status-dot"></span>
+            <span>Online</span>
+          </div>
+        </div>
+      </div>
+      <div class="chat-history" id="chatHistory"></div>
+      <form onsubmit="sendMessage(event)" class="chat-input">
+        <button type="button" class="emoji-btn" onclick="insertEmoji('😊')"><i class="fas fa-smile"></i></button>
+        <button type="button" class="voice-btn" onclick="sendVoiceMessage()"><i class="fas fa-microphone"></i></button>
+        <input type="text" id="chatInput" placeholder="Type your message..." oninput="updateSendButton()">
+        <button type="submit" class="send-btn" id="sendButton" disabled><i class="fas fa-paper-plane"></i></button>
+      </form>
+    </div>
+
+    <script>
+      // Mock psychologists data
+      const psychologists = [
+        { id: 1, name: "Dr. Jane Smith", thumbnail: "https://via.placeholder.com/48" },
+        { id: 2, name: "Dr. John Doe", thumbnail: "https://via.placeholder.com/48" },
+        { id: 3, name: "Dr. Emily Brown", thumbnail: "https://via.placeholder.com/48" }
+      ];
+
+      // Get URL parameters
+      function getUrlParams() {
+        console.log("Parsing URL parameters:", window.location.search);
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const psychologistId = parseInt(params.get('psychologistId')) || null;
+          const name = params.get('name') ? decodeURIComponent(params.get('name')) : '';
+          console.log("Parsed params:", { psychologistId, name });
+          return { psychologistId, name };
+        } catch (error) {
+          console.error("Error parsing URL parameters:", error);
+          alert("Failed to load chat session. Redirecting...");
+          navigateToConsultation();
+          return { psychologistId: null, name: '' };
+        }
+      }
+
+      // Navigate to consultation page
+      function navigateToConsultation() {
+        console.log("Navigating to consultation.html");
+        try {
+          window.location.href = 'consultation.html';
+        } catch (error) {
+          console.error("Error navigating to consultation.html:", error);
+          alert("Failed to redirect. Please navigate to consultation.html manually.");
+        }
+      }
+
+      // Render chat history
+      function renderChatHistory(psychologistId) {
+        console.log("Rendering chat history for psychologistId:", psychologistId);
+        try {
+          const chatHistory = document.getElementById('chatHistory');
+          if (!chatHistory) throw new Error("Chat history element not found");
+          chatHistory.innerHTML = '';
+          const messages = JSON.parse(sessionStorage.getItem('chatHistory') || '[]')
+            .filter(msg => msg.psychologistId === psychologistId);
+          console.log("Messages:", messages);
+          messages.forEach(msg => {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${msg.sender}`;
+            messageDiv.innerHTML = `
+              <p>${msg.message}</p>
+              <div class="timestamp">${new Date(msg.timestamp).toLocaleString('en-US', { hour: 'numeric', minute: '2-digit' })}</div>
+            `;
+            chatHistory.appendChild(messageDiv);
+          });
+          chatHistory.scrollTop = chatHistory.scrollHeight;
+          console.log("Chat history rendered");
+        } catch (error) {
+          console.error("Error rendering chat history:", error);
+          alert("Failed to load chat history. Redirecting...");
+          navigateToConsultation();
+        }
+      }
+
+      // Update send button state
+      function updateSendButton() {
+        console.log("Updating send button state");
+        try {
+          const input = document.getElementById('chatInput');
+          const sendButton = document.getElementById('sendButton');
+          if (!input || !sendButton) throw new Error("Input or send button not found");
+          sendButton.disabled = !input.value.trim();
+        } catch (error) {
+          console.error("Error updating send button:", error);
+        }
+      }
+
+      // Insert emoji
+      function insertEmoji(emoji) {
+        console.log("Inserting emoji:", emoji);
+        try {
+          const input = document.getElementById('chatInput');
+          if (!input) throw new Error("Input element not found");
+          input.value += emoji;
+          input.focus();
+          updateSendButton();
+        } catch (error) {
+          console.error("Error inserting emoji:", error);
+        }
+      }
+
+      // Send voice message (mock)
+      function sendVoiceMessage() {
+        console.log("Sending voice message");
+        try {
+          const { psychologistId } = getUrlParams();
+          if (!psychologistId) {
+            alert("Invalid chat session.");
+            navigateToConsultation();
+            return;
+          }
+          const message = "Voice message sent";
+          const timestamp = new Date().toISOString();
+          let messages = JSON.parse(sessionStorage.getItem('chatHistory') || '[]');
+          messages.push({ psychologistId, sender: 'user', message, timestamp });
+          sessionStorage.setItem('chatHistory', JSON.stringify(messages));
+          console.log("Voice message:", { psychologistId, message, timestamp });
+          renderChatHistory(psychologistId);
+          setTimeout(() => {
+            const mockResponse = `I received your voice message. Could you share more details?`;
+            messages = JSON.parse(sessionStorage.getItem('chatHistory') || '[]');
+            messages.push({ psychologistId, sender: 'psychologist', message: mockResponse, timestamp: new Date().toISOString() });
+            sessionStorage.setItem('chatHistory', JSON.stringify(messages));
+            console.log("Mock response:", mockResponse);
+            renderChatHistory(psychologistId);
+          }, 1000);
+        } catch (error) {
+          console.error("Error sending voice message:", error);
+          alert("Failed to send voice message.");
+        }
+      }
+
+      // Send text message
+      function sendMessage(e) {
+        e.preventDefault();
+        console.log("Sending text message");
+        try {
+          const { psychologistId } = getUrlParams();
+          if (!psychologistId) {
+            alert("Invalid chat session.");
+            navigateToConsultation();
+            return;
+          }
+          const input = document.getElementById('chatInput');
+          if (!input) throw new Error("Input element not found");
+          const message = input.value.trim();
+          if (!message) {
+            console.log("Empty message ignored");
+            return;
+          }
+          const timestamp = new Date().toISOString();
+          let messages = JSON.parse(sessionStorage.getItem('chatHistory') || '[]');
+          messages.push({ psychologistId, sender: 'user', message, timestamp });
+          sessionStorage.setItem('chatHistory', JSON.stringify(messages));
+          console.log("Text message:", { psychologistId, message, timestamp });
+          input.value = '';
+          updateSendButton();
+          renderChatHistory(psychologistId);
+          setTimeout(() => {
+            const mockResponse = `Thank you for sharing. Could you elaborate on your thoughts?`;
+            messages = JSON.parse(sessionStorage.getItem('chatHistory') || '[]');
+            messages.push({ psychologistId, sender: 'psychologist', message: mockResponse, timestamp: new Date().toISOString() });
+            sessionStorage.setItem('chatHistory', JSON.stringify(messages));
+            console.log("Mock response:", mockResponse);
+            renderChatHistory(psychologistId);
+          }, 1000);
+        } catch (error) {
+          console.error("Error sending message:", error);
+          alert("Failed to send message.");
+        }
+      }
+
+      // Initialize chat
+      document.addEventListener('DOMContentLoaded', () => {
+        console.log("Initializing chat2.html");
+        try {
+          const { psychologistId, name } = getUrlParams();
+          if (!psychologistId || !name || isNaN(psychologistId)) {
+            console.error("Invalid parameters:", { psychologistId, name });
+            alert('Invalid chat session.');
+            navigateToConsultation();
+            return;
+          }
+          const psychologist = psychologists.find(p => p.id === psychologistId);
+          if (!psychologist) {
+            console.error("Psychologist not found for ID:", psychologistId);
+            alert('Psychologist not found.');
+            navigateToConsultation();
+            return;
+          }
+          console.log("Psychologist details:", { name, thumbnail: psychologist.thumbnail });
+          const nameElement = document.getElementById('chatPsychologistName');
+          const imageElement = document.getElementById('chatPsychologistImage');
+          if (!nameElement || !imageElement) throw new Error("Name or image element not found");
+          nameElement.textContent = name;
+          imageElement.src = psychologist.thumbnail;
+          renderChatHistory(psychologistId);
+          updateSendButton();
+        } catch (error) {
+          console.error("Error initializing chat:", error);
+          alert("Failed to initialize chat. Redirecting...");
+          navigateToConsultation();
+        }
+      });
+    </script>
+  </body>
+</html>

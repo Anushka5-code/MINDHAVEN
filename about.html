@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>About - Mindful Check-In</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+      /* General Styles */
+      body {
+        background: linear-gradient(180deg, #C6F0E0 0%, #E6F0FA 100%);
+        font-family: Poppins, sans-serif;
+        margin: 0;
+      }
+      h1, h2, h3, h4 {
+        font-family: Playfair Display, serif;
+      }
+      .fade-in {
+        animation: fadeIn .5s ease-in;
+      }
+      @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+     
+      .glassmorphic {
+        background: rgba(255,255,255,.9);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,.5);
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,.05);
+      }
+      .leaf-icon {
+        animation: sway 4s ease-in-out infinite;
+        color: rgba(193,154,46,.3);
+        font-size: 1.5rem;
+        position: absolute;
+      }
+      @keyframes sway {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(8deg); }
+      }
+
+      /* Navigation Styles */
+      .nav-menu {
+        animation: slideIn .3s ease-in-out;
+        display: none;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 60px;
+        z-index: 1000;
+      }
+      .nav-menu.show {
+        display: block;
+      }
+      @keyframes slideIn {
+        0% { opacity: 0; transform: translateY(-10px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+      .nav-menu ul {
+        margin: 0;
+        padding: 1rem;
+      }
+      .nav-menu li {
+        list-style: none;
+        margin-bottom: .5rem;
+      }
+      .nav-menu {
+    background: linear-gradient(135deg, rgba(167, 243, 208, 0.95) 0%, rgba(191, 219, 254, 0.95) 100%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    animation: slideIn 0.3s ease-in-out;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+     .nav-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #4B5563;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #1F2937;
+        }
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            transition: width 0.3s ease;
+        }
+        .nav-menu a:hover::after {
+            width: calc(100% - 2rem);
+        }
+      
+      .leaf-icon-top {
+        left: 10px;
+        top: 10px;
+      }
+      .leaf-icon-bottom {
+        bottom: 10px;
+        right: 10px;
+      }
+      .dropdown-menu {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,.1);
+        display: none;
+        min-width: 200px;
+        overflow: visible;
+        padding: .75rem;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        z-index: 1000;
+      }
+      .dropdown-menu.show {
+        display: block;
+      }
+      .dropdown-menu a {
+        border-radius: 6px;
+        color: #1F2937;
+        display: block;
+        font-size: .9rem;
+        padding: .5rem 1rem;
+        text-decoration: none;
+        transition: all .3s ease;
+      }
+      .dropdown-menu a:hover {
+        background: rgba(193,154,46,.1);
+        color: #C19A2E;
+      }
+
+      /* Hero Section */
+      .hero-section {
+        background-color: #C6F0E0;
+        margin-bottom: 2rem;
+        position: relative;
+      }
+      .hero-img {
+        filter: brightness(0.9);
+        height: 500px;
+        object-fit: cover;
+        width: 100%;
+      }
+      .hero-overlay {
+        background: linear-gradient(to bottom, rgba(0,0,0,.3), transparent);
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+      }
+      .hero-content {
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust for perfect centering */
+    text-align: center;
+    z-index: 10; /* Ensure it appears above the image */
+    animation: liftUp 1s ease-out forwards; /* Apply the lift animation */
+}
+
+@keyframes liftUp {
+    0% {
+        transform: translate(-50%, -40%); /* Start slightly lower */
+        opacity: 0; /* Start invisible */
+    }
+    100% {
+        transform: translate(-50%, -50%); /* End at the centered position */
+        opacity: 1; /* Fully visible */
+    }
+}
+
+.hero-content h1 {
+    color: #FFFFFF; /* White text */
+    font-size: 3.5rem; /* Adjust size as needed */
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Add shadow for better visibility */
+}
+
+.hero-content h2 {
+    color: #FFFFFF; /* White text */
+    font-size: 2.5rem; /* Adjust size as needed */
+    font-weight: 400;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Add shadow for better visibility */
+}
+       
+      /* Mission Section */
+      .mission-section {
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"><path d="M25 35c-5.5 0-10-4.5-10-10s4.5-10 10-10 10 4.5 10 10-4.5 10-10 10zm0-18c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8z" fill="rgba(193,154,46,.1)"/></svg>') repeat;
+        padding: 2rem 0;
+      }
+      .mission-section h3 {
+        color: #1F2937;
+        font-size: 2.2rem;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+      .mission-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        justify-content: center;
+      }
+      .mission-card, .team-card {
+        background: rgba(255,255,255,.9);
+        border: 1px solid rgba(193,154,46,.2);
+        border-radius: 12px;
+        max-width: 280px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: transform .3s ease, box-shadow .3s ease, border .3s ease;
+        will-change: transform;
+      }
+      .mission-card:hover, .team-card:hover {
+        border-color: #C19A2E;
+        box-shadow: 0 6px 15px rgba(193,154,46,.3);
+        transform: scale(1.05);
+      }
+      .mission-img {
+        border-radius: 50%;
+        height: 100px;
+        margin: 0 auto .75rem;
+        object-fit: cover;
+        width: 100px;
+      }
+      .mission-text {
+        color: #1F2937;
+        font-size: .9rem;
+        line-height: 1.5;
+      }
+      .team-card h4 {
+        color: #1F2937;
+        font-size: 1.2rem;
+        margin-bottom: .5rem;
+      }
+      .contact-btn {
+        background: linear-gradient(135deg, #34D399, #C19A2E);
+        border: none;
+        border-radius: 8px;
+        color: #FFFFFF;
+        cursor: pointer;
+        font-size: .9rem;
+        font-weight: 600;
+        margin-top: 1rem;
+        padding: .75rem 1.5rem;
+        transition: all .3s ease;
+      }
+      .contact-btn:hover {
+        background: linear-gradient(135deg, #C19A2E, #34D399);
+        box-shadow: 0 0 8px rgba(193,154,46,.5);
+      }
+
+      /* Footer Styles */
+      footer {
+        background: #1F2937;
+        color: #FFFFFF;
+        padding: 2rem 0;
+        text-align: center;
+      }
+      .footer-logo {
+        height: 32px;
+        margin: 0 auto .5rem;
+        width: 32px;
+      }
+      footer button {
+        background: linear-gradient(135deg, #34D399, #C19A2E);
+        border: none;
+        border-radius: 8px;
+        color: #FFFFFF;
+        cursor: pointer;
+        font-size: .9rem;
+        font-weight: 600;
+        padding: .75rem 1.5rem;
+        transition: all .3s ease;
+      }
+      footer button:hover {
+        background: linear-gradient(135deg, #C19A2E, #34D399);
+        box-shadow: 0 0 8px rgba(193,154,46,.5);
+      }
+
+      /* Modal Styles */
+     .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed position to center it */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 2000; /* Ensure it appears above other elements */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+.modal.show {
+    display: flex; /* Flexbox to center the modal */
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.95); /* White background with slight transparency */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Subtle shadow */
+    max-width: 400px; /* Limit the width */
+    width: 90%; /* Responsive width */
+    padding: 1.5rem; /* Add padding inside the modal */
+    position: relative; /* Ensure child elements are positioned relative to this */
+    text-align: center; /* Center-align text */
+}
+      .modal-close {
+        color: #1F2937;
+        cursor: pointer;
+        font-size: 1.5rem;
+        position: absolute;
+        right: 15px;
+        top: 10px;
+      }
+      .modal-tabs {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+      .modal-tab {
+        border-bottom: 2px solid transparent;
+        color: #1F2937;
+        cursor: pointer;
+        flex: 1;
+        font-weight: 600;
+        padding: .5rem;
+        text-align: center;
+        transition: all .3s ease;
+      }
+      .modal-tab.active {
+        border-bottom: 2px solid #C19A2E;
+        color: #C19A2E;
+      }
+      .modal-form {
+        display: none;
+      }
+      .modal-form.active {
+        display: block;
+      }
+      .modal-form label {
+        color: #1F2937;
+        display: block;
+        font-size: .9rem;
+        margin-bottom: .5rem;
+      }
+      .modal-form input {
+        border: 1px solid #D1D5DB;
+        border-radius: 8px;
+        font-size: .9rem;
+        margin-bottom: .75rem;
+        padding: .5rem;
+        width: 100%;
+      }
+      .modal-form input:focus {
+        border-color: #C19A2E;
+        box-shadow: 0 0 0 2px rgba(193,154,46,.2);
+        outline: none;
+      }
+      .modal-form button {
+        background: linear-gradient(135deg, #34D399, #C19A2E);
+        border: none;
+        border-radius: 8px;
+        color: #FFFFFF;
+        cursor: pointer;
+        font-weight: 600;
+        padding: .5rem;
+        transition: all .3s ease;
+        width: 100%;
+      }
+      .modal-form button:hover {
+        background: linear-gradient(135deg, #C19A2E, #34D399);
+        box-shadow: 0 0 8px rgba(193,154,46,.5);
+      }
+      .modal-link {
+        font-size: .9rem;
+        margin-top: .75rem;
+        text-align: center;
+      }
+      .modal-link a {
+        color: #C19A2E;
+        cursor: pointer;
+      }
+      .modal-leaf-icon {
+        left: 10px;
+        top: 10px;
+      }
+      .modal-leaf-icon-right {
+        bottom: 10px;
+        right: 10px;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 768px) {
+        .hero-img {
+          height: 400px;
+        }
+        .hero-content h1 {
+          font-size: 2.5rem;
+        }
+        .hero-content h2 {
+          font-size: 2rem;
+        }
+        .mission-section {
+          padding: 1.5rem 0;
+        }
+        .mission-section h3 {
+          font-size: 1.8rem;
+        }
+        .mission-card, .team-card {
+          max-width: 260px;
+          padding: 1rem;
+        }
+        .mission-img {
+          height: 80px;
+          width: 80px;
+        }
+        .mission-text {
+          font-size: .85rem;
+        }
+        .modal-content {
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <div class="flex items-center">
+          <button onclick="toggleMenu('navMenu')" class="text-gray-600 hover:text-gray-800 focus:outline-none mr-4" aria-label="Toggle navigation menu">
+            <i class="fas fa-bars text-2xl"></i>
+          </button>
+          <a href="index.html" class="flex items-center">
+            <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mr-2">
+            <h1 class="text-2xl font-semibold text-gray-800">Mindful Check-In</h1>
+          </a>
+        </div>
+        <div class="relative">
+          <button onclick="toggleMenu('dropdownMenu')" class="text-gray-600 hover:text-gray-800 focus:outline-none" aria-label="User account options">
+            <i class="fas fa-user-circle text-2xl"></i>
+          </button>
+          <div id="dropdownMenu" class="dropdown-menu">
+            <a href="#" onclick="startGuestChat()">Use as Guest</a>
+            <a href="#" onclick="openAuthModal('login')">Login / Signup</a>
+          </div>
+        </div>
+      </nav>
+      <div id="navMenu" class="nav-menu glassmorphic">
+        <ul class="px-4 py-4 space-y-2">
+          <i class="fas fa-leaf leaf-icon leaf-icon-top"></i>
+          <i class="fas fa-leaf leaf-icon leaf-icon-bottom"></i>
+          <li><a href="index.html" onclick="navigateTo('index.html','Home menu item clicked')">Home</a></li>
+          <li><a href="features.html" onclick="navigateTo('features.html','Features menu item clicked')">Features</a></li>
+          <li><a href="#" onclick="checkDashboardAccess()">Dashboard</a></li>
+          <li><a href="about.html" onclick="console.log('About menu item clicked')">About</a></li>
+          <li><a href="faq.html#faq" onclick="console.log('FAQ menu item clicked')">FAQ</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Sunrise over a serene landscape" class="hero-img">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h1>About Us</h1>
+        <h2>Embrace Calm, Live Mindfully</h2>
+      </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h3>Our Mission</h3>
+        <div class="mission-grid fade-in">
+          <div class="mission-card" style="animation-delay: .2s">
+            <img src="https://images.unsplash.com/photo-1517436073897-929b2e789f0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Person practicing yoga at sunrise" class="mission-img">
+            <p class="mission-text">Mindful Check-In is your safe space for emotional reflection and growth.</p>
+          </div>
+          <div class="mission-card" style="animation-delay: .4s">
+            <img src="https://images.unsplash.com/photo-1510894347713-fc3ed6fdf547?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Person meditating in nature" class="mission-img">
+            <p class="mission-text">Our AI chatbot listens with empathy, guiding you through your feelings.</p>
+          </div>
+          <div class="mission-card" style="animation-delay: .6s">
+            <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Calm lake surrounded by mountains" class="mission-img">
+            <p class="mission-text">Explore free yoga and meditation videos to nurture your mind and body.</p>
+          </div>
+          <div class="mission-card" style="animation-delay: .8s">
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Group of people in a supportive community" class="mission-img">
+            <p class="mission-text">Join a community dedicated to mental well-being and mindfulness.</p>
+          </div>
+          <div class="team-card" style="animation-delay: 1s">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d877c828f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Team collaborating in a calm setting" class="mission-img">
+            <h4 class="text-lg font-semibold">Our Team</h4>
+            <p class="mission-text">Our team is dedicated to fostering wellness and mindfulness. Reach out to us!</p>
+            <button class="contact-btn" onclick="openAuthModal('login')">Contact Us</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="footer-logo">
+      <p>© 2025 Mindful Check-In. All rights reserved.</p>
+      <p class="mt-2">Built with care for your mental well-being.</p>
+      <button onclick="startGuestChat()">Start Chatting Now</button>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+      <div class="modal-content glassmorphic">
+        <i class="fas fa-leaf leaf-icon modal-leaf-icon"></i>
+        <i class="fas fa-leaf leaf-icon modal-leaf-icon-right"></i>
+        <span class="modal-close" onclick="closeAuthModal()">×</span>
+        <div class="modal-tabs">
+          <div class="modal-tab active" onclick="switchTab('login')">Login</div>
+          <div class="modal-tab" onclick="switchTab('signup')">Sign Up</div>
+        </div>
+        <div id="loginForm" class="modal-form active">
+          <form onsubmit="handleLogin(event)">
+            <div class="mb-4">
+              <label for="login-email">Email</label>
+              <input type="email" id="login-email" required placeholder="you@example.com">
+            </div>
+            <div class="mb-4">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" required placeholder="Your password">
+            </div>
+            <button type="submit">Login</button>
+          </form>
+          <p class="modal-link">Don't have an account? <a onclick="switchTab('signup')">Sign up</a></p>
+        </div>
+        <div id="signupForm" class="modal-form">
+          <form onsubmit="handleSignup(event)">
+            <div class="mb-4">
+              <label for="signup-email">Email</label>
+              <input type="email" id="signup-email" required placeholder="you@example.com">
+            </div>
+            <div class="mb-4">
+              <label for="signup-password">Password</label>
+              <input type="password" id="signup-password" required placeholder="Create a password">
+            </div>
+            <div class="mb-4">
+              <label for="signup-confirm-password">Confirm Password</label>
+              <input type="password" id="signup-confirm-password" required placeholder="Confirm your password">
+            </div>
+            <button type="submit">Sign Up</button>
+          </form>
+          <p class="modal-link">Already have an account? <a onclick="switchTab('login')">Login</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+      // Toggle navigation or dropdown menu
+      function toggleMenu(menuId) {
+        document.getElementById(menuId).classList.toggle('show');
+      }
+
+      // Navigate to chat page
+      function startGuestChat() {
+        navigateTo('chat.html', 'Start chat clicked');
+      }
+
+      // Handle page navigation
+      function navigateTo(url, message) {
+        console.log(message);
+        window.location.href = url;
+      }
+
+      // Check dashboard access based on registration
+      function checkDashboardAccess() {
+        if (sessionStorage.getItem('isRegistered') === 'true') {
+          navigateTo('dashboard.html', 'Dashboard menu item clicked');
+        } else {
+          openAuthModal('login');
+        }
+      }
+
+      // Open authentication modal
+      function openAuthModal(tab) {
+        document.getElementById('authModal').classList.add('show');
+        switchTab(tab);
+      }
+
+      // Close authentication modal
+      function closeAuthModal() {
+        document.getElementById('authModal').classList.remove('show');
+      }
+
+      // Switch between login and signup tabs
+      function switchTab(tab) {
+        const loginTab = document.querySelector('.modal-tab:nth-child(1)');
+        const signupTab = document.querySelector('.modal-tab:nth-child(2)');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        loginTab.classList.toggle('active', tab === 'login');
+        signupTab.classList.toggle('active', tab === 'signup');
+        loginForm.classList.toggle('active', tab === 'login');
+        signupForm.classList.toggle('active', tab === 'signup');
+      }
+
+      // Handle login form submission
+      function handleLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        console.log('Logging in with:', { email, password });
+        sessionStorage.setItem('isRegistered', 'true');
+        alert('Login successful!');
+        closeAuthModal();
+        window.location.reload();
+      }
+
+      // Handle signup form submission
+      function handleSignup(e) {
+        e.preventDefault();
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const confirmPassword = document.getElementById('signup-confirm-password').value;
+        if (password !== confirmPassword) {
+          alert('Passwords do not match!');
+          return;
+        }
+        console.log('Signing up with:', { email, password });
+        sessionStorage.setItem('isRegistered', 'true');
+        alert('Sign up successful!');
+        closeAuthModal();
+        window.location.reload();
+      }
+
+      // Handle click events for dropdown and modal
+      document.addEventListener('click', e => {
+        const dropdown = document.querySelector('nav > div.relative');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const modal = document.getElementById('authModal');
+        if (dropdown && !dropdown.contains(e.target)) {
+          dropdownMenu.classList.remove('show');
+        }
+        if (e.target === modal) {
+          closeAuthModal();
+        }
+      });
+
+      // Initialize on page load
+      document.addEventListener('DOMContentLoaded', () => {
+        const isRegistered = sessionStorage.getItem('isRegistered') === 'true';
+        console.log('User registered:', isRegistered);
+      });
+    </script>
+  </body>
+</html>

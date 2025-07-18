@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotlines & Services - MINDHAVEN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #E8F5E9;
+        }
+        
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .nav-menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(167, 243, 208, 0.95) 0%, rgba(191, 219, 254, 0.95) 100%);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            animation: slideIn 0.3s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .nav-menu.show {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .nav-menu ul {
+            position: relative;
+            padding: 1rem;
+            margin: 0;
+        }
+        
+        .nav-menu li {
+            list-style: none;
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            color: #4B5563;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #1F2937;
+        }
+        
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-menu a:hover::after {
+            width: calc(100% - 2rem);
+        }
+        
+        .nav-menu i {
+            font-size: 1rem;
+        }
+        
+        .leaf-icon-top {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(52, 211, 153, 0.2);
+            font-size: 2rem;
+        }
+        
+        .leaf-icon-bottom {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: rgba(96, 165, 250, 0.2);
+            font-size: 2rem;
+        }
+        
+        .dropdown-menu {
+            display: none;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        
+        /* Hotline Tile Styling */
+        .hotline-tile {
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            z-index: 10;
+            overflow: hidden;
+        }
+        
+        .hotline-tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            border-color: #34D399;
+        }
+        
+        .hotline-icon {
+            font-size: 2rem;
+            color: #34D399;
+            margin-bottom: 0.75rem;
+            transition: color 0.3s ease;
+        }
+        
+        .hotline-tile:hover .hotline-icon {
+            color: #2DD4BF;
+        }
+        
+        .hotline-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.25rem;
+        }
+        
+        .hotline-desc {
+            font-size: 0.85rem;
+            color: #4B5563;
+            line-height: 1.3;
+            margin-bottom: 0.75rem;
+        }
+        
+        .hotline-contact {
+            font-size: 0.9rem;
+            color: #1F2937;
+            font-weight: 500;
+        }
+        
+        /* Section Background */
+        .hotlines-section {
+            background: linear-gradient(180deg, #E8F5E9 0%, #E6F0FA 100%), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><path d="M20 30c-5 0-9-4-9-9s4-9 9-9 9 4 9 9-4 9-9 9zm0-16c-3.9 0-7 3.1-7 7s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7z" fill="rgba(52, 211, 153, 0.1)"/></svg>') repeat;
+            position: relative;
+            overflow: hidden;
+            padding-top: 10rem;
+            padding-bottom: 4rem;
+        }
+        
+        .hotlines-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 60px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113.64,31.08,1200,36.85V0H0Z" fill="%23FFFFFF"/></svg>') no-repeat center top;
+            background-size: cover;
+            z-index: 5;
+        }
+        
+        .hotlines-section h2 {
+            position: relative;
+            z-index: 20;
+        }
+        
+        /* Footer Styling */
+        footer {
+            z-index: 100;
+            background: #1F2937;
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+        
+        /* Auth Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+        }
+        
+        .modal.show {
+            display: block;
+        }
+        
+        .modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #FFFFFF;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .modal-tabs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .modal-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: #4B5563;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .modal-tab.active {
+            color: #34D399;
+            border-bottom: 2px solid #34D399;
+        }
+        
+        .modal-form {
+            display: none;
+        }
+        
+        .modal-form.active {
+            display: block;
+        }
+        
+        .modal-form label {
+            font-size: 0.9rem;
+            color: #1F2937;
+            margin-bottom: 0.25rem;
+        }
+        
+        .modal-form input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+        
+        .modal-form button {
+            width: 100%;
+            padding: 0.5rem;
+            background: linear-gradient(135deg, #34D399, #60A5FA);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .modal-form button:hover {
+            background: linear-gradient(135deg, #2DD4BF, #3B82F6);
+        }
+        
+        .modal-link {
+            text-align: center;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+        }
+        
+        .modal-link a {
+            color: #34D399;
+            cursor: pointer;
+        }
+        
+        .modal-leaf-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(52, 211, 153, 0.2);
+            font-size: 2rem;
+        }
+        
+        .modal-leaf-icon-right {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: rgba(96, 165, 250, 0.2);
+            font-size: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hotlines-section::before {
+                min-height: 50px;
+            }
+            .hotline-tile {
+                padding: 0.75rem;
+            }
+            .hotline-title {
+                font-size: 1rem;
+            }
+            .hotline-desc,
+            .hotline-contact {
+                font-size: 0.8rem;
+            }
+            .hotline-icon {
+                font-size: 1.75rem;
+            }
+            .modal-content {
+                width: 95%;
+                padding: 1rem;
+            }
+            .hotlines-section {
+                padding-top: 8rem;
+                padding-bottom: 3rem;
+            }
+            .header-icon {
+                font-size: 1.5rem;
+            }
+            .header-text {
+                font-size: 0.8rem;
+            }
+            .nav-menu i {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <button onclick="toggleNav()" class="text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 mr-4" aria-label="Toggle navigation menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <a href="index.html" class="flex items-center">
+                    <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mr-2">
+                    <h1 class="text-2xl font-semibold text-gray-800">Mindful Check-In</h1>
+                </a>
+            </div>
+            <div class="relative dropdown flex items-center gap-4">
+                <a href="premium.html" class="flex items-center text-gray-600 hover:text-gray-800 mr-4" aria-label="Premium options">
+                    <i class="fas fa-crown header-icon text-2xl"></i>
+                    <span class="header-text text-sm font-medium ml-1">Premium</span>
+                </a>
+                <a href="community.html" class="flex items-center text-gray-600 hover:text-gray-800 mr-4" aria-label="Community page">
+                    <i class="fas fa-users header-icon text-2xl"></i>
+                    <span class="header-text text-sm font-medium ml-1">Community</span>
+                </a>
+                <button onclick="toggleDropdown()" class="text-gray-600 hover:text-gray-800 focus:outline-none" aria-label="User account options">
+                    <i class="fas fa-user-circle header-icon text-2xl"></i>
+                </button>
+                <div id="dropdownMenu" class="dropdown-menu absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 z-10">
+                    <a href="#" onclick="startGuestChat()" class="block px-4 py-2 text-gray-600 hover:bg-blue-100">Use as Guest</a>
+                    <a href="#" onclick="openAuthModal('login')" class="block px-4 py-2 text-gray-600 hover:bg-green-100">Login / Signup</a>
+                </div>
+            </div>
+        </nav>
+        <!-- Navigation Menu -->
+        <div id="navMenu" class="nav-menu">
+            <ul class="px-4 py-4 space-y-2">
+                <i class="fas fa-leaf leaf-icon-top"></i>
+                <i class="fas fa-leaf leaf-icon-bottom"></i>
+                <li><a href="index.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('index.html', 'Home menu item clicked')"><i class="fas fa-home mr-2"></i>Home</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="checkProfileAccess()"><i class="fas fa-user mr-2"></i>My Profile</a></li>
+                <li><a href="features.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('features.html', 'Features menu item clicked')"><i class="fas fa-star mr-2"></i>Features</a></li>
+                <li><a href="about.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="console.log('About menu item clicked')"><i class="fas fa-info-circle mr-2"></i>About</a></li>
+                <li><a href="faq.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="console.log('FAQ menu item clicked')"><i class="fas fa-question-circle mr-2"></i>FAQ</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hotlines & Services Section -->
+    <section class="hotlines-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-semibold text-gray-800 text-center mb-8 fade-in">Hotlines & Services</h2>
+            <div id="hotlinesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+                <!-- Hotline Tiles -->
+                <div class="hotline-tile fade-in">
+                    <i class="fas fa-phone-alt hotline-icon"></i>
+                    <h3 class="hotline-title">National Suicide Prevention Lifeline</h3>
+                    <p class="hotline-desc">24/7 confidential support for those in crisis.</p>
+                    <p class="hotline-contact">Call: <a href="tel:988" class="text-blue-600 hover:underline">988</a></p>
+                </div>
+                <div class="hotline-tile fade-in" style="animation-delay: 0.2s;">
+                    <i class="fas fa-heart hotline-icon"></i>
+                    <h3 class="hotline-title">Crisis Text Line</h3>
+                    <p class="hotline-desc">Text-based support for any crisis, available 24/7.</p>
+                    <p class="hotline-contact">Text: <a href="sms:741741" class="text-blue-600 hover:underline">741741</a></p>
+                </div>
+                <div class="hotline-tile fade-in" style="animation-delay: 0.4s;">
+                    <i class="fas fa-hands-helping hotline-icon"></i>
+                    <h3 class="hotline-title">SAMHSA National Helpline</h3>
+                    <p class="hotline-desc">Free treatment referral and information service.</p>
+                    <p class="hotline-contact">Call: <a href="tel:1-800-662-4357" class="text-blue-600 hover:underline">1-800-662-HELP (4357)</a></p>
+                </div>
+                <div class="hotline-tile fade-in" style="animation-delay: 0.6s;">
+                    <i class="fas fa-home hotline-icon"></i>
+                    <h3 class="hotline-title">National Domestic Violence Hotline</h3>
+                    <p class="hotline-desc">Support for those experiencing domestic violence.</p>
+                    <p class="hotline-contact">Call: <a href="tel:1-800-799-7233" class="text-blue-600 hover:underline">1-800-799-SAFE (7233)</a></p>
+                </div>
+                <div class="hotline-tile fade-in" style="animation-delay: 0.8s;">
+                    <i class="fas fa-users hotline-icon"></i>
+                    <h3 class="hotline-title">Trevor Project</h3>
+                    <p class="hotline-desc">Crisis support for LGBTQ+ youth.</p>
+                    <p class="hotline-contact">Call: <a href="tel:1-866-488-7386" class="text-blue-600 hover:underline">1-866-488-7386</a></p>
+                </div>
+                <div class="hotline-tile fade-in" style="animation-delay: 1s;">
+                    <i class="fas fa-hand-holding-heart hotline-icon"></i>
+                    <h3 class="hotline-title">Veterans Crisis Line</h3>
+                    <p class="hotline-desc">Confidential support for veterans and their families.</p>
+                    <p class="hotline-contact">Call: <a href="tel:988" class="text-blue-600 hover:underline">988, then press 1</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mx-auto mb-3">
+            <p>© 2025 Mindful Check-In. All rights reserved.</p>
+            <p class="mt-1">Built with care for your mental well-being.</p>
+            <button onclick="startGuestChat()" class="btn bg-blue-200 text-gray-800 px-6 py-2 rounded-full font-medium mt-3 hover:bg-blue-300">
+                Start Chatting Now
+            </button>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <i class="fas fa-leaf modal-leaf-icon"></i>
+            <i class="fas fa-leaf modal-leaf-icon-right"></i>
+            <span class="modal-close" onclick="closeAuthModal()">×</span>
+            <div class="modal-tabs">
+                <div class="modal-tab active" onclick="switchTab('login')">Login</div>
+                <div class="modal-tab" onclick="switchTab('signup')">Sign Up</div>
+            </div>
+            <!-- Login Form -->
+            <div id="loginForm" class="modal-form active">
+                <form onsubmit="handleLogin(event)">
+                    <div class="mb-5">
+                        <label for="login-email" class="block">Email</label>
+                        <input type="email" id="login-email" required placeholder="you@example.com">
+                    </div>
+                    <div class="mb-5">
+                        <label for="login-password" class="block">Password</label>
+                        <input type="password" id="login-password" required placeholder="Your password">
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+                <p class="modal-link">
+                    Don't have an account? <a onclick="switchTab('signup')">Sign up</a>
+                </p>
+            </div>
+            <!-- Sign-Up Form -->
+            <div id="signupForm" class="modal-form">
+                <form onsubmit="handleSignup(event)">
+                    <div class="mb-5">
+                        <label for="signup-email" class="block">Email</label>
+                        <input type="email" id="signup-email" required placeholder="you@example.com">
+                    </div>
+                    <div class="mb-5">
+                        <label for="signup-password" class="block">Password</label>
+                        <input type="password" id="signup-password" required placeholder="Create a password">
+                    </div>
+                    <div class="mb-5">
+                        <label for="signup-confirm-password" class="block">Confirm Password</label>
+                        <input type="password" id="signup-confirm-password" required placeholder="Confirm your password">
+                    </div>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p class="modal-link">
+                    Already have an account? <a onclick="switchTab('login')">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startGuestChat() {
+            alert("Starting anonymous guest chat... Your data won’t be saved!");
+            // Replace with chat redirect/modal
+        }
+
+        function toggleNav() {
+            try {
+                document.getElementById('navMenu').classList.toggle('show');
+            } catch (error) {
+                console.error("Error toggling navigation menu:", error);
+                alert("Failed to toggle navigation menu. Please check console for errors.");
+            }
+        }
+
+        function toggleDropdown() {
+            try {
+                const dropdownMenu = document.getElementById('dropdownMenu');
+                dropdownMenu.classList.toggle('show');
+            } catch (error) {
+                console.error("Error toggling dropdown menu:", error);
+                alert("Failed to toggle dropdown menu. Please check console for errors.");
+            }
+        }
+
+        function navigateTo(url, message) {
+            console.log(message);
+            try {
+                window.location.href = url;
+            } catch (error) {
+                console.error("Navigation failed to", url, ":", error);
+                alert("Failed to navigate to " + url + ". Please ensure the file exists and check console for errors.");
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            if (!dropdown.contains(event.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+        // Check Profile Access
+        function checkProfileAccess() {
+            const isRegistered = sessionStorage.getItem('isRegistered') === 'true';
+            if (isRegistered) {
+                navigateTo('dashboard.html', 'My Profile menu item clicked');
+            } else {
+                openAuthModal('login');
+            }
+        }
+
+        // Auth Modal Functions
+        function openAuthModal(tab) {
+            const modal = document.getElementById('authModal');
+            modal.classList.add('show');
+            switchTab(tab);
+        }
+
+        function closeAuthModal() {
+            const modal = document.getElementById('authModal');
+            modal.classList.remove('show');
+        }
+
+        function switchTab(tab) {
+            const loginTab = document.querySelector('.modal-tab:nth-child(1)');
+            const signupTab = document.querySelector('.modal-tab:nth-child(2)');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+
+            if (tab === 'login') {
+                loginTab.classList.add('active');
+                signupTab.classList.remove('active');
+                loginForm.classList.add('active');
+                signupForm.classList.remove('active');
+            } else {
+                loginTab.classList.remove('active');
+                signupTab.classList.add('active');
+                loginForm.classList.remove('active');
+                signupForm.classList.add('active');
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            console.log("Logging in with:", { email, password });
+            sessionStorage.setItem('isRegistered', 'true');
+            alert("Login successful!");
+            closeAuthModal();
+            window.location.reload();
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm-password').value;
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            console.log("Signing up with:", { email, password });
+            sessionStorage.setItem('isRegistered', 'true');
+            alert("Sign up successful!");
+            closeAuthModal();
+            window.location.reload();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('authModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeAuthModal();
+            }
+        });
+    </script>
+</body>
+
+</html>

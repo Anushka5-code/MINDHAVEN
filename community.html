@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - MINDHAVEN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #E8F5E9;
+            overflow-x: hidden;
+            position: relative;
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .nav-menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(167, 243, 208, 0.95) 0%, rgba(191, 219, 254, 0.95) 100%);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            animation: slideIn 0.3s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .nav-menu.show {
+            display: block;
+        }
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .nav-menu ul {
+            position: relative;
+            padding: 1.5rem;
+            margin: 0;
+        }
+        .nav-menu li {
+            list-style: none;
+            margin-bottom: 0.75rem;
+        }
+        .nav-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #4B5563;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #1F2937;
+        }
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            transition: width 0.3s ease;
+        }
+        .nav-menu a:hover::after {
+            width: calc(100% - 2rem);
+        }
+        .leaf-icon-top {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(52, 211, 153, 0.2);
+            font-size: 2rem;
+        }
+        .leaf-icon-bottom {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: rgba(96, 165, 250, 0.2);
+            font-size: 2rem;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            width: 200px;
+            background: #FFFFFF;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            z-index: 1000;
+        }
+        .dropdown-menu.show {
+            display: block;
+        }
+        .community-header {
+            background: linear-gradient(180deg, #D1E8D4 0%, #C4D6F8 100%);
+            position: relative;
+            padding: 4rem 0;
+            text-align: center;
+            overflow: hidden;
+        }
+        .community-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(167, 243, 208, 0.2)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+            z-index: 0;
+        }
+        .community-header h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 1rem;
+        }
+        .community-header p {
+            font-size: 1.25rem;
+            color: #4A5568;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        .community-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .btn-primary {
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(to right, #2DD4BF, #3B82F6);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .btn-secondary {
+            background: #FFFFFF;
+            color: #1F2937;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            border: 1px solid #34D399;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background: #34D399;
+            color: white;
+            transform: scale(1.05);
+        }
+        .community-layout {
+            max-width: 1200px;
+            margin: 2rem auto;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 2rem;
+            padding: 0 1rem;
+        }
+        .community-sidebar,
+        .community-right-sidebar {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+        }
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+        .sidebar-section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 1rem;
+        }
+        .sidebar-section p {
+            font-size: 0.95rem;
+            color: #4A5568;
+            margin-bottom: 1rem;
+        }
+        .text-button {
+            color: #34D399;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .text-button:hover {
+            color: #2DD4BF;
+            text-decoration: underline;
+        }
+        .topic-list,
+        .group-list {
+            list-style: none;
+            padding: 0;
+        }
+        .topic-link,
+        .group-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            color: #4A5568;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .topic-link:hover,
+        .group-link:hover {
+            color: #1F2937;
+        }
+        .topic-count {
+            background: #E8F5E9;
+            color: #34D399;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+        .group-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .group-icon {
+            color: #34D399;
+            font-size: 1.25rem;
+        }
+        .group-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .group-name {
+            font-weight: 500;
+            color: #1F2937;
+        }
+        .group-members {
+            font-size: 0.85rem;
+            color: #4A5568;
+        }
+        .community-feed {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+        }
+        .feed-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .filter-button {
+            background: #F3F4F6;
+            color: #4A5568;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .filter-button.active,
+        .filter-button:hover {
+            background: #34D399;
+            color: white;
+        }
+        .feed-search {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .search-input {
+            padding: 0.5rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            width: 200px;
+        }
+        .search-button {
+            background: #34D399;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .search-button:hover {
+            background: #2DD4BF;
+        }
+        .post-card {
+            border-bottom: 1px solid #E5E7EB;
+            padding: 1.5rem 0;
+        }
+        .post-card:last-child {
+            border-bottom: none;
+        }
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .post-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .author-avatar img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .author-name {
+            font-weight: 600;
+            color: #1F2937;
+        }
+        .post-meta {
+            font-size: 0.85rem;
+            color: #4A5568;
+        }
+        .post-meta a {
+            color: #34D399;
+            text-decoration: none;
+        }
+        .post-meta a:hover {
+            text-decoration: underline;
+        }
+        .post-actions .icon-button {
+            color: #4A5568;
+            font-size: 1rem;
+        }
+        .post-actions .icon-button:hover {
+            color: #1F2937;
+        }
+        .post-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.75rem;
+        }
+        .post-text {
+            font-size: 0.95rem;
+            color: #4A5568;
+            margin-bottom: 0.75rem;
+        }
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        .post-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #4A5568;
+        }
+        .post-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        .post-buttons .text-button {
+            color: #4A5568;
+            font-size: 0.85rem;
+        }
+        .post-buttons .text-button:hover {
+            color: #34D399;
+        }
+        .event-card {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: #E8F5E9;
+            border-radius: 8px;
+        }
+        .event-date {
+            text-align: center;
+            background: #34D399;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 8px;
+            min-width: 60px;
+        }
+        .date-month {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .date-day {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        .event-details h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+        .event-time,
+        .event-location {
+            font-size: 0.85rem;
+            color: #4A5568;
+        }
+        .moderator-card {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .moderator-avatar img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+        .moderator-name {
+            font-weight: 600;
+            color: #1F2937;
+        }
+        .moderator-role {
+            font-size: 0.85rem;
+            color: #4A5568;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000; /* Increased for visibility */
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s ease;
+        }
+        .modal.show {
+            display: flex;
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-content,
+        .post-modal-content {
+            max-width: 600px;
+            width: 90%;
+            padding: 2rem;
+            background: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 10001;
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #4B5563;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .modal-close:hover {
+            color: #1F2937;
+        }
+        .modal-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        .modal-tab {
+            padding: 0.5rem 1.5rem;
+            color: #4B5563;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        .modal-tab.active {
+            color: #1F2937;
+            border-bottom: 2px solid #34D399;
+        }
+        .modal-tab:hover {
+            color: #1F2937;
+        }
+        .modal-form {
+            display: none;
+        }
+        .modal-form.active {
+            display: block;
+        }
+        .modal-form label {
+            color: #4B5563;
+            font-weight: 500;
+            font-size: 0.95rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .modal-form input,
+        .modal-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .modal-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .modal-form button {
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+        }
+        .modal-form button.submit {
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            color: white;
+        }
+        .modal-form button.submit:hover {
+            background: linear-gradient(to right, #2DD4BF, #3B82F6);
+        }
+        .modal-form button.cancel {
+            background: #F3F4F6;
+            color: #4A5568;
+        }
+        .modal-form button.cancel:hover {
+            background: #E5E7EB;
+        }
+        .modal-link {
+            text-align: center;
+            margin-top: 1rem;
+            color: #4B5563;
+        }
+        .modal-link a {
+            color: #34D399;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .modal-link a:hover {
+            color: #2DD4BF;
+            text-decoration: underline;
+        }
+        .emoji-toggle {
+            background: #F3F4F6;
+            color: #4A5568;
+            padding: 0.5rem;
+            border-radius: 8px;
+            font-size: 1.25rem;
+        }
+        .emoji-toggle:hover {
+            background: #E5E7EB;
+            color: #1F2937;
+        }
+        .emoji-picker {
+            display: none;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: #F3F4F6;
+            border-radius: 8px;
+        }
+        .emoji-picker.show {
+            display: flex;
+        }
+        .emoji-button {
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+        .emoji-button:hover {
+            background: #E5E7EB;
+        }
+        .emoji-input-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        @media (max-width: 1024px) {
+            .community-layout {
+                grid-template-columns: 1fr;
+            }
+            .community-sidebar,
+            .community-right-sidebar {
+                margin: 0 1rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .community-header {
+                padding: 2rem 0;
+            }
+            .community-header h2 {
+                font-size: 2rem;
+            }
+            .community-header p {
+                font-size: 1rem;
+            }
+            .community-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .feed-search {
+                width: 100%;
+            }
+            .search-input {
+                width: 100%;
+            }
+            .post-modal-content {
+                padding: 1.5rem;
+            }
+            .modal-form textarea {
+                min-height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-white shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <button onclick="toggleNav()" class="text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 mr-4" aria-label="Toggle navigation menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <a href="index.html" class="flex items-center">
+                    <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mr-2">
+                    <h1 class="text-2xl font-semibold text-gray-800">Mindful Check-In</h1>
+                </a>
+            </div>
+            <div class="flex items-center space-x-6">
+                <a href="premium.html" onclick="navigateTo('premium.html', 'Premium button clicked')" class="flex items-center text-gray-600 hover:text-gray-800 focus:outline-none" aria-label="Premium page">
+                    <span class="font-semibold mr-1">Premium</span>
+                    <i class="fas fa-crown text-2xl"></i>
+                </a>
+                <div class="relative dropdown">
+                    <button onclick="toggleDropdown()" class="text-gray-600 hover:text-gray-800 focus:outline-none" aria-label="User account options">
+                        <i class="fas fa-user-circle text-2xl"></i>
+                    </button>
+                    <div id="dropdownMenu" class="dropdown-menu">
+                        <a href="#" onclick="startGuestChat()" class="block px-4 py-2 text-gray-600 hover:bg-blue-100">Use as Guest</a>
+                        <a href="#" onclick="openAuthModal('login')" class="block px-4 py-2 text-gray-600 hover:bg-green-100">Login / Signup</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div id="navMenu" class="nav-menu">
+            <ul class="px-4 py-4 space-y-2">
+                <i class="fas fa-leaf leaf-icon-top"></i>
+                <i class="fas fa-leaf leaf-icon-bottom"></i>
+                <li><a href="index.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('index.html', 'Home menu item clicked')"><i class="fas fa-home mr-2"></i>Home</a></li>
+                <li><a href="dashboard.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('dashboard.html', 'My Profile menu item clicked')"><i class="fas fa-user mr-2"></i>My Profile</a></li>
+                <li><a href="features.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="navigateTo('features.html', 'Features menu item clicked')"><i class="fas fa-cogs mr-2"></i>Features</a></li>
+                <li><a href="about.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="console.log('About menu item clicked')"><i class="fas fa-info-circle mr-2"></i>About</a></li>
+                <li><a href="faq.html" class="text-gray-600 hover:text-gray-800 block px-4 py-2 hover:bg-gray-100 rounded" onclick="console.log('FAQ menu item clicked')"><i class="fas fa-question-circle mr-2"></i>FAQ</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <section class="community-header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in">
+            <h2>Mindful Check-In Community</h2>
+            <p>Join our supportive community to share experiences, find inspiration, and grow together on your wellness journey.</p>
+            <div class="community-actions">
+                <button class="btn-primary" onclick="openPostModal()">
+                    <i class="fas fa-plus"></i> Create Post
+                </button>
+                <button class="btn-secondary" onclick="viewEvents()">
+                    <i class="fas fa-calendar-alt"></i> Upcoming Events
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <div class="community-layout">
+        <aside class="community-sidebar">
+            <div class="sidebar-section fade-in">
+                <h3>Community Guidelines</h3>
+                <p>Our community is a safe and respectful space. Be kind, supportive, and mindful in all interactions.</p>
+                <a href="#" class="text-button" onclick="console.log('View Guidelines clicked')">Read Full Guidelines <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="sidebar-section fade-in">
+                <h3>Popular Topics</h3>
+                <ul class="topic-list">
+                    <li><a href="#" class="topic-link" onclick="console.log('Topic: Anxiety Support clicked')">Anxiety Support <span class="topic-count">120</span></a></li>
+                    <li><a href="#" class="topic-link" onclick="console.log('Topic: Mindfulness clicked')">Mindfulness <span class="topic-count">95</span></a></li>
+                    <li><a href="#" class="topic-link" onclick="console.log('Topic: Stress Management clicked')">Stress Management <span class="topic-count">80</span></a></li>
+                    <li><a href="#" class="topic-link" onclick="console.log('Topic: Self-Care clicked')">Self-Care <span class="topic-count">70</span></a></li>
+                    <li><a href="#" class="topic-link" onclick="console.log('Topic: Meditation clicked')">Meditation <span class="topic-count">65</span></a></li>
+                    <li><a href="#" class="topic-link" onclick="console.log('Topic: Sleep clicked')">Sleep <span class="topic-count">60</span></a></li>
+                </ul>
+            </div>
+            <div class="sidebar-section fade-in">
+                <h3>Active Groups</h3>
+                <ul class="group-list">
+                    <li>
+                        <a href="#" class="group-link" onclick="console.log('Group: Mindfulness Circle clicked')">
+                            <span class="group-icon"><i class="fas fa-users"></i></span>
+                            <span class="group-info">
+                                <span class="group-name">Mindfulness Circle</span>
+                                <span class="group-members">200 members</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="group-link" onclick="console.log('Group: Anxiety Support Group clicked')">
+                            <span class="group-icon"><i class="fas fa-users"></i></span>
+                            <span class="group-info">
+                                <span class="group-name">Anxiety Support Group</span>
+                                <span class="group-members">150 members</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="group-link" onclick="console.log('Group: Wellness Warriors clicked')">
+                            <span class="group-icon"><i class="fas fa-users"></i></span>
+                            <span class="group-info">
+                                <span class="group-name">Wellness Warriors</span>
+                                <span class="group-members">120 members</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <a href="#" class="text-button" onclick="console.log('View All Groups clicked')">View All Groups <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </aside>
+
+        <div class="community-feed">
+            <div class="feed-filters fade-in">
+                <button class="filter-button active" onclick="filterPosts('recent')">Recent</button>
+                <button class="filter-button" onclick="filterPosts('popular')">Popular</button>
+                <button class="filter-button" onclick="filterPosts('my-topics')">My Topics</button>
+                <div class="feed-search">
+                    <input type="text" id="searchInput" placeholder="Search posts..." class="search-input">
+                    <button class="search-button" onclick="searchPosts()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="feed-posts">
+                <div class="post-card fade-in">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <div class="author-avatar">
+                                <img src="https://via.placeholder.com/40x40" alt="User avatar">
+                            </div>
+                            <div class="author-info">
+                                <div class="author-name">Anonymous User</div>
+                                <div class="post-meta">Posted in <a href="#" onclick="console.log('Topic: Mindfulness clicked')">Mindfulness</a> • 3 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="post-actions">
+                            <button class="icon-button" title="More Options" onclick="console.log('Post options clicked')">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <h3 class="post-title">My morning meditation routine</h3>
+                        <p class="post-text">I've been starting my day with a 10-minute mindfulness meditation, and it's been a game-changer. I use a guided session from the app and focus on my breath. It helps me feel grounded before the day begins.</p>
+                        <p class="post-text">What’s your favorite way to start the day mindfully?</p>
+                    </div>
+                    <div class="post-footer">
+                        <div class="post-stats">
+                            <span class="stat-item"><i class="fas fa-heart"></i> 30</span>
+                            <span class="stat-item"><i class="fas fa-comment"></i> 10</span>
+                        </div>
+                        <div class="post-buttons">
+                            <button class="text-button" onclick="console.log('Like post: My morning meditation routine')">
+                                <i class="far fa-heart"></i> Like
+                            </button>
+                            <button class="text-button" onclick="console.log('Comment on post: My morning meditation routine')">
+                                <i class="far fa-comment"></i> Comment
+                            </button>
+                            <button class="text-button" onclick="console.log('Share post: My morning meditation routine')">
+                                <i class="fas fa-share"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-card fade-in">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <div class="author-avatar">
+                                <img src="https://via.placeholder.com/40x40" alt="User avatar">
+                            </div>
+                            <div class="author-info">
+                                <div class="author-name">Liam Carter</div>
+                                <div class="post-meta">Posted in <a href="#" onclick="console.log('Topic: Anxiety Support clicked')">Anxiety Support</a> • 6 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="post-actions">
+                            <button class="icon-button" title="More Options" onclick="console.log('Post options clicked')">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <h3 class="post-title">Tips for managing anxiety at work</h3>
+                        <p class="post-text">Work has been overwhelming lately, but I’ve found that taking short breaks to do deep breathing helps. I also keep a small notebook to jot down worries and address them later, which keeps me focused.</p>
+                        <p class="post-text">Any other tips for handling anxiety in a busy workplace?</p>
+                    </div>
+                    <div class="post-footer">
+                        <div class="post-stats">
+                            <span class="stat-item"><i class="fas fa-heart"></i> 45</span>
+                            <span class="stat-item"><i class="fas fa-comment"></i> 18</span>
+                        </div>
+                        <div class="post-buttons">
+                            <button class="text-button" onclick="console.log('Like post: Tips for managing anxiety at work')">
+                                <i class="far fa-heart"></i> Like
+                            </button>
+                            <button class="text-button" onclick="console.log('Comment on post: Tips for managing anxiety at work')">
+                                <i class="far fa-comment"></i> Comment
+                            </button>
+                            <button class="text-button" onclick="console.log('Share post: Tips for managing anxiety at work')">
+                                <i class="fas fa-share"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-card fade-in">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <div class="author-avatar">
+                                <img src="https://via.placeholder.com/40x40" alt="User avatar">
+                            </div>
+                            <div class="author-info">
+                                <div class="author-name">Sophia Lee</div>
+                                <div class="post-meta">Posted in <a href="#" onclick="console.log('Topic: Self-Care clicked')">Self-Care</a> • Yesterday</div>
+                            </div>
+                        </div>
+                        <div class="post-actions">
+                            <button class="icon-button" title="More Options" onclick="console.log('Post options clicked')">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <h3 class="post-title">Self-care Sunday ideas</h3>
+                        <p class="post-text">I love dedicating Sundays to self-care. Last week, I tried journaling and a long walk in the park. It felt so refreshing to disconnect and focus on myself.</p>
+                        <p class="post-text">What are your go-to self-care activities for the weekend?</p>
+                    </div>
+                    <div class="post-footer">
+                        <div class="post-stats">
+                            <span class="stat-item"><i class="fas fa-heart"></i> 38</span>
+                            <span class="stat-item"><i class="fas fa-comment"></i> 14</span>
+                        </div>
+                        <div class="post-buttons">
+                            <button class="text-button" onclick="console.log('Like post: Self-care Sunday ideas')">
+                                <i class="far fa-heart"></i> Like
+                            </button>
+                            <button class="text-button" onclick="console.log('Comment on post: Self-care Sunday ideas')">
+                                <i class="far fa-comment"></i> Comment
+                            </button>
+                            <button class="text-button" onclick="console.log('Share post: Self-care Sunday ideas')">
+                                <i class="fas fa-share"></i> Share
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="load-more fade-in">
+                <button class="btn-secondary" onclick="console.log('Load more posts clicked')">
+                    <i class="fas fa-sync"></i> Load More Posts
+                </button>
+            </div>
+        </div>
+
+        <aside class="community-right-sidebar">
+            <div class="sidebar-section fade-in">
+                <h3>Upcoming Events</h3>
+                <div class="events-list">
+                    <div class="event-card">
+                        <div class="event-date">
+                            <div class="date-month">May</div>
+                            <div class="date-day">20</div>
+                        </div>
+                        <div class="event-details">
+                            <h4 class="event-title">Mindfulness Meditation</h4>
+                            <div class="event-time"><i class="fas fa-clock"></i> 6:00 PM - 7:00 PM</div>
+                            <div class="event-location"><i class="fas fa-video"></i> Online</div>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-date">
+                            <div class="date-month">May</div>
+                            <div class="date-day">25</div>
+                        </div>
+                        <div class="event-details">
+                            <h4 class="event-title">Anxiety Support Group</h4>
+                            <div class="event-time"><i class="fas fa-clock"></i> 7:00 PM - 8:30 PM</div>
+                            <div class="event-location"><i class="fas fa-video"></i> Online</div>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <div class="event-date">
+                            <div class="date-month">Jun</div>
+                            <div class="date-day">01</div>
+                        </div>
+                        <div class="event-details">
+                            <h4 class="event-title">Self-Care Workshop</h4>
+                            <div class="event-time"><i class="fas fa-clock"></i> 5:00 PM - 6:00 PM</div>
+                            <div class="event-location"><i class="fas fa-video"></i> Online</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="text-button" onclick="console.log('View All Events clicked')">View All Events <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="sidebar-section fade-in">
+                <h3>Community Moderators</h3>
+                <div class="moderators-list">
+                    <div class="moderator-card">
+                        <div class="moderator-avatar">
+                            <img src="https://via.placeholder.com/50x50" alt="Moderator avatar">
+                        </div>
+                        <div class="moderator-info">
+                            <div class="moderator-name">Dr. Laura Evans</div>
+                            <div class="moderator-role">Therapist</div>
+                        </div>
+                    </div>
+                    <div class="moderator-card">
+                        <div class="moderator-avatar">
+                            <img src="https://via.placeholder.com/50x50" alt="Moderator avatar">
+                        </div>
+                        <div class="moderator-info">
+                            <div class="moderator-name">James Patel</div>
+                            <div class="moderator-role">Wellness Coach</div>
+                        </div>
+                    </div>
+                    <div class="moderator-card">
+                        <div class="moderator-avatar">
+                            <img src="https://via.placeholder.com/50x50" alt="Moderator avatar">
+                        </div>
+                        <div class="moderator-info">
+                            <div class="moderator-name">Anna Kim</div>
+                            <div class="moderator-role">Mindfulness Expert</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeAuthModal()">×</span>
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Welcome</h2>
+            <div class="modal-tabs">
+                <div class="modal-tab active" onclick="switchTab('login')">Login</div>
+                <div class="modal-tab" onclick="switchTab('signup')">Sign Up</div>
+            </div>
+            <div id="loginForm" class="modal-form active">
+                <form onsubmit="handleLogin(event)">
+                    <div class="mb-4">
+                        <label for="login-email" class="block">Email</label>
+                        <input type="email" id="login-email" required placeholder="you@example.com">
+                    </div>
+                    <div class="mb-4">
+                        <label for="login-password" class="block">Password</label>
+                        <input type="password" id="login-password" required placeholder="Your password">
+                    </div>
+                    <button type="submit" class="submit">Login</button>
+                </form>
+                <p class="modal-link">
+                    Don't have an account? <a onclick="switchTab('signup')">Sign up</a>
+                </p>
+            </div>
+            <div id="signupForm" class="modal-form">
+                <form onsubmit="handleSignup(event)">
+                    <div class="mb-4">
+                        <label for="signup-email" class="block">Email</label>
+                        <input type="email" id="signup-email" required placeholder="you@example.com">
+                    </div>
+                    <div class="mb-4">
+                        <label for="signup-password" class="block">Password</label>
+                        <input type="password" id="signup-password" required placeholder="Create a password">
+                    </div>
+                    <div class="mb-4">
+                        <label for="signup-confirm-password" class="block">Confirm Password</label>
+                        <input type="password" id="signup-confirm-password" required placeholder="Confirm your password">
+                    </div>
+                    <button type="submit" class="submit">Sign Up</button>
+                </form>
+                <p class="modal-link">
+                    Already have an account? <a onclick="switchTab('login')">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Creation Modal -->
+    <div id="postModal" class="modal">
+        <div class="post-modal-content">
+            <span class="modal-close" onclick="closePostModal()">×</span>
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Create a New Post</h2>
+            <form onsubmit="handlePostSubmit(event)">
+                <div class="mb-4">
+                    <label for="post-content" class="block mb-1">Your Post</label>
+                    <div class="emoji-input-container">
+                        <button type="button" class="emoji-toggle" onclick="toggleEmojiPicker()">
+                            <i class="fas fa-smile"></i>
+                        </button>
+                        <textarea id="post-content" required placeholder="What's on your mind?" class="flex-1"></textarea>
+                    </div>
+                    <div id="emojiPicker" class="emoji-picker">
+                        <button type="button" class="emoji-button" onclick="insertEmoji('😊')">😊</button>
+                        <button type="button" class="emoji-button" onclick="insertEmoji('😂')">😂</button>
+                        <button type="button" class="emoji-button" onclick="insertEmoji('😍')">😍</button>
+                        <button type="button" class="emoji-button" onclick="insertEmoji('👍')">👍</button>
+                        <button type="button" class="emoji-button" onclick="insertEmoji('❤️')">❤️</button>
+                        <button type="button" class="emoji-button" onclick="insertEmoji('🙏')">🙏</button>
+                        <button type="button" class="emoji-button" onclick="insertEmoji('🌟')">🌟</button>
+                        <button type="button" class="emoji-button" onclick="insertEmoji('😌')">😌</button>
+                        <button type="button" class="emoji-button" onclick="insertEmoji('💪')">💪</button>
+                        <button type="button" class="emoji-button" onclick="insertEmoji('😎')">😎</button>
+                        <button type="button" class="emoji-button" onclick="insertEmoji('🎉')">🎉</button>
+                        <button type="button" class="emoji-button" onclick="insertEmoji('💖')">💖</button>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" class="cancel">Cancel</button>
+                    <button type="submit" class="submit">Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mx-auto mb-4">
+            <p>© 2025 Mindful Check-In. All rights reserved.</p>
+            <p class="mt-2">Crafted with love for your mental well-being.</p>
+            <button onclick="navigateTo('premium_selection.html', 'Return to Premium Selection page')" class="btn bg-blue-200 text-gray-800 px-6 py-3 rounded-full font-medium mt-4 hover:bg-blue-300">
+                Explore Other Premium Options
+            </button>
+        </div>
+    </footer>
+
+    <script>
+        function startGuestChat() {
+            console.log("Starting guest chat");
+            sessionStorage.setItem('isGuest', 'true');
+            alert("Started as guest. You can now create posts!");
+        }
+        function toggleNav() {
+            try {
+                document.getElementById('navMenu').classList.toggle('show');
+            } catch (error) {
+                console.error("Error toggling navigation menu:", error);
+                alert("Failed to toggle navigation menu. Please check console for errors.");
+            }
+        }
+        function toggleDropdown() {
+            try {
+                const dropdownMenu = document.getElementById('dropdownMenu');
+                dropdownMenu.classList.toggle('show');
+            } catch (error) {
+                console.error("Error toggling dropdown menu:", error);
+                alert("Failed to toggle dropdown menu. Please check console for errors.");
+            }
+        }
+        function navigateTo(url, message) {
+            console.log(message);
+            try {
+                window.location.href = url;
+            } catch (error) {
+                console.error("Navigation failed to", url, ":", error);
+                alert("Failed to navigate to " + url + ". Please ensure the file exists and check console for errors.");
+            }
+        }
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            if (!dropdown.contains(event.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+        function openAuthModal(tab) {
+            console.log("Attempting to open auth modal with tab:", tab);
+            const modal = document.getElementById('authModal');
+            if (!modal) {
+                console.error("Auth modal not found in DOM");
+                alert("Error: Auth modal not found. Please check the console.");
+                return;
+            }
+            console.log("Opening auth modal");
+            modal.classList.add('show');
+            switchTab(tab);
+        }
+        function closeAuthModal() {
+            console.log("Closing auth modal");
+            const modal = document.getElementById('authModal');
+            if (modal) {
+                modal.classList.remove('show');
+            }
+        }
+        function switchTab(tab) {
+            console.log("Switching to tab:", tab);
+            const loginTab = document.querySelector('.modal-tab:nth-child(1)');
+            const signupTab = document.querySelector('.modal-tab:nth-child(2)');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            if (tab === 'login') {
+                loginTab.classList.add('active');
+                signupTab.classList.remove('active');
+                loginForm.classList.add('active');
+                signupForm.classList.remove('active');
+            } else {
+                loginTab.classList.remove('active');
+                signupTab.classList.add('active');
+                loginForm.classList.remove('active');
+                signupForm.classList.add('active');
+            }
+        }
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            console.log("Logging in with:", { email, password });
+            sessionStorage.setItem('isRegistered', 'true');
+            alert("Login successful!");
+            closeAuthModal();
+            navigateTo('index.html', 'Home page accessed after login');
+        }
+        function handleSignup(event) {
+            event.preventDefault();
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm-password').value;
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+            console.log("Signing up with:", { email, password });
+            sessionStorage.setItem('isRegistered', 'true');
+            alert("Sign up successful!");
+            closeAuthModal();
+            navigateTo('index.html', 'Home page accessed after signup');
+        }
+        function openPostModal() {
+            console.log("Attempting to open post modal");
+            const isRegistered = sessionStorage.getItem('isRegistered') === 'true';
+            const isGuest = sessionStorage.getItem('isGuest') === 'true';
+            if (!isRegistered && !isGuest) {
+                console.log("User not authenticated, opening auth modal");
+                openAuthModal('login');
+                return;
+            }
+            const modal = document.getElementById('postModal');
+            if (!modal) {
+                console.error("Post modal not found in DOM");
+                alert("Error: Post modal not found. Please check the console.");
+                return;
+            }
+            console.log("Opening post modal");
+            modal.classList.add('show');
+            document.getElementById('post-content').focus();
+            document.getElementById('emojiPicker').classList.remove('show');
+        }
+        function closePostModal() {
+            console.log("Closing post modal");
+            const modal = document.getElementById('postModal');
+            if (modal) {
+                modal.classList.remove('show');
+                document.getElementById('post-content').value = '';
+                document.getElementById('emojiPicker').classList.remove('show');
+            }
+        }
+        function toggleEmojiPicker() {
+            console.log("Toggling emoji picker");
+            const picker = document.getElementById('emojiPicker');
+            if (picker) {
+                picker.classList.toggle('show');
+            }
+        }
+        function insertEmoji(emoji) {
+            console.log("Inserting emoji:", emoji);
+            const textarea = document.getElementById('post-content');
+            if (textarea) {
+                const startPos = textarea.selectionStart;
+                const endPos = textarea.selectionEnd;
+                const value = textarea.value;
+                textarea.value = value.substring(0, startPos) + emoji + value.substring(endPos);
+                textarea.selectionStart = textarea.selectionEnd = startPos + emoji.length;
+                textarea.focus();
+            }
+        }
+        function handlePostSubmit(event) {
+            event.preventDefault();
+            const content = document.getElementById('post-content').value.trim();
+            if (!content) {
+                alert("Please enter some content for your post.");
+                return;
+            }
+            console.log("Submitting post:", { content });
+            alert("Post submitted successfully!");
+            closePostModal();
+        }
+        function viewEvents() {
+            console.log("View Upcoming Events clicked");
+            alert("Check out the upcoming events in the right sidebar!");
+        }
+        function filterPosts(filter) {
+            document.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            console.log(`Filtering posts by: ${filter}`);
+        }
+        function searchPosts() {
+            const query = document.getElementById('searchInput').value;
+            console.log(`Searching posts for: ${query}`);
+            alert(`Searching for "${query}"...`);
+        }
+        window.onload = function() {
+            console.log("Page loaded, checking authentication");
+            try {
+                const isRegistered = sessionStorage.getItem('isRegistered') === 'true';
+                const isGuest = sessionStorage.getItem('isGuest') === 'true';
+                if (!isRegistered && !isGuest) {
+                    console.log("No authentication found, opening auth modal");
+                    openAuthModal('login');
+                } else {
+                    console.log("User authenticated, no auth modal needed");
+                }
+            } catch (error) {
+                console.error("Error during page load authentication check:", error);
+                alert("Error checking authentication. Please check console.");
+            }
+        };
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM fully loaded");
+            const postModal = document.getElementById('postModal');
+            const authModal = document.getElementById('authModal');
+            if (postModal) {
+                postModal.addEventListener('click', function(event) {
+                    if (event.target === postModal) {
+                        closePostModal();
+                    }
+                });
+            } else {
+                console.error("Post modal not found on DOM load");
+            }
+            if (authModal) {
+                authModal.addEventListener('click', function(event) {
+                    if (event.target === authModal) {
+                        closeAuthModal();
+                    }
+                });
+            } else {
+                console.error("Auth modal not found on DOM load");
+            }
+        });
+    </script>
+</body>
+</html>

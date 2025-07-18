@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Yoga & Meditation Videos - MINDHAVEN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+        /* ====== General Styling ====== */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(180deg, #E8F5E9 0%, #E6F0FA 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        .fade-in {
+            animation: fadeIn 1.2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ====== Navigation Menu Styling ====== */
+        .nav-menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(167, 243, 208, 0.95), rgba(191, 219, 254, 0.95));
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+            animation: slideIn 0.3s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .nav-menu.show {
+            display: block;
+        }
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .nav-menu ul {
+            position: relative;
+            padding: 1.5rem;
+            margin: 0;
+        }
+        .nav-menu li {
+            list-style: none;
+            margin-bottom: 0.75rem;
+        }
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: #1F2937;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-menu a i {
+            color: #1F2937;
+        }
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.4);
+            color: #34D399;
+        }
+        .nav-menu a:hover i {
+            color: #34D399;
+        }
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #34D399, #60A5FA);
+            transition: width 0.3s ease;
+        }
+        .nav-menu a:hover::after {
+            width: calc(100% - 2rem);
+        }
+        .leaf-icon-top {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(52, 211, 153, 0.3);
+            font-size: 2rem;
+        }
+        .leaf-icon-bottom {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: rgba(96, 165, 250, 0.3);
+            font-size: 2rem;
+        }
+
+        /* ====== Profile Dropdown Menu Styling (Simplified Theme) ====== */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            width: 200px;
+            background: #FFFFFF;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            border: 1px solid #E5E7EB;
+        }
+        .dropdown-menu.show {
+            display: block;
+        }
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            color: #1F2937;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .dropdown-item i {
+            margin-right: 0.5rem;
+            color: #34D399;
+        }
+        .dropdown-item:hover {
+            background: #F3F4F6;
+            color: #34D399;
+        }
+
+        /* ====== Navigation Link Styling ====== */
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            background: rgba(52, 211, 153, 0.1);
+        }
+
+        /* ====== View Control Section Styling (View, Size, Watch History) ====== */
+        .view-control {
+            position: absolute;
+            top: 70px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 500;
+            padding-right: 10px;
+        }
+        .view-btn, .size-btn, .watch-history-btn {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1F2937;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            width: 120px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .view-btn i, .size-btn i, .watch-history-btn i {
+            margin-right: 0.5rem;
+            color: #34D399;
+        }
+        .view-btn:hover, .size-btn:hover, .watch-history-btn:hover {
+            background: #F3F4F6;
+            color: #34D399;
+        }
+        .view-options, .size-options, .watch-history-panel {
+            display: none;
+            position: absolute;
+            top: 0;
+            right: 100%;
+            margin-right: 0.5rem;
+            background: linear-gradient(135deg, rgba(167, 243, 208, 0.95), rgba(191, 219, 254, 0.95));
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 600;
+            width: 150px;
+        }
+        .view-options.show, .size-options.show, .watch-history-panel.show {
+            display: block;
+        }
+        .view-option, .size-option {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            color: #1F2937;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .view-option i, .size-option i {
+            margin-right: 0.5rem;
+            color: #34D399;
+        }
+        .view-option:hover, .size-option:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #34D399;
+        }
+        .view-option.active, .size-option.active {
+            background: rgba(255, 255, 255, 0.5);
+            color: #34D399;
+            font-weight: 600;
+        }
+        .watch-history-panel {
+            padding: 1rem;
+            width: 300px;
+        }
+        .watch-history-list {
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+            color: #1F2937;
+        }
+        .watch-history-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(52, 211, 153, 0.1);
+            transition: background 0.3s ease;
+        }
+        .watch-history-item:hover {
+            background: rgba(52, 211, 153, 0.05);
+        }
+        .watch-history-item:last-child {
+            border-bottom: none;
+        }
+        .watch-history-item span {
+            color: #34D399;
+            font-weight: 600;
+        }
+        .clear-watch-history-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: linear-gradient(135deg, #34D399, #60A5FA);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .clear-watch-history-btn:hover {
+            background: linear-gradient(135deg, #2DD4BF, #3B82F6);
+            box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
+        }
+
+        /* ====== Video Section Styling ====== */
+        .video-section {
+            background: linear-gradient(180deg, #E8F5E9 0%, #A7F3D0 50%, #E6F0FA 100%),
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><path d="M20 30c-5 0-9-4-9-9s4-9 9-9 9 4 9 9-4 9-9 9zm0-16c-3.9 0-7 3.1-7 7s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7z" fill="rgba(52, 211, 153, 0.1)"/></svg>') repeat;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            padding-top: 16rem;
+            padding-bottom: 2rem;
+        }
+        .video-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113.64,31.08,1200,36.85V0H0Z" fill="%23FFFFFF"/></svg>') no-repeat center top;
+            background-size: cover;
+            z-index: 5;
+        }
+        .video-section h2 {
+            position: relative;
+            z-index: 20;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1F2937;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ====== Search Bar Styling ====== */
+        .search-container {
+            display: flex;
+            max-width: 600px;
+            margin: 0.5rem auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            padding: 0.5rem;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+        .search-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: transparent;
+            color: #1F2937;
+        }
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #34D399;
+        }
+        .search-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #34D399, #60A5FA);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .search-btn:hover {
+            background: linear-gradient(135deg, #2DD4BF, #3B82F6);
+            box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
+        }
+
+        /* ====== Video Grid Styling ====== */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            max-width: 100%;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+        .video-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+        .video-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .video-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid #34D399;
+        }
+        .video-card.small {
+            transform: scale(0.9);
+        }
+        .video-card.medium {
+            transform: scale(1);
+        }
+        .video-card.large {
+            transform: scale(1.1);
+        }
+        .video-grid.list-view .video-card {
+            display: flex;
+            align-items: center;
+        }
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .video-grid.list-view .video-thumbnail {
+            width: 200px;
+            flex-shrink: 0;
+        }
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .video-card:hover .video-thumbnail img {
+            transform: scale(1.05);
+        }
+        .video-play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .video-card:hover .video-play-overlay {
+            opacity: 1;
+        }
+        .video-play-overlay i {
+            color: #FFFFFF;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .video-duration {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.85);
+            color: #FFFFFF;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .video-info {
+            padding: 0.5rem;
+        }
+        .video-grid.list-view .video-info {
+            flex: 1;
+            padding: 1rem;
+        }
+        .video-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 0.25rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .video-grid.list-view .video-title {
+            font-size: 1.2rem;
+            -webkit-line-clamp: 1;
+        }
+        .video-channel {
+            font-size: 0.9rem;
+            color: #4B5563;
+            font-weight: 400;
+        }
+        .video-description {
+            display: none;
+            font-size: 0.9rem;
+            color: #6B7280;
+            margin-top: 0.5rem;
+        }
+        .video-grid.list-view .video-description {
+            display: block;
+        }
+
+        /* ====== Video Modal Styling ====== */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .video-modal.show {
+            display: flex;
+        }
+        .video-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            background: #FFFFFF;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .video-modal iframe {
+            width: 100%;
+            aspect-ratio: 16/9;
+        }
+        .video-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 2rem;
+            color: #FFFFFF;
+            cursor: pointer;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ====== Footer Styling ====== */
+        footer {
+            z-index: 100;
+            background: #1F2937;
+        }
+        footer p, footer button {
+            font-weight: 500;
+        }
+
+        /* ====== Auth Modal Styling ====== */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+        }
+        .auth-modal.show {
+            display: block;
+        }
+        .auth-modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #FFFFFF;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+        .auth-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #1F2937;
+        }
+        .auth-modal-tabs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        .auth-modal-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #4B5563;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .auth-modal-tab.active {
+            color: #34D399;
+            border-bottom: 2px solid #34D399;
+        }
+        .auth-modal-form {
+            display: none;
+        }
+        .auth-modal-form.active {
+            display: block;
+        }
+        .auth-modal-form label {
+            font-size: 0.9rem;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+        .auth-modal-form input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        .auth-modal-form input:focus {
+            outline: none;
+            border-color: #34D399;
+            box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2);
+        }
+        .auth-modal-form button {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #34D399, #60A5FA);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .auth-modal-form button:hover {
+            background: linear-gradient(135deg, #2DD4BF, #3B82F6);
+            box-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
+        }
+        .auth-modal-link {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        .auth-modal-link a {
+            color: #34D399;
+            cursor: pointer;
+        }
+        .auth-modal-leaf-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(52, 211, 153, 0.3);
+            font-size: 2rem;
+        }
+        .auth-modal-leaf-icon-right {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: rgba(52, 211, 153, 0.3);
+            font-size: 2rem;
+        }
+
+        /* ====== Responsive Styling ====== */
+        @media (max-width: 1024px) {
+            .video-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .search-container {
+                max-width: 500px;
+            }
+            .view-control {
+                top: 60px;
+                right: 8px;
+                gap: 0.6rem;
+                padding-right: 8px;
+            }
+        }
+        @media (max-width: 768px) {
+            .video-section::before {
+                min-height: 80px;
+            }
+            .video-section {
+                padding-top: 12rem;
+                padding-bottom: 1.5rem;
+            }
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+            .video-grid.list-view .video-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .video-grid.list-view .video-thumbnail {
+                width: 100%;
+                max-width: 200px;
+                margin-bottom: 0.5rem;
+            }
+            .video-grid.list-view .video-info {
+                padding: 0.5rem;
+            }
+            .video-title, .video-channel, .video-description {
+                font-size: 0.8rem;
+            }
+            .search-container {
+                max-width: 100%;
+                padding: 0.4rem;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-input, .search-btn {
+                font-size: 0.85rem;
+                padding: 0.6rem;
+                width: 100%;
+                margin-bottom: 0.3rem;
+            }
+            .view-control {
+                top: 50px;
+                right: 5px;
+                gap: 0.5rem;
+                padding-right: 5px;
+            }
+            .view-btn, .size-btn, .watch-history-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
+                width: 100px;
+            }
+            .view-options, .size-options, .watch-history-panel {
+                width: 120px;
+                margin-right: 0.3rem;
+            }
+            .watch-history-panel {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ====== Header Section ====== -->
+<header class="bg-white shadow-sm">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <div class="flex items-center">
+            <button onclick="toggleNav()" class="text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 mr-4" aria-label="Toggle navigation menu">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+            <a href="index.html" class="flex items-center">
+                <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mr-2">
+                <h1 class="text-2xl font-semibold text-gray-800">Mindful Check-In</h1>
+            </a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="premium.html" class="nav-link text-gray-600 hover:text-[#34D399] transition-colors duration-300 flex items-center">
+                <i class="fas fa-crown mr-1"></i> Premium
+            </a>
+            <a href="community.html" class="nav-link text-gray-600 hover:text-[#34D399] transition-colors duration-300 flex items-center">
+                <i class="fas fa-users mr-1"></i> Community
+            </a>
+            <div class="relative dropdown">
+                <button onclick="toggleDropdown()" class="text-gray-600 hover:text-gray-800 focus:outline-none" aria-label="User account options">
+                    <i class="fas fa-user-circle text-2xl"></i>
+                </button>
+                <div id="dropdownMenu" class="dropdown-menu">
+                    <a href="#" onclick="startGuestChat()" class="dropdown-item"><i class="fas fa-user"></i> Use as Guest</a>
+                    <a href="#" onclick="openAuthModal('login')" class="dropdown-item"><i class="fas fa-sign-in-alt"></i> Login / Signup</a>
+                </div>
+            </div>
+            <!-- View Control Section (View, Size, Watch History) -->
+            <div id="viewControl" class="view-control">
+                <div class="relative">
+                    <button class="view-btn" onclick="toggleViewOptions()"><i class="fas fa-th"></i> View</button>
+                    <div id="viewOptions" class="view-options">
+                        <div class="view-option" onclick="setView('grid')"><i class="fas fa-th-large"></i> Grid View</div>
+                        <div class="view-option" onclick="setView('list')"><i class="fas fa-list"></i> List View</div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <button class="size-btn" onclick="toggleSizeOptions()"><i class="fas fa-expand-arrows-alt"></i> Size</button>
+                    <div id="sizeOptions" class="size-options">
+                        <div class="size-option" onclick="setSize('small')"><i class="fas fa-compress-arrows-alt"></i> Small Size</div>
+                        <div class="size-option" onclick="setSize('medium')"><i class="fas fa-arrows-alt"></i> Medium Size</div>
+                        <div class="size-option" onclick="setSize('large')"><i class="fas fa-expand-arrows-alt"></i> Large Size</div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <button class="watch-history-btn" onclick="toggleWatchHistoryPanel()"><i class="fas fa-history"></i> Watch History</button>
+                    <div id="watchHistoryPanel" class="watch-history-panel" aria-hidden="true">
+                        <button class="clear-watch-history-btn" onclick="clearWatchHistory()">Clear History</button>
+                        <div id="watchHistoryList" class="watch-history-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Navigation Menu -->
+    <div id="navMenu" class="nav-menu">
+        <ul>
+            <i class="fas fa-leaf leaf-icon-top"></i>
+            <i class="fas fa-leaf leaf-icon-bottom"></i>
+            <li>
+                <a href="index.html" onclick="navigateTo('index.html', 'Home menu item clicked')">
+                    <i class="fas fa-home text-base mr-2"></i>
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="#" onclick="checkProfileAccess()">
+                    <i class="fas fa-user text-base mr-2"></i>
+                    My Profile
+                </a>
+            </li>
+            <li>
+                <a href="features.html" onclick="navigateTo('features.html', 'Features menu item clicked')">
+                    <i class="fas fa-list text-base mr-2"></i>
+                    Features
+                </a>
+            </li>
+            <li>
+                <a href="about.html" onclick="console.log('About menu item clicked')">
+                    <i class="fas fa-info-circle text-base mr-2"></i>
+                    About
+                </a>
+            </li>
+            <li>
+                <a href="faq.html" onclick="console.log('FAQ menu item clicked')">
+                    <i class="fas fa-question-circle text-base mr-2"></i>
+                    FAQ
+                </a>
+            </li>
+        </ul>
+    </div>
+</header>
+
+<!-- ====== Video Section ====== -->
+<section class="video-section">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-center mb-6 fade-in">Free Yoga & Meditation Videos</h2>
+        <!-- Search Bar -->
+        <div class="search-container fade-in" style="animation-delay: 0.2s;">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search videos..." oninput="filterVideos()">
+            <button class="search-btn"><i class="fas fa-search"></i> Search</button>
+        </div>
+        <!-- Video Grid -->
+        <div class="video-grid fade-in" id="videoGrid" style="animation-delay: 0.4s;">
+            <div class="video-card" data-title="Morning Yoga Flow" data-description="A 20-minute morning yoga flow to energize your day." data-duration="20">
+                <div class="video-thumbnail" onclick="playVideo('https://www.youtube.com/embed/dQw4w9WgXcQ', 'Morning Yoga Flow')">
+                    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="Morning Yoga Flow Thumbnail">
+                    <div class="video-play-overlay"><i class="fas fa-play"></i></div>
+                    <span class="video-duration">20:00</span>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">Morning Yoga Flow</h3>
+                    <p class="video-channel">Yoga With Adriene</p>
+                    <p class="video-description">A 20-minute morning yoga flow to energize your day.</p>
+                </div>
+            </div>
+            <div class="video-card" data-title="Guided Meditation for Stress" data-description="A 15-minute guided meditation to relieve stress." data-duration="15">
+                <div class="video-thumbnail" onclick="playVideo('https://www.youtube.com/embed/9pV--w1Ed3M', 'Guided Meditation for Stress')">
+                    <img src="https://img.youtube.com/vi/9pV--w1Ed3M/hqdefault.jpg" alt="Guided Meditation for Stress Thumbnail">
+                    <div class="video-play-overlay"><i class="fas fa-play"></i></div>
+                    <span class="video-duration">15:00</span>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">Guided Meditation for Stress</h3>
+                    <p class="video-channel">The Honest Guys</p>
+                    <p class="video-description">A 15-minute guided meditation to relieve stress.</p>
+                </div>
+            </div>
+            <div class="video-card" data-title="Evening Wind Down Yoga" data-description="A 30-minute yoga session to relax before bed." data-duration="30">
+                <div class="video-thumbnail" onclick="playVideo('https://www.youtube.com/embed/5N5XkmZ4uZw', 'Evening Wind Down Yoga')">
+                    <img src="https://img.youtube.com/vi/5N5XkmZ4uZw/hqdefault.jpg" alt="Evening Wind Down Yoga Thumbnail">
+                    <div class="video-play-overlay"><i class="fas fa-play"></i></div>
+                    <span class="video-duration">30:00</span>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">Evening Wind Down Yoga</h3>
+                    <p class="video-channel">Yoga With Adriene</p>
+                    <p class="video-description">A 30-minute yoga session to relax before bed.</p>
+                </div>
+            </div>
+            <div class="video-card" data-title="Mindfulness Meditation" data-description="A 10-minute mindfulness meditation to center your mind." data-duration="10">
+                <div class="video-thumbnail" onclick="playVideo('https://www.youtube.com/embed/4EaMJOo1jks', 'Mindfulness Meditation')">
+                    <img src="https://img.youtube.com/vi/4EaMJOo1jks/hqdefault.jpg" alt="Mindfulness Meditation Thumbnail">
+                    <div class="video-play-overlay"><i class="fas fa-play"></i></div>
+                    <span class="video-duration">10:00</span>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">Mindfulness Meditation</h3>
+                    <p class="video-channel">Calm</p>
+                    <p class="video-description">A 10-minute mindfulness meditation to center your mind.</p>
+                </div>
+            </div>
+            <div class="video-card" data-title="Beginner Yoga Basics" data-description="A 25-minute beginner yoga session to learn the basics." data-duration="25">
+                <div class="video-thumbnail" onclick="playVideo('https://www.youtube.com/embed/0o0kNeR1G1A', 'Beginner Yoga Basics')">
+                    <img src="https://img.youtube.com/vi/0o0kNeR1G1A/hqdefault.jpg" alt="Beginner Yoga Basics Thumbnail">
+                    <div class="video-play-overlay"><i class="fas fa-play"></i></div>
+                    <span class="video-duration">25:00</span>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">Beginner Yoga Basics</h3>
+                    <p class="video-channel">Yoga With Adriene</p>
+                    <p class="video-description">A 25-minute beginner yoga session to learn the basics.</p>
+                </div>
+            </div>
+            <div class="video-card" data-title="Deep Relaxation Meditation" data-description="A 20-minute meditation for deep relaxation and sleep." data-duration="20">
+                <div class="video-thumbnail" onclick="playVideo('https://www.youtube.com/embed/1ZYbU82GVz4', 'Deep Relaxation Meditation')">
+                    <img src="https://img.youtube.com/vi/1ZYbU82GVz4/hqdefault.jpg" alt="Deep Relaxation Meditation Thumbnail">
+                    <div class="video-play-overlay"><i class="fas fa-play"></i></div>
+                    <span class="video-duration">20:00</span>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">Deep Relaxation Meditation</h3>
+                    <p class="video-channel">The Honest Guys</p>
+                    <p class="video-description">A 20-minute meditation for deep relaxation and sleep.</p>
+                </div>
+            </div>
+            <div class="video-card" data-title="Yoga for Flexibility" data-description="A 30-minute yoga session to improve flexibility." data-duration="30">
+                <div class="video-thumbnail" onclick="playVideo('https://www.youtube.com/embed/2vA6tTLPqV8', 'Yoga for Flexibility')">
+                    <img src="https://img.youtube.com/vi/2vA6tTLPqV8/hqdefault.jpg" alt="Yoga for Flexibility Thumbnail">
+                    <div class="video-play-overlay"><i class="fas fa-play"></i></div>
+                    <span class="video-duration">30:00</span>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">Yoga for Flexibility</h3>
+                    <p class="video-channel">Boho Beautiful</p>
+                    <p class="video-description">A 30-minute yoga session to improve flexibility.</p>
+                </div>
+            </div>
+            <div class="video-card" data-title="Gratitude Meditation" data-description="A 15-minute meditation to cultivate gratitude." data-duration="15">
+                <div class="video-thumbnail" onclick="playVideo('https://www.youtube.com/embed/8_NJ4Z5KIvQ', 'Gratitude Meditation')">
+                    <img src="https://img.youtube.com/vi/8_NJ4Z5KIvQ/hqdefault.jpg" alt="Gratitude Meditation Thumbnail">
+                    <div class="video-play-overlay"><i class="fas fa-play"></i></div>
+                    <span class="video-duration">15:00</span>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">Gratitude Meditation</h3>
+                    <p class="video-channel">Calm</p>
+                    <p class="video-description">A 15-minute meditation to cultivate gratitude.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====== Video Modal Section ====== -->
+<div id="videoModal" class="video-modal">
+    <div class="video-modal-content">
+        <span class="video-modal-close" onclick="closeVideoModal()">×</span>
+        <iframe id="videoFrame" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+
+<!-- ====== Footer Section ====== -->
+<footer class="bg-gray-800 text-white py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p class="text-sm">© 2025 Mindful Check-In. All rights reserved.</p>
+        <button onclick="logout()" class="mt-2 text-sm text-gray-300 hover:text-white underline focus:outline-none focus:ring-2 focus:ring-gray-400" aria-label="Log out">Logout</button>
+    </div>
+</footer>
+
+<!-- ====== Auth Modal Section ====== -->
+<div id="authModal" class="auth-modal">
+    <div class="auth-modal-content">
+        <i class="fas fa-leaf auth-modal-leaf-icon"></i>
+        <i class="fas fa-leaf auth-modal-leaf-icon-right"></i>
+        <span class="auth-modal-close" onclick="closeAuthModal()">×</span>
+        <div class="auth-modal-tabs">
+            <div class="auth-modal-tab active" onclick="toggleAuthTab('login')">Login</div>
+            <div class="auth-modal-tab" onclick="toggleAuthTab('signup')">Signup</div>
+        </div>
+        <form id="loginForm" class="auth-modal-form active">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" required>
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required>
+            <button type="submit" onclick="handleLogin()">Login</button>
+            <div class="auth-modal-link">
+                <a onclick="toggleAuthTab('signup')">Need an account? Signup</a>
+            </div>
+        </form>
+        <form id="signupForm" class="auth-modal-form">
+            <label for="signupEmail">Email</label>
+            <input type="email" id="signupEmail" required>
+            <label for="signupPassword">Password</label>
+            <input type="password" id="signupPassword" required>
+            <label for="signupConfirmPassword">Confirm Password</label>
+            <input type="password" id="signupConfirmPassword" required>
+            <button type="submit" onclick="handleSignup()">Signup</button>
+            <div class="auth-modal-link">
+                <a onclick="toggleAuthTab('login')">Already have an account? Login</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ====== JavaScript Section ====== -->
+<script>
+// ====== Navigation Functions ======
+// Toggle navigation menu visibility
+function toggleNav() {
+    const navMenu = document.getElementById('navMenu');
+    navMenu.classList.toggle('show');
+}
+
+// Toggle profile dropdown menu visibility
+function toggleDropdown() {
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    dropdownMenu.classList.toggle('show');
+}
+
+// Navigate to a page and log the action
+function navigateTo(page, message) {
+    console.log(message);
+    window.location.href = page;
+}
+
+// Check if user can access the profile
+function checkProfileAccess() {
+    if (sessionStorage.getItem('isRegistered')) {
+        navigateTo('dashboard.html', 'My Profile menu item clicked');
+    } else {
+        openAuthModal('login');
+    }
+}
+
+// ====== Auth Functions ======
+// Start a guest chat session
+function startGuestChat() {
+    sessionStorage.removeItem('isRegistered');
+    sessionStorage.setItem('isGuest', 'true');
+    navigateTo('chat.html', 'Guest chat started');
+}
+
+// Open the authentication modal
+function openAuthModal(tab) {
+    const modal = document.getElementById('authModal');
+    modal.classList.add('show');
+    toggleAuthTab(tab);
+}
+
+// Toggle between login and signup tabs
+function toggleAuthTab(tab) {
+    const loginTab = document.querySelector('.auth-modal-tab:nth-child(1)');
+    const signupTab = document.querySelector('.auth-modal-tab:nth-child(2)');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    if (tab === 'login') {
+        loginTab.classList.add('active');
+        signupTab.classList.remove('active');
+        loginForm.classList.add('active');
+        signupForm.classList.remove('active');
+    } else {
+        signupTab.classList.add('active');
+        loginTab.classList.remove('active');
+        signupForm.classList.add('active');
+        loginForm.classList.remove('active');
+    }
+}
+
+// Close the authentication modal
+function closeAuthModal() {
+    const modal = document.getElementById('authModal');
+    modal.classList.remove('show');
+}
+
+// Handle login form submission
+function handleLogin() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    if (email && password) {
+        sessionStorage.setItem('isRegistered', 'true');
+        sessionStorage.removeItem('isGuest');
+        closeAuthModal();
+        alert('Logged in successfully!');
+        window.location.reload();
+    } else {
+        alert('Please fill in all fields.');
+    }
+}
+
+// Handle signup form submission
+function handleSignup() {
+    const email = document.getElementById('signupEmail').value;
+    const password = document.getElementById('signupPassword').value;
+    const confirmPassword = document.getElementById('signupConfirmPassword').value;
+    if (email && password && confirmPassword) {
+        if (password === confirmPassword) {
+            sessionStorage.setItem('isRegistered', 'true');
+            sessionStorage.removeItem('isGuest');
+            closeAuthModal();
+            alert('Signed up successfully!');
+            window.location.reload();
+        } else {
+            alert('Passwords do not match.');
+        }
+    } else {
+        alert('Please fill in all fields.');
+    }
+}
+
+// Log out the user
+function logout() {
+    sessionStorage.removeItem('isRegistered');
+    sessionStorage.removeItem('isGuest');
+    localStorage.removeItem('watchHistory');
+    localStorage.removeItem('viewMode');
+    localStorage.removeItem('gridSize');
+    localStorage.removeItem('listSize');
+    alert('Logged out successfully!');
+    window.location.reload();
+}
+
+// ====== Video Functions ======
+// Filter videos based on search input
+function filterVideos() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.video-card');
+    cards.forEach(card => {
+        const title = card.dataset.title.toLowerCase();
+        const description = card.dataset.description.toLowerCase();
+        card.style.display = (title.includes(query) || description.includes(query)) ? '' : 'none';
+    });
+}
+
+// Play a video in the modal and track watch history
+function playVideo(videoUrl, title) {
+    if (!sessionStorage.getItem('isRegistered')) {
+        openAuthModal('login');
+        return;
+    }
+    const modal = document.getElementById('videoModal');
+    const videoFrame = document.getElementById('videoFrame');
+    videoFrame.src = videoUrl;
+    modal.classList.add('show');
+
+    // Track watch history
+    const timestamp = new Date().toLocaleString();
+    let watchHistory = JSON.parse(localStorage.getItem('watchHistory')) || [];
+    watchHistory.unshift({ title, timestamp });
+    localStorage.setItem('watchHistory', JSON.stringify(watchHistory));
+    if (document.getElementById('watchHistoryPanel').classList.contains('show')) {
+        updateWatchHistory();
+    }
+}
+
+// Close the video modal
+function closeVideoModal() {
+    const modal = document.getElementById('videoModal');
+    const videoFrame = document.getElementById('videoFrame');
+    videoFrame.src = '';
+    modal.classList.remove('show');
+}
+
+// ====== View Control Functions ======
+// Toggle view options dropdown
+function toggleViewOptions() {
+    const viewOptions = document.getElementById('viewOptions');
+    viewOptions.classList.toggle('show');
+}
+
+// Toggle size options dropdown
+function toggleSizeOptions() {
+    const sizeOptions = document.getElementById('sizeOptions');
+    sizeOptions.classList.toggle('show');
+}
+
+// Toggle watch history panel
+function toggleWatchHistoryPanel() {
+    const panel = document.getElementById('watchHistoryPanel');
+    panel.classList.toggle('show');
+    panel.setAttribute('aria-hidden', !panel.classList.contains('show'));
+    if (panel.classList.contains('show')) {
+        updateWatchHistory();
+    }
+}
+
+// Update watch history list
+function updateWatchHistory() {
+    const historyList = document.getElementById('watchHistoryList');
+    const history = JSON.parse(localStorage.getItem('watchHistory')) || [];
+    historyList.innerHTML = history.length ? history.map(item => `
+        <div class="watch-history-item">
+            <span>${item.timestamp}</span> ${item.title}
+        </div>
+    `).join('') : '<div class="watch-history-item">No watch history yet.</div>';
+}
+
+// Clear watch history
+function clearWatchHistory() {
+    localStorage.removeItem('watchHistory');
+    updateWatchHistory();
+}
+
+// Set the view mode (grid or list)
+function setView(view) {
+    const videoGrid = document.getElementById('videoGrid');
+    const videoCards = document.querySelectorAll('.video-card');
+    const viewOptions = document.querySelectorAll('.view-option');
+
+    if (view === 'grid') {
+        videoGrid.classList.remove('list-view');
+        videoCards.forEach(card => card.classList.remove('list-view'));
+    } else {
+        videoGrid.classList.add('list-view');
+        videoCards.forEach(card => card.classList.add('list-view'));
+    }
+
+    viewOptions.forEach(option => {
+        option.classList.toggle('active', option.textContent.includes(view.charAt(0).toUpperCase() + view.slice(1)));
+    });
+
+    localStorage.setItem('viewMode', view);
+    toggleViewOptions();
+}
+
+// Set the size of video cards
+function setSize(size) {
+    const videoCards = document.querySelectorAll('.video-card');
+    const sizeOptions = document.querySelectorAll('.size-option');
+
+    videoCards.forEach(card => {
+        card.classList.remove('small', 'medium', 'large');
+        card.classList.add(size);
+    });
+
+    sizeOptions.forEach(option => {
+        option.classList.toggle('active', option.textContent.includes(size.charAt(0).toUpperCase() + size.slice(1)));
+    });
+
+    const isListView = document.getElementById('videoGrid').classList.contains('list-view');
+    localStorage.setItem(isListView ? 'listSize' : 'gridSize', size);
+    toggleSizeOptions();
+}
+
+// ====== Click Outside to Close ======
+// Close menus, modals, and panels when clicking outside
+document.addEventListener('click', (e) => {
+    const navMenu = document.getElementById('navMenu');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const authModal = document.getElementById('authModal');
+    const videoModal = document.getElementById('videoModal');
+    const viewOptions = document.getElementById('viewOptions');
+    const sizeOptions = document.getElementById('sizeOptions');
+    const watchHistoryPanel = document.getElementById('watchHistoryPanel');
+
+    if (!navMenu.contains(e.target) && !e.target.closest('button[aria-label="Toggle navigation menu"]') && navMenu.classList.contains('show')) {
+        navMenu.classList.remove('show');
+    }
+    if (!dropdownMenu.contains(e.target) && !e.target.closest('button[aria-label="User account options"]') && dropdownMenu.classList.contains('show')) {
+        dropdownMenu.classList.remove('show');
+    }
+    if (!authModal.contains(e.target) && !e.target.closest('a[onclick*="openAuthModal"]') && authModal.classList.contains('show')) {
+        closeAuthModal();
+    }
+    if (videoModal.classList.contains('show') && !videoModal.querySelector('.video-modal-content').contains(e.target) && !e.target.closest('.video-thumbnail')) {
+        closeVideoModal();
+    }
+    if (!viewOptions.contains(e.target) && !e.target.closest('.view-btn') && viewOptions.classList.contains('show')) {
+        viewOptions.classList.remove('show');
+    }
+    if (!sizeOptions.contains(e.target) && !e.target.closest('.size-btn') && sizeOptions.classList.contains('show')) {
+        sizeOptions.classList.remove('show');
+    }
+    if (!watchHistoryPanel.contains(e.target) && !e.target.closest('.watch-history-btn') && watchHistoryPanel.classList.contains('show')) {
+        watchHistoryPanel.classList.remove('show');
+        watchHistoryPanel.setAttribute('aria-hidden', 'true');
+    }
+});
+
+// ====== Initialize on Page Load ======
+// Set initial visibility of controls based on user status
+document.addEventListener('DOMContentLoaded', () => {
+    const isRegistered = sessionStorage.getItem('isRegistered');
+    const viewControl = document.getElementById('viewControl');
+
+    // Show view control section only for registered users
+    if (!isRegistered) {
+        viewControl.style.display = 'none';
+    } else {
+        viewControl.style.display = 'flex';
+    }
+
+    // Only apply view and size if explicitly set by user
+    const viewMode = localStorage.getItem('viewMode');
+    if (viewMode) {
+        setView(viewMode);
+    }
+
+    const size = localStorage.getItem(viewMode === 'grid' ? 'gridSize' : 'listSize');
+    if (size) {
+        setSize(size);
+    }
+
+    // Initialize watch history
+    updateWatchHistory();
+});
+</script>
+</body>
+</html>

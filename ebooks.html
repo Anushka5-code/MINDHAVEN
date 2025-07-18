@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Wellness E-Books - MINDHAVEN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #E8F5E9;
+        }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        .fade-in {
+            animation: fadeIn 1.2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .nav-menu, .view-menu, .size-menu, .download-history-panel, .bookmarks-panel {
+            display: none;
+            position: absolute;
+            background: linear-gradient(135deg, rgba(167, 243, 208, 0.95), rgba(191, 219, 254, 0.95));
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            animation: slideIn 0.3s ease-in-out;
+        }
+        .nav-menu.show, .view-menu.show, .size-menu.show, .download-history-panel.show, .bookmarks-panel.show {
+            display: block;
+        }
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .nav-menu ul, .view-menu ul, .size-menu ul {
+            padding: 1rem;
+            margin: 0;
+        }
+        .nav-menu li, .view-menu li, .size-menu li {
+            list-style: none;
+            margin-bottom: 0.5rem;
+        }
+        .nav-menu a, .view-menu button, .size-menu button {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #1F2937;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+        }
+        .nav-menu a:hover, .view-menu button:hover, .size-menu button:hover {
+            background: rgba(255, 255, 255, 0.4);
+            color: #D4AF37;
+        }
+        .leaf-icon-top {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(212, 175, 55, 0.3);
+            font-size: 1.5rem;
+        }
+        .leaf-icon-bottom {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: rgba(212, 175, 55, 0.3);
+            font-size: 1.5rem;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            width: 200px;
+            background: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            z-index: 1000;
+        }
+        .dropdown-menu.show {
+            display: block;
+        }
+        .view-control {
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 999;
+        }
+        .view-btn, .size-btn, .download-history-btn, .bookmarks-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1F2937;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .view-btn:hover, .size-btn:hover, .download-history-btn:hover, .bookmarks-btn:hover {
+            background: linear-gradient(135deg, #D4AF37, #60A5FA);
+            color: white;
+        }
+        .ebook-section {
+            background: linear-gradient(180deg, #E8F5E9 0%, #A7F3D0 50%, #E6F0FA 100%),
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><path d="M20 30c-5 0-9-4-9-9s4-9 9-9 9 4 9 9-4 9-9 9zm0-16c-3.9 0-7 3.1-7 7s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7z" fill="rgba(52, 211, 153, 0.1)"/></svg>') repeat;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            padding-top: 16rem;
+            padding-bottom: 2rem;
+        }
+        .ebook-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113.64,31.08,1200,36.85V0H0Z" fill="%23FFFFFF"/></svg>') no-repeat center top;
+            background-size: cover;
+            z-index: 5;
+        }
+        .ebook-section h2 {
+            position: relative;
+            z-index: 20;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1F2937;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+            max-width: 600px;
+            margin: 0.5rem auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+            padding: 0.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .search-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: transparent;
+            color: #1F2937;
+        }
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #D4AF37;
+        }
+        .search-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #34D399, #60A5FA);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .search-btn:hover {
+            background: linear-gradient(135deg, #D4AF37, #60A5FA);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+        }
+        .ebook-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            max-width: 100%;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+        .ebook-grid.size-small {
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.5rem;
+        }
+        .ebook-grid.size-large {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        .ebook-grid.list-view {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .ebook-grid.list-view.size-small {
+            gap: 0.5rem;
+        }
+        .ebook-grid.list-view.size-large {
+            gap: 1rem;
+        }
+        .ebook-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            width: 320px;
+            height: 480px;
+        }
+        .ebook-grid.size-small .ebook-card {
+            width: 200px;
+            height: 300px;
+        }
+        .ebook-grid.size-large .ebook-card {
+            width: 400px;
+            height: 600px;
+        }
+        .ebook-grid.list-view .ebook-card {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 0.75rem;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.02) 0%, #FFFFFF 50%, rgba(212, 175, 55, 0.02) 100%);
+            width: auto;
+            height: auto;
+            min-height: 120px;
+        }
+        .ebook-grid.list-view.size-small .ebook-card {
+            min-height: 100px;
+        }
+        .ebook-grid.list-view.size-large .ebook-card {
+            min-height: 140px;
+        }
+        .ebook-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid #D4AF37;
+        }
+        .ebook-grid.list-view .ebook-card:hover {
+            transform: none;
+            background: rgba(212, 175, 55, 0.05);
+        }
+        .ebook-cover {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .ebook-grid.size-small .ebook-cover {
+            height: 200px;
+        }
+        .ebook-grid.size-large .ebook-cover {
+            height: 400px;
+        }
+        .ebook-grid.list-view .ebook-cover {
+            width: 100px;
+            height: 120px;
+            flex-shrink: 0;
+        }
+        .ebook-grid.list-view.size-small .ebook-cover {
+            width: 80px;
+            height: 96px;
+        }
+        .ebook-grid.list-view.size-large .ebook-cover {
+            width: 120px;
+            height: 144px;
+        }
+        .ebook-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .ebook-card:hover .ebook-cover img {
+            transform: scale(1.05);
+        }
+        .cover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-align: center;
+            padding: 1rem;
+        }
+        .ebook-card:hover .cover-overlay {
+            opacity: 1;
+        }
+        .ebook-grid.list-view .cover-overlay {
+            display: none;
+        }
+        .cover-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 0.5rem;
+        }
+        .ebook-grid.size-small .cover-title {
+            font-size: 1rem;
+        }
+        .ebook-grid.size-large .cover-title {
+            font-size: 1.3rem;
+        }
+        .cover-author {
+            font-size: 0.9rem;
+            color: #FFFFFF;
+            font-weight: 400;
+        }
+        .ebook-grid.size-small .cover-author {
+            font-size: 0.8rem;
+        }
+        .ebook-grid.size-large .cover-author {
+            font-size: 1rem;
+        }
+        .ebook-info {
+            padding: 0.75rem;
+            position: relative;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .ebook-grid.list-view .ebook-info {
+            padding: 0 1rem;
+            flex: 1;
+        }
+        .ebook-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 0.25rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .ebook-grid.size-small .ebook-title {
+            font-size: 0.9rem;
+        }
+        .ebook-grid.size-large .ebook-title {
+            font-size: 1.1rem;
+        }
+        .ebook-grid.list-view.size-small .ebook-title {
+            font-size: 0.9rem;
+        }
+        .ebook-grid.list-view.size-large .ebook-title {
+            font-size: 1.1rem;
+        }
+        .ebook-author {
+            font-size: 0.9rem;
+            color: #4B5563;
+            font-weight: 400;
+            margin-bottom: 0.25rem;
+        }
+        .ebook-grid.size-small .ebook-author {
+            font-size: 0.8rem;
+        }
+        .ebook-grid.size-large .ebook-author {
+            font-size: 0.95rem;
+        }
+        .ebook-grid.list-view.size-small .ebook-author {
+            font-size: 0.8rem;
+        }
+        .ebook-grid.list-view.size-large .ebook-author {
+            font-size: 0.95rem;
+        }
+        .ebook-pages {
+            font-size: 0.9rem;
+            color: #4B5563;
+            font-weight: 400;
+            margin-bottom: 0.25rem;
+        }
+        .ebook-grid.size-small .ebook-pages {
+            font-size: 0.8rem;
+        }
+        .ebook-grid.size-large .ebook-pages {
+            font-size: 0.95rem;
+        }
+        .ebook-grid.list-view.size-small .ebook-pages {
+            font-size: 0.8rem;
+        }
+        .ebook-grid.list-view.size-large .ebook-pages {
+            font-size: 0.95rem;
+        }
+        .ebook-description {
+            font-size: 0.9rem;
+            color: #4B5563;
+            display: block;
+            margin-bottom: 0.25rem;
+            max-width: 400px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .ebook-grid.size-small .ebook-description {
+            font-size: 0.8rem;
+            -webkit-line-clamp: 1;
+        }
+        .ebook-grid.size-large .ebook-description {
+            font-size: 0.95rem;
+            -webkit-line-clamp: 3;
+        }
+        .ebook-grid.list-view.size-small .ebook-description {
+            font-size: 0.8rem;
+        }
+        .ebook-grid.list-view.size-large .ebook-description {
+            font-size: 0.95rem;
+        }
+        .download-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: linear-gradient(135deg, #34D399, #60A5FA);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .ebook-grid.list-view .download-btn {
+            position: static;
+            padding: 0.5rem 0.75rem;
+        }
+        .ebook-grid.size-small .download-btn {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+        }
+        .ebook-grid.size-large .download-btn {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+        }
+        .ebook-grid.list-view.size-small .download-btn {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+        }
+        .ebook-grid.list-view.size-large .download-btn {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+        }
+        .download-btn:hover {
+            background: linear-gradient(135deg, #D4AF37, #60A5FA);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+        }
+        .bookmark-icon {
+            position: absolute;
+            bottom: 0.75rem;
+            right: 0.75rem;
+            color: #4B5563;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .ebook-grid.list-view .bookmark-icon {
+            position: static;
+            font-size: 1rem;
+        }
+        .ebook-grid.size-small .bookmark-icon {
+            font-size: 1rem;
+        }
+        .ebook-grid.size-large .bookmark-icon {
+            font-size: 1.3rem;
+        }
+        .ebook-grid.list-view.size-small .bookmark-icon {
+            font-size: 0.9rem;
+        }
+        .ebook-grid.list-view.size-large .bookmark-icon {
+            font-size: 1.1rem;
+        }
+        .bookmark-icon.bookmarked {
+            color: #D4AF37;
+        }
+        .bookmark-icon:hover {
+            color: #D4AF37;
+        }
+        .download-history-panel, .bookmarks-panel {
+            padding: 1rem;
+            max-width: 300px;
+            right: 20px;
+            top: 100%;
+            min-height: 100px;
+        }
+        .download-history-list, .bookmarks-list {
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+            color: #1F2937;
+            min-height: 50px;
+        }
+        .download-history-item, .bookmarks-item {
+            padding: 0.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            transition: background 0.3s ease;
+            word-break: break-word;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .download-history-item:hover, .bookmarks-item:hover {
+            background: rgba(212, 175, 55, 0.05);
+        }
+        .download-history-item:last-child, .bookmarks-item:last-child {
+            border-bottom: none;
+        }
+        .download-history-item span, .bookmarks-item span {
+            color: #D4AF37;
+            font-weight: 600;
+        }
+        .bookmarks-item img {
+            width: 40px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+        }
+        .bookmarks-item-details {
+            display: flex;
+            flex-direction: column;
+        }
+        .bookmarks-item-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1F2937;
+        }
+        .bookmarks-item-author, .bookmarks-item-pages, .bookmarks-item-description {
+            font-size: 0.8rem;
+            color: #4B5563;
+        }
+        .bookmarks-item-description {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .clear-download-history-btn, .clear-bookmarks-btn {
+            background: linear-gradient(135deg, #34D399, #60A5FA);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .clear-download-history-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+        }
+        .clear-bookmarks-btn {
+            position: absolute;
+            bottom: 0.5rem;
+            right: 0.5rem;
+        }
+        .clear-download-history-btn:hover, .clear-bookmarks-btn:hover {
+            background: linear-gradient(135deg, #D4AF37, #60A5FA);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+        }
+        #bookmarkCount {
+            color: #D4AF37;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            animation: pulse 0.5s ease-in-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        footer {
+            z-index: 100;
+            background: #1F2937;
+        }
+        footer p, footer button {
+            font-weight: 500;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+        }
+        .modal.show {
+            display: block;
+        }
+        .modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #FFFFFF;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #1F2937;
+        }
+        .modal-tabs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        .modal-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #4B5563;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .modal-tab.active {
+            color: #D4AF37;
+            border-bottom: 2px solid #D4AF37;
+        }
+        .modal-form {
+            display: none;
+        }
+        .modal-form.active {
+            display: block;
+        }
+        .modal-form label {
+            font-size: 0.9rem;
+            color: #1F2937;
+            margin-bottom: 0.5rem;
+        }
+        .modal-form input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        .modal-form input:focus {
+            outline: none;
+            border-color: #D4AF37;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+        .modal-form button {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #34D399, #60A5FA);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .modal-form button:hover {
+            background: linear-gradient(135deg, #D4AF37, #60A5FA);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+        }
+        .modal-link {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        .modal-link a {
+            color: #D4AF37;
+            cursor: pointer;
+        }
+        .modal-leaf-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(212, 175, 55, 0.3);
+            font-size: 2rem;
+        }
+        .modal-leaf-icon-right {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: rgba(212, 175, 55, 0.3);
+            font-size: 2rem;
+        }
+        @media (max-width: 1024px) {
+            .ebook-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .ebook-grid.size-small {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .ebook-grid.size-large {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .ebook-grid.size-small .ebook-card {
+                width: 180px;
+                height: 270px;
+            }
+            .ebook-grid.size-large .ebook-card {
+                width: 360px;
+                height: 540px;
+            }
+            .search-container {
+                max-width: 500px;
+            }
+            .view-control {
+                top: 80px;
+                right: 10px;
+            }
+        }
+        @media (max-width: 768px) {
+            .ebook-section::before {
+                min-height: 80px;
+            }
+            .ebook-section {
+                padding-top: 12rem;
+                padding-bottom: 1.5rem;
+            }
+            .ebook-grid {
+                grid-template-columns: 1fr;
+            }
+            .ebook-grid.size-small, .ebook-grid.size-large {
+                grid-template-columns: 1fr;
+            }
+            .ebook-grid.size-small .ebook-card {
+                width: 160px;
+                height: 240px;
+            }
+            .ebook-grid.size-medium .ebook-card {
+                width: 280px;
+                height: 420px;
+            }
+            .ebook-grid.size-large .ebook-card {
+                width: 320px;
+                height: 480px;
+            }
+            .ebook-grid.list-view .ebook-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .ebook-grid.list-view .ebook-cover {
+                width: 100%;
+                max-width: 100px;
+                height: 120px;
+                margin-bottom: 0.5rem;
+            }
+            .ebook-grid.list-view .ebook-info {
+                padding: 0;
+            }
+            .ebook-grid.list-view .download-btn, .ebook-grid.list-view .bookmark-icon {
+                align-self: flex-end;
+            }
+            .ebook-title, .ebook-author, .ebook-pages, .ebook-description {
+                font-size: 0.8rem;
+            }
+            .ebook-grid.size-small .ebook-title, .ebook-grid.size-small .ebook-author,
+            .ebook-grid.size-small .ebook-pages, .ebook-grid.size-small .ebook-description {
+                font-size: 0.75rem;
+            }
+            .ebook-grid.size-large .ebook-title, .ebook-grid.size-large .ebook-author,
+            .ebook-grid.size-large .ebook-pages, .ebook-grid.size-large .ebook-description {
+                font-size: 0.85rem;
+            }
+            .cover-title {
+                font-size: 1rem;
+            }
+            .cover-author {
+                font-size: 0.8rem;
+            }
+            .search-container {
+                max-width: 100%;
+                padding: 0.4rem;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-input, .search-btn {
+                font-size: 0.85rem;
+                padding: 0.6rem;
+                width: 100%;
+                margin-bottom: 0.3rem;
+            }
+            .view-control {
+                top: 100px;
+                right: 10px;
+                flex-direction: column;
+                align-items: flex-end;
+            }
+            .view-btn, .size-btn, .download-history-btn, .bookmarks-btn {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
+            }
+            .view-menu, .size-menu, .download-history-panel, .bookmarks-panel {
+                max-width: 200px;
+                right: 10px;
+            }
+            .bookmarks-item img {
+                width: 32px;
+                height: 38px;
+            }
+            .bookmarks-item-title {
+                font-size: 0.85rem;
+            }
+            .bookmarks-item-author, .bookmarks-item-pages, .bookmarks-item-description {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <button onclick="toggleNav()" class="text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 mr-4" aria-label="Toggle navigation menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <a href="index.html" class="flex items-center">
+                    <img src="logo.png" alt="Mindful Check-In Logo: Heart and Leaf" class="h-8 w-8 mr-2">
+                    <h1 class="text-2xl font-semibold text-gray-800">Mindful Check-In</h1>
+                </a>
+            </div>
+            <div class="relative dropdown flex items-center">
+                <button onclick="toggleDropdown()" class="text-gray-600 hover:text-gray-800 focus:outline-none" aria-label="User account options">
+                    <i class="fas fa-user-circle text-2xl"></i>
+                </button>
+                <span id="bookmarkCount" class="ml-2 text-sm text-gray-600"></span>
+                <div id="dropdownMenu" class="dropdown-menu">
+                    <a href="#" onclick="startGuestChat()" class="block px-4 py-2 text-gray-600 hover:bg-blue-100">Use as Guest</a>
+                    <a href="#" onclick="openAuthModal('login')" class="block px-4 py-2 text-gray-600 hover:bg-green-100">Login / Signup</a>
+                </div>
+            </div>
+        </nav>
+        <!-- Navigation Menu -->
+        <div id="navMenu" class="nav-menu">
+            <ul>
+                <i class="fas fa-leaf leaf-icon-top"></i>
+                <i class="fas fa-leaf leaf-icon-bottom"></i>
+                <li><a href="index.html" onclick="navigateTo('index.html', 'Home menu item clicked')">Home</a></li>
+                <li><a href="features.html" onclick="navigateTo('features.html', 'Features menu item clicked')">Features</a></li>
+                <li><a href="#" onclick="checkDashboardAccess()">Dashboard</a></li>
+                <li><a href="about.html" onclick="console.log('About menu item clicked')">About</a></li>
+                <li><a href="faq.html" onclick="console.log('FAQ menu item clicked')">FAQ</a></li>
+            </ul>
+        </div>
+        <!-- View and History Controls -->
+        <div class="view-control">
+            <button class="view-btn" onclick="toggleViewMenu()" aria-label="Toggle view options">
+                <i class="fas fa-eye"></i> View
+            </button>
+            <div id="viewMenu" class="view-menu">
+                <ul>
+                    <li><button onclick="toggleView('grid')" aria-label="Switch to grid view">Grid</button></li>
+                    <li><button onclick="toggleView('list')" aria-label="Switch to list view">List</button></li>
+                </ul>
+            </div>
+            <button class="size-btn" onclick="toggleSizeMenu()" aria-label="Toggle size options">
+                <i class="fas fa-ruler"></i> Size
+            </button>
+            <div id="sizeMenu" class="size-menu">
+                <ul id="sizeOptions">
+                    <li><button onclick="setSize('small')" aria-label="Set size to small">Small</button></li>
+                    <li><button onclick="setSize('medium')" aria-label="Set size to medium">Medium</button></li>
+                    <li><button onclick="setSize('large')" aria-label="Set size to large">Large</button></li>
+                </ul>
+            </div>
+            <button id="downloadHistoryBtn" class="download-history-btn" onclick="toggleDownloadHistoryPanel()" aria-label="View download history">
+                <i class="fas fa-download"></i> Download History
+            </button>
+            <button id="bookmarksBtn" class="bookmarks-btn" onclick="toggleBookmarksPanel()" aria-label="View bookmarks">
+                <i class="fas fa-bookmark"></i> Bookmarks
+            </button>
+        </div>
+    </header>
+
+    <!-- E-Book Section -->
+    <section class="ebook-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-center mb-6 fade-in">Free Wellness E-Books</h2>
+            <div class="search-container fade-in" style="animation-delay: 0.2s;">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search e-books..." oninput="filterEBooks()">
+                <button class="search-btn"><i class="fas fa-search"></i> Search</button>
+            </div>
+            <div id="downloadHistoryPanel" class="download-history-panel fade-in" style="animation-delay: 0.4s;" aria-hidden="true">
+                <i class="fas fa-leaf leaf-icon-top"></i>
+                <button class="clear-download-history-btn" onclick="clearDownloadHistory()" aria-label="Clear download history">Clear Download History</button>
+                <div id="downloadHistoryList" class="download-history-list"></div>
+            </div>
+            <div id="bookmarksPanel" class="bookmarks-panel fade-in" style="animation-delay: 0.6s;" aria-hidden="true">
+                <i class="fas fa-leaf leaf-icon-top"></i>
+                <div id="bookmarksList" class="bookmarks-list"></div>
+                <button class="clear-bookmarks-btn" onclick="clearBookmarks()" aria-label="Clear all bookmarks">Clear Bookmarks</button>
+            </div>
+            <div class="ebook-grid fade-in size-medium" style="animation-delay: 0.8s;">
+                <div class="ebook-card" data-title="Mindful Living" data-description="A guide to integrating mindfulness into daily life for peace and clarity.">
+                    <div class="ebook-cover" onclick="trackReadingProgress('Mindful Living', 200)">
+                        <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=320&h=400" alt="Mindful Living Cover">
+                        <div class="cover-overlay">
+                            <h3 class="cover-title">Mindful Living</h3>
+                            <p class="cover-author">Dr. Jane Smith</p>
+                        </div>
+                    </div>
+                    <div class="ebook-info">
+                        <h3 class="ebook-title">Mindful Living</h3>
+                        <p class="ebook-author">Dr. Jane Smith</p>
+                        <p class="ebook-pages">200 pages</p>
+                        <p class="ebook-description">A guide to integrating mindfulness into daily life for peace and clarity.</p>
+                        <button class="download-btn" onclick="downloadEBook('Mindful Living')"><i class="fas fa-download"></i> Download</button>
+                        <i class="far fa-bookmark bookmark-icon" onclick="toggleBookmark('Mindful Living')"></i>
+                    </div>
+                </div>
+                <div class="ebook-card" data-title="Yoga for Beginners" data-description="Learn foundational yoga poses to start your wellness journey.">
+                    <div class="ebook-cover" onclick="trackReadingProgress('Yoga for Beginners', 150)">
+                        <img src="https://images.unsplash.com/photo-1506126611910-5d7d37a92891?ixlib=rb-4.0.3&auto=format&fit=crop&w=320&h=400" alt="Yoga for Beginners Cover">
+                        <div class="cover-overlay">
+                            <h3 class="cover-title">Yoga for Beginners</h3>
+                            <p class="cover-author">Anna Lee</p>
+                        </div>
+                    </div>
+                    <div class="ebook-info">
+                        <h3 class="ebook-title">Yoga for Beginners</h3>
+                        <p class="ebook-author">Anna Lee</p>
+                        <p class="ebook-pages">150 pages</p>
+                        <p class="ebook-description">Learn foundational yoga poses to start your wellness journey.</p>
+                        <button class="download-btn" onclick="downloadEBook('Yoga for Beginners')"><i class="fas fa-download"></i> Download</button>
+                        <i class="far fa-bookmark bookmark-icon" onclick="toggleBookmark('Yoga for Beginners')"></i>
+                    </div>
+                </div>
+                <div class="ebook-card" data-title="Meditation Guide" data-description="Step-by-step techniques to cultivate calm and focus.">
+                    <div class="ebook-cover" onclick="trackReadingProgress('Meditation Guide', 180)">
+                        <img src="https://images.unsplash.com/photo-1510894347713-fc3ed6fdf547?ixlib=rb-4.0.3&auto=format&fit=crop&w=320&h=400" alt="Meditation Guide Cover">
+                        <div class="cover-overlay">
+                            <h3 class="cover-title">Meditation Guide</h3>
+                            <p class="cover-author">Dr. Mark Chen</p>
+                        </div>
+                    </div>
+                    <div class="ebook-info">
+                        <h3 class="ebook-title">Meditation Guide</h3>
+                        <p class="ebook-author">Dr. Mark Chen</p>
+                        <p class="ebook-pages">180 pages</p>
+                        <p class="ebook-description">Step-by-step techniques to cultivate calm and focus.</p>
+                        <button class="download-btn" onclick="downloadEBook('Meditation Guide')"><i class="fas fa-download"></i> Download</button>
+                        <i class="far fa-bookmark bookmark-icon" onclick="toggleBookmark('Meditation Guide')"></i>
+                    </div>
+                </div>
+                <div class="ebook-card" data-title="Inner Peace" data-description="Discover practices to find tranquility amidst life’s chaos.">
+                    <div class="ebook-cover" onclick="trackReadingProgress('Inner Peace', 220)">
+                        <img src="https://images.unsplash.com/photo-1545205597-3d9c8f26d036?ixlib=rb-4.0.3&auto=format&fit=crop&w=320&h=400" alt="Inner Peace Cover">
+                        <div class="cover-overlay">
+                            <h3 class="cover-title">Inner Peace</h3>
+                            <p class="cover-author">Sofia Patel</p>
+                        </div>
+                    </div>
+                    <div class="ebook-info">
+                        <h3 class="ebook-title">Inner Peace</h3>
+                        <p class="ebook-author">Sofia Patel</p>
+                        <p class="ebook-pages">220 pages</p>
+                        <p class="ebook-description">Discover practices to find tranquility amidst life’s chaos.</p>
+                        <button class="download-btn" onclick="downloadEBook('Inner Peace')"><i class="fas fa-download"></i> Download</button>
+                        <i class="far fa-bookmark bookmark-icon" onclick="toggleBookmark('Inner Peace')"></i>
+                    </div>
+                </div>
+                <div class="ebook-card" data-title="Mindful Eating" data-description="Explore mindful eating habits for a healthier lifestyle.">
+                    <div class="ebook-cover" onclick="trackReadingProgress('Mindful Eating', 170)">
+                        <img src="https://images.unsplash.com/photo-1532795986-6b1a0b22b9a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=320&h=400" alt="Mindful Eating Cover">
+                        <div class="cover-overlay">
+                            <h3 class="cover-title">Mindful Eating</h3>
+                            <p class="cover-author">Laura Kim</p>
+                        </div>
+                    </div>
+                    <div class="ebook-info">
+                        <h3 class="ebook-title">Mindful Eating</h3>
+                        <p class="ebook-author">Laura Kim</p>
+                        <p class="ebook-pages">170 pages</p>
+                        <p class="ebook-description">Explore mindful eating habits for a healthier lifestyle.</p>
+                        <button class="download-btn" onclick="downloadEBook('Mindful Eating')"><i class="fas fa-download"></i> Download</button>
+                        <i class="far fa-bookmark bookmark-icon" onclick="toggleBookmark('Mindful Eating')"></i>
+                    </div>
+                </div>
+                <div class="ebook-card" data-title="Stress Less" data-description="Practical strategies to reduce stress and enhance well-being.">
+                    <div class="ebook-cover" onclick="trackReadingProgress('Stress Less', 190)">
+                        <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-4.0.3&auto=format&fit=crop&w=320&h=400" alt="Stress Less Cover">
+                        <div class="cover-overlay">
+                            <h3 class="cover-title">Stress Less</h3>
+                            <p class="cover-author">Dr. Emily Wong</p>
+                        </div>
+                    </div>
+                    <div class="ebook-info">
+                        <h3 class="ebook-title">Stress Less</h3>
+                        <p class="ebook-author">Dr. Emily Wong</p>
+                        <p class="ebook-pages">190 pages</p>
+                        <p class="ebook-description">Practical strategies to reduce stress and enhance well-being.</p>
+                        <button class="download-btn" onclick="downloadEBook('Stress Less')"><i class="fas fa-download"></i> Download</button>
+                        <i class="far fa-bookmark bookmark-icon" onclick="toggleBookmark('Stress Less')"></i>
+                    </div>
+                </div>
+                <div class="ebook-card" data-title="Daily Yoga" data-description="Daily routines to build strength and flexibility through yoga.">
+                    <div class="ebook-cover" onclick="trackReadingProgress('Daily Yoga', 160)">
+                        <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?ixlib=rb-4.0.3&auto=format&fit=crop&w=320&h=400" alt="Daily Yoga Cover">
+                        <div class="cover-overlay">
+                            <h3 class="cover-title">Daily Yoga</h3>
+                            <p class="cover-author">Michael Tran</p>
+                        </div>
+                    </div>
+                    <div class="ebook-info">
+                        <h3 class="ebook-title">Daily Yoga</h3>
+                        <p class="ebook-author">Michael Tran</p>
+                        <p class="ebook-pages">160 pages</p>
+                        <p class="ebook-description">Daily routines to build strength and flexibility through yoga.</p>
+                        <button class="download-btn" onclick="downloadEBook('Daily Yoga')"><i class="fas fa-download"></i> Download</button>
+                        <i class="far fa-bookmark bookmark-icon" onclick="toggleBookmark('Daily Yoga')"></i>
+                    </div>
+                </div>
+                <div class="ebook-card" data-title="Nature Meditations" data-description="Meditations inspired by nature to soothe the soul.">
+                    <div class="ebook-cover" onclick="trackReadingProgress('Nature Meditations', 210)">
+                        <img src="https://images.unsplash.com/photo-1504282766592-4a9c0c2c0e00?ixlib=rb-4.0.3&auto=format&fit=crop&w=320&h=400" alt="Nature Meditations Cover">
+                        <div class="cover-overlay">
+                            <h3 class="cover-title">Nature Meditations</h3>
+                            <p class="cover-author">Emma Green</p>
+                        </div>
+                    </div>
+                    <div class="ebook-info">
+                        <h3 class="ebook-title">Nature Meditations</h3>
+                        <p class="ebook-author">Emma Green</p>
+                        <p class="ebook-pages">210 pages</p>
+                        <p class="ebook-description">Meditations inspired by nature to soothe the soul.</p>
+                        <button class="download-btn" onclick="downloadEBook('Nature Meditations')"><i class="fas fa-download"></i> Download</button>
+                        <i class="far fa-bookmark bookmark-icon" onclick="toggleBookmark('Nature Meditations')"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm">© 2025 Mindful Check-In. All rights reserved.</p>
+            <button onclick="logout()" class="mt-2 text-sm text-gray-300 hover:text-white underline focus:outline-none focus:ring-2 focus:ring-gray-400" aria-label="Log out">Logout</button>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <i class="fas fa-leaf modal-leaf-icon"></i>
+            <i class="fas fa-leaf modal-leaf-icon-right"></i>
+            <span class="modal-close" onclick="closeAuthModal()">×</span>
+            <div class="modal-tabs">
+                <div class="modal-tab active" onclick="toggleAuthTab('login')">Login</div>
+                <div class="modal-tab" onclick="toggleAuthTab('signup')">Signup</div>
+            </div>
+            <form id="loginForm" class="modal-form active">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" required>
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" required>
+                <button type="submit" onclick="handleLogin()">Login</button>
+                <div class="modal-link">
+                    <a onclick="toggleAuthTab('signup')">Need an account? Signup</a>
+                </div>
+            </form>
+            <form id="signupForm" class="modal-form">
+                <label for="signupEmail">Email</label>
+                <input type="email" id="signupEmail" required>
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" required>
+                <label for="signupConfirmPassword">Confirm Password</label>
+                <input type="password" id="signupConfirmPassword" required>
+                <button type="submit" onclick="handleSignup()">Signup</button>
+                <div class="modal-link">
+                    <a onclick="toggleAuthTab('login')">Already have an account? Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Navigation
+        function toggleNav() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('show');
+        }
+
+        function toggleDropdown() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            dropdownMenu.classList.toggle('show');
+        }
+
+        function navigateTo(page, message) {
+            console.log(message);
+            window.location.href = page;
+        }
+
+        function checkDashboardAccess() {
+            if (sessionStorage.getItem('isRegistered')) {
+                navigateTo('dashboard.html', 'Dashboard menu item clicked');
+            } else {
+                openAuthModal('login');
+            }
+        }
+
+        // Auth
+        function startGuestChat() {
+            sessionStorage.removeItem('isRegistered');
+            sessionStorage.setItem('isGuest', 'true');
+            navigateTo('chat.html', 'Guest chat started');
+        }
+
+        function openAuthModal(tab) {
+            const modal = document.getElementById('authModal');
+            modal.classList.add('show');
+            toggleAuthTab(tab);
+        }
+
+        function toggleAuthTab(tab) {
+            const loginTab = document.querySelector('.modal-tab:nth-child(1)');
+            const signupTab = document.querySelector('.modal-tab:nth-child(2)');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            if (tab === 'login') {
+                loginTab.classList.add('active');
+                signupTab.classList.remove('active');
+                loginForm.classList.add('active');
+                signupForm.classList.remove('active');
+            } else {
+                signupTab.classList.add('active');
+                loginTab.classList.remove('active');
+                signupForm.classList.add('active');
+                loginForm.classList.remove('active');
+            }
+        }
+
+        function closeAuthModal() {
+            const modal = document.getElementById('authModal');
+            modal.classList.remove('show');
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            if (email && password) {
+                sessionStorage.setItem('isRegistered', 'true');
+                sessionStorage.removeItem('isGuest');
+                closeAuthModal();
+                alert('Logged in successfully!');
+                window.location.reload();
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        function handleSignup() {
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            if (email && password && confirmPassword) {
+                if (password === confirmPassword) {
+                    sessionStorage.setItem('isRegistered', 'true');
+                    sessionStorage.removeItem('isGuest');
+                    closeAuthModal();
+                    alert('Signed up successfully!');
+                    window.location.reload();
+                } else {
+                    alert('Passwords do not match.');
+                }
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('isRegistered');
+            sessionStorage.removeItem('isGuest');
+            localStorage.removeItem('readingHistory');
+            localStorage.removeItem('bookmarks');
+            localStorage.removeItem('downloadHistory');
+            alert('Logged out successfully!');
+            window.location.reload();
+        }
+
+        // E-Book Functions
+        function filterEBooks() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.ebook-card');
+            cards.forEach(card => {
+                const title = card.dataset.title.toLowerCase();
+                const description = card.dataset.description.toLowerCase();
+                card.style.display = (title.includes(query) || description.includes(query)) ? '' : 'none';
+            });
+        }
+
+        function trackReadingProgress(title, totalPages) {
+            if (!sessionStorage.getItem('isRegistered')) {
+                openAuthModal('login');
+                return;
+            }
+            const pagesRead = Math.floor(Math.random() * totalPages) + 1;
+            const timestamp = new Date().toLocaleString();
+            let history = JSON.parse(localStorage.getItem('readingHistory')) || [];
+            history.unshift({ title, pagesRead, totalPages, timestamp });
+            localStorage.setItem('readingHistory', JSON.stringify(history));
+            console.log(`Reading progress tracked: ${title}, ${pagesRead}/${totalPages} pages`);
+        }
+
+        function downloadEBook(title) {
+            if (!sessionStorage.getItem('isRegistered')) {
+                openAuthModal('login');
+                return;
+            }
+            alert(`Downloading "${title}"...`);
+            const timestamp = new Date().toLocaleString();
+            let downloadHistory = JSON.parse(localStorage.getItem('downloadHistory')) || [];
+            downloadHistory.unshift({ title, timestamp });
+            localStorage.setItem('downloadHistory', JSON.stringify(downloadHistory));
+            if (document.getElementById('downloadHistoryPanel').classList.contains('show')) {
+                updateDownloadHistory();
+            }
+            console.log(`Download recorded: ${title} at ${timestamp}`);
+        }
+
+        function toggleBookmark(title) {
+            if (!sessionStorage.getItem('isRegistered')) {
+                openAuthModal('login');
+                return;
+            }
+            let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+            console.log(`Before toggle: bookmarks = ${JSON.stringify(bookmarks)}`);
+            if (bookmarks.includes(title)) {
+                bookmarks = bookmarks.filter(t => t !== title);
+                console.log(`Removed bookmark: ${title}`);
+            } else {
+                bookmarks.push(title);
+                console.log(`Added bookmark: ${title}`);
+            }
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+            console.log(`After toggle: bookmarks = ${JSON.stringify(bookmarks)}`);
+            updateBookmarkIcons();
+            updateBookmarkCount();
+            if (document.getElementById('bookmarksPanel').classList.contains('show')) {
+                updateBookmarksList();
+            }
+        }
+
+        function updateBookmarkIcons() {
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+            console.log(`Updating bookmark icons with: ${JSON.stringify(bookmarks)}`);
+            document.querySelectorAll('.bookmark-icon').forEach(icon => {
+                const title = icon.parentElement.querySelector('.ebook-title').textContent;
+                const isBookmarked = bookmarks.includes(title);
+                icon.classList.toggle('far', !isBookmarked);
+                icon.classList.toggle('fas', isBookmarked);
+                icon.classList.toggle('bookmarked', isBookmarked);
+                console.log(`Icon for ${title}: ${isBookmarked ? 'bookmarked' : 'not bookmarked'}`);
+            });
+        }
+
+        function updateBookmarkCount() {
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+            const countElement = document.getElementById('bookmarkCount');
+            countElement.textContent = `${bookmarks.length} Bookmark${bookmarks.length !== 1 ? 's' : ''}`;
+            countElement.style.animation = 'pulse 0.5s ease-in-out';
+            setTimeout(() => countElement.style.animation = '', 500);
+            console.log(`Bookmark count updated: ${bookmarks.length}`);
+        }
+
+        // View and Size Controls
+        function toggleViewMenu() {
+            const viewMenu = document.getElementById('viewMenu');
+            viewMenu.classList.toggle('show');
+        }
+
+        function toggleSizeMenu() {
+            const sizeMenu = document.getElementById('sizeMenu');
+            sizeMenu.classList.toggle('show');
+        }
+
+        function toggleView(view) {
+            const grid = document.querySelector('.ebook-grid');
+            grid.classList.toggle('list-view', view === 'list');
+            localStorage.setItem('viewMode', view);
+            toggleViewMenu();
+            const size = localStorage.getItem(view === 'grid' ? 'gridSize' : 'listSize') || 'medium';
+            setSize(size);
+        }
+
+        function setSize(size) {
+            const grid = document.querySelector('.ebook-grid');
+            const isListView = grid.classList.contains('list-view');
+            grid.classList.remove('size-small', 'size-medium', 'size-large');
+            grid.classList.add(`size-${size}`);
+            localStorage.setItem(isListView ? 'listSize' : 'gridSize', size);
+            toggleSizeMenu();
+        }
+
+        // History and Bookmarks Panels
+        function toggleDownloadHistoryPanel() {
+            const panel = document.getElementById('downloadHistoryPanel');
+            panel.classList.toggle('show');
+            panel.setAttribute('aria-hidden', !panel.classList.contains('show'));
+            if (panel.classList.contains('show')) {
+                updateDownloadHistory();
+            }
+            console.log(`Download history panel ${panel.classList.contains('show') ? 'shown' : 'hidden'}`);
+        }
+
+        function updateDownloadHistory() {
+            const historyList = document.getElementById('downloadHistoryList');
+            let history = [];
+            try {
+                history = JSON.parse(localStorage.getItem('downloadHistory')) || [];
+            } catch (error) {
+                console.error('Failed to parse download history:', error);
+            }
+            historyList.innerHTML = history.length ? history.map(item => `
+                <div class="download-history-item">
+                    <span>${item.timestamp}</span> ${item.title}
+                </div>
+            `).join('') : '<div class="download-history-item">No downloads yet.</div>';
+            console.log(`Download history updated: ${history.length} items`);
+        }
+
+        function clearDownloadHistory() {
+            localStorage.removeItem('downloadHistory');
+            updateDownloadHistory();
+            console.log('Download history cleared');
+        }
+
+        function toggleBookmarksPanel() {
+            const panel = document.getElementById('bookmarksPanel');
+            const isShowing = !panel.classList.contains('show');
+            panel.classList.toggle('show');
+            panel.setAttribute('aria-hidden', !isShowing);
+            if (isShowing) {
+                updateBookmarksList();
+            }
+            console.log(`Bookmarks panel ${isShowing ? 'shown' : 'hidden'}`);
+        }
+
+        function updateBookmarksList() {
+            const bookmarksList = document.getElementById('bookmarksList');
+            if (!bookmarksList) {
+                console.error('Bookmarks list element not found');
+                return;
+            }
+            let bookmarks = [];
+            try {
+                const rawBookmarks = localStorage.getItem('bookmarks');
+                console.log(`Raw bookmarks from localStorage: ${rawBookmarks}`);
+                bookmarks = rawBookmarks ? JSON.parse(rawBookmarks) : [];
+                if (!Array.isArray(bookmarks)) {
+                    console.warn('Bookmarks is not an array, resetting to empty array');
+                    bookmarks = [];
+                    localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+                }
+            } catch (error) {
+                console.error('Failed to parse bookmarks:', error);
+                bookmarks = [];
+                localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+            }
+            console.log(`Rendering bookmarks: ${JSON.stringify(bookmarks)}`);
+            if (!bookmarks.length) {
+                bookmarksList.innerHTML = '<div class="bookmarks-item">No bookmarks yet.</div>';
+                return;
+            }
+            const cards = Array.from(document.querySelectorAll('.ebook-card'));
+            bookmarksList.innerHTML = bookmarks.map(title => {
+                const card = cards.find(c => c.dataset.title === title);
+                if (!card) return '';
+                const imgSrc = card.querySelector('.ebook-cover img').src;
+                const author = card.querySelector('.ebook-author').textContent;
+                const pages = card.querySelector('.ebook-pages').textContent;
+                const description = card.dataset.description;
+                return `
+                    <div class="bookmarks-item" role="listitem">
+                        <div class="bookmarks-item-details">
+                            <img src="${imgSrc}" alt="${title} Cover">
+                            <span class="bookmarks-item-title">${title}</span>
+                            <span class="bookmarks-item-author">${author}</span>
+                            <span class="bookmarks-item-pages">${pages}</span>
+                            <span class="bookmarks-item-description">${description}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function clearBookmarks() {
+            localStorage.removeItem('bookmarks');
+            updateBookmarksList();
+            updateBookmarkIcons();
+            updateBookmarkCount();
+            console.log('Bookmarks cleared');
+        }
+
+        // Click Outside to Close
+        document.addEventListener('click', (e) => {
+            const navMenu = document.getElementById('navMenu');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const viewMenu = document.getElementById('viewMenu');
+            const sizeMenu = document.getElementById('sizeMenu');
+            const downloadHistoryPanel = document.getElementById('downloadHistoryPanel');
+            const bookmarksPanel = document.getElementById('bookmarksPanel');
+            const authModal = document.getElementById('authModal');
+
+            if (!navMenu.contains(e.target) && !e.target.closest('button[aria-label="Toggle navigation menu"]') && navMenu.classList.contains('show')) {
+                navMenu.classList.remove('show');
+            }
+            if (!dropdownMenu.contains(e.target) && !e.target.closest('button[aria-label="User account options"]') && dropdownMenu.classList.contains('show')) {
+                dropdownMenu.classList.remove('show');
+            }
+            if (!viewMenu.contains(e.target) && !e.target.closest('.view-btn') && viewMenu.classList.contains('show')) {
+                viewMenu.classList.remove('show');
+            }
+            if (!sizeMenu.contains(e.target) && !e.target.closest('.size-btn') && sizeMenu.classList.contains('show')) {
+                sizeMenu.classList.remove('show');
+            }
+            if (!downloadHistoryPanel.contains(e.target) && !e.target.closest('#downloadHistoryBtn') && downloadHistoryPanel.classList.contains('show')) {
+                downloadHistoryPanel.classList.remove('show');
+                downloadHistoryPanel.setAttribute('aria-hidden', 'true');
+            }
+            if (!bookmarksPanel.contains(e.target) && !e.target.closest('#bookmarksBtn') && bookmarksPanel.classList.contains('show')) {
+                bookmarksPanel.classList.remove('show');
+                bookmarksPanel.setAttribute('aria-hidden', 'true');
+            }
+            if (!authModal.contains(e.target) && !e.target.closest('a[onclick*="openAuthModal"]') && authModal.classList.contains('show')) {
+                closeAuthModal();
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            const isRegistered = sessionStorage.getItem('isRegistered');
+            const downloadHistoryBtn = document.getElementById('downloadHistoryBtn');
+            const bookmarksBtn = document.getElementById('bookmarksBtn');
+
+            if (downloadHistoryBtn) {
+                downloadHistoryBtn.style.display = isRegistered ? 'flex' : 'none';
+            }
+            if (bookmarksBtn) {
+                bookmarksBtn.style.display = isRegistered ? 'flex' : 'none';
+            }
+
+            updateBookmarkIcons();
+            updateBookmarkCount();
+            updateDownloadHistory();
+            updateBookmarksList();
+
+            const viewMode = localStorage.getItem('viewMode') || 'grid';
+            toggleView(viewMode);
+
+            const size = localStorage.getItem(viewMode === 'grid' ? 'gridSize' : 'listSize') || 'medium';
+            setSize(size);
+
+            console.log('Page initialized');
+        });
+    </script>
+</body>
+</html>
